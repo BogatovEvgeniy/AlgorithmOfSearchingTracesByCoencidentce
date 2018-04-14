@@ -1,5 +1,6 @@
 package algorithms;
 
+import exceptions.LogParsingError;
 import javafx.util.Pair;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XEvent;
@@ -31,7 +32,7 @@ import java.util.*;
  */
 
 public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
-    public static final int UNDEFINED_INT_VAL = -1;
+    public static final int ZERO_COINCIDENCE_VALUE = 0;
     private final File srcFile;
     private final File resFile;
     private int minimalCoincidenceValue;
@@ -53,9 +54,12 @@ public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
             if (xUniversalParser.canParse(srcFile)) {
                 parsedLog = xUniversalParser.parse(srcFile);
                 if (validateParceErrors(parsedLog)) return;
-                resultLog = buildTracesWithStronglyDependentEvents(parsedLog, minimalCoincidenceValue);
+                resultLog = buildTracesBasedOnInvariants(parsedLog, minimalCoincidenceValue);
 
-                if (resultLog == null) return;
+                if (resultLog == null) {
+                    throw  new LogParsingError("Result log is empty. Impossible to build output file");
+                }
+
                 new XesXmlSerializer().serialize(resultLog, new FileOutputStream(resFile));
             }
         } catch (Exception e) {
@@ -63,7 +67,7 @@ public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
         }
     }
 
-    private XLog buildTracesWithStronglyDependentEvents(List<XLog> parsedLog, int minimalCoincidenceValue) {
+    private XLog buildTracesBasedOnInvariants(List<XLog> parsedLog, int minimalCoincidenceValue) {
         resultLog = new XLogImpl(parsedLog.get(0).getAttributes());
         for (XEvent event: parsedLog.get(0).get(0)) {
             insertEventInLogByCriteria(resultLog, event, false, minimalCoincidenceValue);
@@ -76,16 +80,23 @@ public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
         if (proceedEventForEmptyResultLog(xLog, xEvent)) return;
 
         // Search for better coincidence
-        Map<Integer, Integer> coincidencesMap = buildCoencidenceMap(xLog, xEvent, deepSearchByAllEvents);
+        Map<Integer, Integer> coincidencesMap = buildCoincidenceMapForEvent(xLog, xEvent, deepSearchByAllEvents);
         Pair<Integer, Integer> traceIndexCoincidenceValue = getHigherValueKey(coincidencesMap);
 
-        proceedZeroCoincidence(xLog, xEvent, deepSearchByAllEvents, traceIndexCoincidenceValue.getValue(), minimalCoincidenceValue);
+//        if (traceIndexCoincidenceValue.getValue() == ZERO_COINCIDENCE_VALUE) {
+//            if (!deepSearchByAllEvents) {
+//                insertEventInLogByCriteria(xLog, xEvent, true, minimalCoincidenceValue);
+//            }
+//        }
 
+        System.out.println("coincidencesMap:" + coincidencesMap + "   traceIndexCoincidenceValue:" + traceIndexCoincidenceValue);
         // Insert value in a trace with highest coincidence
         if (coincidencesMap.get(traceIndexCoincidenceValue.getKey()) >= minimalCoincidenceValue) {
             resultLog.get(traceIndexCoincidenceValue.getKey()).add(xEvent);
         } else {
-            resultLog.add(new XTraceImpl(xEvent.getAttributes()));
+            XTraceImpl trace = new XTraceImpl(xEvent.getAttributes());
+            resultLog.add(trace);
+            trace.add(xEvent);
         }
     }
 
@@ -98,28 +109,19 @@ public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
         return false;
     }
 
-    private void proceedZeroCoincidence(XLog xLog, XEvent xEvent, boolean deepSearchByAllEvents, int bestCoincidenceTraceIndex, int minimalCoincidenceValue) {
-        if (bestCoincidenceTraceIndex == UNDEFINED_INT_VAL) {
-            if (deepSearchByAllEvents) {
-                undefinedEvents.add(xEvent);
-            } else {
-                insertEventInLogByCriteria(xLog, xEvent, true, minimalCoincidenceValue);
-            }
-        }
-    }
-
-    private Map<Integer, Integer> buildCoencidenceMap(XLog xLog, XEvent xEvent, boolean deepSearchByAllEvents) {
+    private Map<Integer, Integer> buildCoincidenceMapForEvent(XLog xLog, XEvent xEvent, boolean deepSearchByAllEvents) {
         Map<Integer, Integer> coincidencesMap;
         if (deepSearchByAllEvents) {
-            coincidencesMap = searchByAllEvents(xLog, xEvent);
+            coincidencesMap = getCoincidencesByInvariants(xLog, xEvent);
         } else {
-            coincidencesMap = searchByLastEventInTrace(xLog, xEvent);
+            coincidencesMap = getCoencidencesForLastEventsInTraces(xLog, xEvent);
         }
         return coincidencesMap;
     }
 
-    private  Map<Integer, Integer> searchByLastEventInTrace(XLog xLog, XEvent xEvent) {
+    private  Map<Integer, Integer> getCoencidencesForLastEventsInTraces(XLog xLog, XEvent xEvent) {
         Map<Integer, Integer> resultMap = new HashMap<>();
+
         for (int i = 0; i < xLog.size(); i++) {
             XTrace trace = xLog.get(i);
             XEvent lastEventOfTrace = trace.get(trace.size() - 1);
@@ -129,7 +131,7 @@ public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
         return resultMap;
     }
 
-    private Map<Integer, Integer> searchByAllEvents(XLog xLog, XEvent xEvent) {
+    private Map<Integer, Integer> getCoincidencesByInvariants(XLog xLog, XEvent xEvent) {
         Map<Integer, Integer> resultMap = new HashMap<>();
         for (int i = 0; i < xLog.size(); i++) {
             for (XEvent eventInTrace : xLog.get(i)) {
@@ -143,9 +145,11 @@ public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
     }
 
     private Pair<Integer,Integer> getHigherValueKey(Map<Integer, Integer> coincidencesMap) {
-        int maxValueIndex = UNDEFINED_INT_VAL;
-        int currentMaxValue = UNDEFINED_INT_VAL;
-        Integer[] coincidences = coincidencesMap.keySet().toArray(new Integer[coincidencesMap.size()]);
+        Integer firstValueInMap = coincidencesMap.get(0);
+        int maxValueIndex = 0;
+        int currentMaxValue = firstValueInMap;
+        Integer[] coincidences = coincidencesMap.values().toArray(new Integer[coincidencesMap.size()]);
+
         for (int i = 0; i < coincidences.length; i++) {
             if (currentMaxValue < coincidences[i]) {
                 maxValueIndex = i;
