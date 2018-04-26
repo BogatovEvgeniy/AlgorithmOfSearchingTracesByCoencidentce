@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.traceremoval;
 
 import java.io.File;
 import java.io.InputStream;

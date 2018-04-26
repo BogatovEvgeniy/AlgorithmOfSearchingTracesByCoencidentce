@@ -1,10 +1,11 @@
-package algorithms;
+package algorithms.traceremoval;
 
-import algorithms.ITraceRemovingAlgorithm;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
+import org.deckfour.xes.model.impl.XAttributeMapImpl;
+import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XEventImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.out.XesXmlSerializer;
@@ -21,13 +22,14 @@ import java.util.List;
 /**
  * Created by Ievgen_Bogatov on 09.04.2018.
  */
-public class TraceRemovingAlgorithmImpl implements ITraceRemovingAlgorithm {
+public class TraceTagRemovingAlgorithm implements ITraceRemovingAlgorithm {
 
     protected static final String XSDATETIME_FORMAT_STRING_MILLIS_TZONE = "dd.MM.yyyyy HH:mm:ss";
     private File src;
     private File dest;
+    protected int traceCounter;
 
-    public TraceRemovingAlgorithmImpl(File src, File dest) {
+    public TraceTagRemovingAlgorithm(File src, File dest) {
         this.src = src;
         this.dest = dest;
     }
@@ -48,16 +50,21 @@ public class TraceRemovingAlgorithmImpl implements ITraceRemovingAlgorithm {
         }
     }
 
-    private static XLog removalOfTraceSeparation(List<XLog> parsedLog) {
-        XLog tracesRemoved = new XLogImpl(parsedLog.get(0).getAttributes());
+    private XLog removalOfTraceSeparation(List<XLog> parsedLog) {
+        XLog tracesRemoved = new XLogImpl(new XAttributeMapLazyImpl<XAttributeMapImpl>(XAttributeMapImpl.class));
         XTrace xTrace = (XTrace) parsedLog.get(0).get(0).clone();
         tracesRemoved.add(xTrace);
+        addEvent(parsedLog, xTrace);
+        System.out.println("Traces added: " + traceCounter);
+        return tracesRemoved;
+    }
+
+    protected void addEvent(List<XLog> parsedLog, XTrace xTrace) {
         for (int i = 1; i < parsedLog.get(0).size(); i++) {
             for (XEvent event : parsedLog.get(0).get(i)) {
                 xTrace.add(event);
             }
         }
-        return tracesRemoved;
     }
 
     private static XLog sortEventsByTimestamp(XLog xLog) {
