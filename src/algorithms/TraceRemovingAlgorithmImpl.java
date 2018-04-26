@@ -79,7 +79,7 @@ public class TraceRemovingAlgorithmImpl implements ITraceRemovingAlgorithm {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                return o1Date == o2Date ? 0 : o1Date.compareTo(o2Date) > 0 ? -1 : 1;
+                return o2Date.compareTo(o1Date);
             }
         };
 

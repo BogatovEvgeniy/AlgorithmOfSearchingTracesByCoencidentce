@@ -6,6 +6,8 @@ import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
+import org.deckfour.xes.model.impl.XAttributeMapImpl;
+import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.model.impl.XTraceImpl;
 import org.deckfour.xes.out.XesXmlSerializer;
@@ -83,18 +85,18 @@ public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
         Map<Integer, Integer> coincidencesMap = buildCoincidenceMapForEvent(xLog, xEvent, deepSearchByAllEvents);
         Pair<Integer, Integer> traceIndexCoincidenceValue = getHigherValueKey(coincidencesMap);
 
-//        if (traceIndexCoincidenceValue.getValue() == ZERO_COINCIDENCE_VALUE) {
-//            if (!deepSearchByAllEvents) {
-//                insertEventInLogByCriteria(xLog, xEvent, true, minimalCoincidenceValue);
-//            }
-//        }
+        if (traceIndexCoincidenceValue.getValue() == ZERO_COINCIDENCE_VALUE) {
+            if (!deepSearchByAllEvents) {
+                insertEventInLogByCriteria(xLog, xEvent, true, minimalCoincidenceValue);
+            }
+        }
 
         System.out.println("coincidencesMap:" + coincidencesMap + "   traceIndexCoincidenceValue:" + traceIndexCoincidenceValue);
         // Insert value in a trace with highest coincidence
         if (coincidencesMap.get(traceIndexCoincidenceValue.getKey()) >= minimalCoincidenceValue) {
             resultLog.get(traceIndexCoincidenceValue.getKey()).add(xEvent);
         } else {
-            XTraceImpl trace = new XTraceImpl(xEvent.getAttributes());
+            XTraceImpl trace = new XTraceImpl(new XAttributeMapLazyImpl<XAttributeMapImpl>(XAttributeMapImpl.class));
             resultLog.add(trace);
             trace.add(xEvent);
         }
@@ -102,7 +104,7 @@ public class TraceSearchingAlgorithmImpl implements ITraceSearchingAlgorithm {
 
     private boolean proceedEventForEmptyResultLog(XLog xLog, XEvent xEvent) {
         if (xLog.size() == 0) {
-            xLog.add(new XTraceImpl(xEvent.getAttributes()));
+            xLog.add(new XTraceImpl(new XAttributeMapLazyImpl<XAttributeMapImpl>(XAttributeMapImpl.class)));
             xLog.get(0).add(xEvent);
             return true;
         }

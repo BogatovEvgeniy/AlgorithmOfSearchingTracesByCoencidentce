@@ -5,6 +5,5 @@ package algorithms;
  */
 public interface ITraceSearchingAlgorithm {
 
-
     void proceed();
 }
