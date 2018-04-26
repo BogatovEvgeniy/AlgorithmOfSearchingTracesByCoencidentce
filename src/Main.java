@@ -1,5 +1,5 @@
 import algorithms.traceremoval.ParallelTraceTagRemovingAlgorithm;
-import algorithms.TraceSearchingAlgorithmBasedOnCoefficient;
+import algorithms.tracesearch.TraceSearchingAlgorithmBasedOnCoefficient;
 
 import java.io.*;
 

@@ -18,10 +18,11 @@ public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm
     @Override
     protected void addEvent(List<XLog> parsedLog, XTrace xTrace) {
         for (int i = 1; i < parsedLog.get(0).size(); i++) {
-            if (!traceContainsEventsWithSameTraceProduct(xTrace, parsedLog.get(0).get(i)))
-                traceCounter ++;
-            for (XEvent event : parsedLog.get(0).get(i)) {
-                xTrace.add(event);
+            if (!traceContainsEventsWithSameTraceProduct(xTrace, parsedLog.get(0).get(i))) {
+                traceCounter++;
+                for (XEvent event : parsedLog.get(0).get(i)) {
+                    xTrace.add(event);
+                }
             }
         }
     }
