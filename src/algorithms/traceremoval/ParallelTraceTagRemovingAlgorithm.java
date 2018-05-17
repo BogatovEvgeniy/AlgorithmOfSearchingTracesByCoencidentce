@@ -1,6 +1,5 @@
 package algorithms.traceremoval;
 
-import algorithms.traceremoval.TraceTagRemovingAlgorithm;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;

@@ -1,9 +1,6 @@
 package algorithms.validators;
 
-import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XEvent;
-
-import java.util.Set;
 
 public class MaximalCoincidenceValidator implements ICoincidenceValidator {
 
