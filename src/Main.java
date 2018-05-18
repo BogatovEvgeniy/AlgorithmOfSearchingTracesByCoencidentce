@@ -1,4 +1,5 @@
 import algorithms.traceremoval.ParallelTraceTagRemovingAlgorithm;
+import algorithms.traceremoval.TraceTagRemovingAlgorithm;
 import algorithms.tracesearch.TraceSearchingAlgorithmBasedOnCoefficient;
 
 import java.io.*;
@@ -16,8 +17,8 @@ public class Main {
 //        File resultFile = new File("C:\\Users\\ievgen_bogatov\\Desktop\\VolvoLog_3_logs_in_one_AlgorithmImplementation.xes");
         new ParallelTraceTagRemovingAlgorithm(srcFile, desctFile).removeTraces();
 
-        new ParallelTraceTagRemovingAlgorithm(srcFile, desctFile).removeTraces();
-        new TraceSearchingAlgorithmBasedOnCoefficient(desctFile, resultFile, 0.50f).proceed();
+        new TraceTagRemovingAlgorithm(srcFile, desctFile).removeTraces();
+        new TraceSearchingAlgorithmBasedOnCoefficient(desctFile, resultFile, 0.55f).proceed();
         final long endTime = System.currentTimeMillis();
         System.out.println("Total execution time: " + (endTime - startTime));
     }
