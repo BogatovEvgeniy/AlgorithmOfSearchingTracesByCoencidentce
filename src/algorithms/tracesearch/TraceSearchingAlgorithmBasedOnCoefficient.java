@@ -35,9 +35,9 @@ import java.util.*;
  */
 
 public class TraceSearchingAlgorithmBasedOnCoefficient implements ITraceSearchingAlgorithm {
-    public static final int ZERO_COINCIDENCE_VALUE = 0;
     private final File srcFile;
     private final File resFile;
+    private Map<String, Float> correctionAtributesMap;
     private float minimalCoincidenceValue;
 
     private List<XEvent> undefinedEvents = new ArrayList<>();
@@ -49,15 +49,19 @@ public class TraceSearchingAlgorithmBasedOnCoefficient implements ITraceSearchin
         this.minimalCoincidenceValue = minimalCoincidenceValue;
     }
 
+    public TraceSearchingAlgorithmBasedOnCoefficient(File srcFile, File resFile, Map<String, Float> correctionAttributesMap, float minimalCoincidenceValue) {
+        this(srcFile, resFile, minimalCoincidenceValue);
+        this.correctionAtributesMap = correctionAttributesMap;
+    }
+
     @Override
     public void proceed() {
         try {
             XesXmlParser xUniversalParser = new XesXmlParser();
-            List<XLog> parsedLog = null;
             if (xUniversalParser.canParse(srcFile)) {
-                parsedLog = xUniversalParser.parse(srcFile);
+                List<XLog> parsedLog = xUniversalParser.parse(srcFile);
                 if (validateLog(parsedLog)) return;
-                Map<String, Float> attributeCoefficientMap = buildCoefficientMapForAttributes(parsedLog);
+                Map<String, Float> attributeCoefficientMap = prepareCoefficientMap(parsedLog);
                 resultLog = buildTracesBasedOnInvariants(parsedLog, minimalCoincidenceValue, attributeCoefficientMap);
 
                 if (resultLog == null) {
@@ -69,6 +73,65 @@ public class TraceSearchingAlgorithmBasedOnCoefficient implements ITraceSearchin
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Map<String, Float> prepareCoefficientMap(List<XLog> parsedLog) {
+        Map<String, Float> attributeCoefficientMap = buildCoefficientMapForAttributes(parsedLog);
+        attributeCoefficientMap = coefficientsCorrectionBaseOnIncomeData(correctionAtributesMap, attributeCoefficientMap);
+        attributeCoefficientMap = rebalanceCoefficientsToValue(1, attributeCoefficientMap);
+        return attributeCoefficientMap;
+    }
+
+    private Map<String, Float> rebalanceCoefficientsToValue(float targetValue, Map<String, Float> attributeCoefficientMap) {
+        Iterator<String> iterator = attributeCoefficientMap.keySet().iterator();
+        float coefficientSum = 0;
+        while (iterator.hasNext()){
+            coefficientSum += attributeCoefficientMap.get(iterator.next());
+        }
+
+        if (targetValue == coefficientSum) return attributeCoefficientMap;
+
+
+        /**
+         * The correction value calculates basing on expression below
+         * t - target value usually equals to 1
+         * n1...ni - the sum of coefficients in the map
+         * x - the correction value used to make values in map that sum of them was equals target val
+         *
+         * t = x + (n1...ni)
+         *
+         * x = t - (ni...ni)
+         *
+         * t = (n1...ni)(x/(n1...ni) + 1)
+         *
+         */
+
+        Map<String, Float> correctedMap = new HashMap<>();
+        // calculate (x/(n1...ni) + 1)
+        float correctionValue = ((targetValue - coefficientSum) / coefficientSum) + 1;
+
+        iterator = attributeCoefficientMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            correctedMap.put(key, attributeCoefficientMap.get(key) * correctionValue);
+        }
+
+        return correctedMap;
+    }
+
+    private Map<String, Float> coefficientsCorrectionBaseOnIncomeData(Map<String, Float> correctionAtributesMap, Map<String, Float> attributeCoefficientMap) {
+        Map<String, Float> resultMap = new HashMap<>();
+        Iterator<String> iterator = attributeCoefficientMap.keySet().iterator();
+        while (iterator.hasNext()){
+            String key = iterator.next();
+            float value = attributeCoefficientMap.get(key);
+            if (correctionAtributesMap.containsKey(key)) {
+                value = correctionAtributesMap.get(key) * attributeCoefficientMap.get(key);
+            }
+            resultMap.put(key, value);
+        }
+
+        return resultMap.size() > 0 ? resultMap : attributeCoefficientMap;
     }
 
     private Map<String, Float> buildCoefficientMapForAttributes(List<XLog> parsedLog) {
@@ -95,14 +158,6 @@ public class TraceSearchingAlgorithmBasedOnCoefficient implements ITraceSearchin
         for (String attributeName : valuesMap.keySet()) {
             resultMap.put(attributeName, (varietyPerAttrMap.get(attributeName) * variatePercentMultilayer));
         }
-
-        String resourceAttrName = "org:resource";
-        String productAttrName = "product";
-        Float resource = resultMap.get(resourceAttrName);
-        Float product = resultMap.get(productAttrName);
-
-        resultMap.put(resourceAttrName, product);
-        resultMap.put(productAttrName, resource);
 
         return resultMap;
     }
@@ -165,7 +220,7 @@ public class TraceSearchingAlgorithmBasedOnCoefficient implements ITraceSearchin
 //            }
 //        }
 
-        System.out.println("coincidencesMap:" + coincidencesMap + "   traceIndexCoincidenceValue:" + traceIndexCoincidenceValue);
+//        System.out.println("coincidencesMap:" + coincidencesMap + "   traceIndexCoincidenceValue:" + traceIndexCoincidenceValue);
         // Insert value in a trace with highest coincidence
         if (coincidencesMap.get(traceIndexCoincidenceValue.getKey()) >= minimalCoincidenceValue) {
             resultLog.get(traceIndexCoincidenceValue.getKey()).add(xEvent);

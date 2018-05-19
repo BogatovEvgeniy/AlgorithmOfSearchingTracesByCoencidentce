@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AlgorithmOfSearchingTracesByCoencidentce.iml" filepath="$PROJECT_DIR$/AlgorithmOfSearchingTracesByCoencidentce.iml" />
       <module fileurl="file://E:/Users/ievgen_bogatov/Downloads/OpenXES-1.1.tar/OpenXES-1.1/OpenXES-1.1.iml" filepath="E:/Users/ievgen_bogatov/Downloads/OpenXES-1.1.tar/OpenXES-1.1/OpenXES-1.1.iml" />
+      <module fileurl="file://$USER_HOME$/Downloads/openxes-1.1.tar/openxes-1.1/openxes-1.1.iml" filepath="$USER_HOME$/Downloads/openxes-1.1.tar/openxes-1.1/openxes-1.1.iml" />
     </modules>
   </component>
 </project>

@@ -5,7 +5,7 @@ import org.deckfour.xes.model.XEvent;
 import java.util.Map;
 
 public interface ICoincidenceValidator {
-    int validateCoincidence(XEvent base, XEvent comp);
+    int validateCoincidenceByMap(XEvent base, XEvent comp);
 
-    float validateCoincidence(XEvent lastEventOfTrace, XEvent xEvent, Map<String, Float> attributeCoefficientMap);
+    float validateCoincidenceByMap(XEvent lastEventOfTrace, XEvent xEvent, Map<String, Float> attributeCoefficientMap);
 }

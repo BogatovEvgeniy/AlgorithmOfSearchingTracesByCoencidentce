@@ -9,7 +9,7 @@ import java.util.Set;
 public class MaximalCoincidenceValidator implements ICoincidenceValidator {
 
     @Override
-    public int validateCoincidence(XEvent base, XEvent compare) {
+    public int validateCoincidenceByMap(XEvent base, XEvent compare) {
         int coincidenceCounter = 0;
         for (String baseKey : base.getAttributes().keySet()) {
             for (String compareKey : compare.getAttributes().keySet()) {
@@ -23,7 +23,7 @@ public class MaximalCoincidenceValidator implements ICoincidenceValidator {
     }
 
     @Override
-    public float validateCoincidence(XEvent base, XEvent compare, Map<String, Float> attributeCoefficientMap) {
+    public float validateCoincidenceByMap(XEvent base, XEvent compare, Map<String, Float> attributeCoefficientMap) {
         float coincidenceCounter = 0;
         for (String baseKey : base.getAttributes().keySet()) {
             for (String compareKey : compare.getAttributes().keySet()) {
