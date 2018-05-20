@@ -10,10 +10,8 @@ import org.deckfour.xes.model.impl.XAttributeMapImpl;
 import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XEventImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
-import org.deckfour.xes.out.XesXmlSerializer;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
@@ -22,28 +20,27 @@ import java.util.List;
 public class TraceTagRemovingAlgorithm implements ITraceRemovingAlgorithm {
 
     private File src;
-    private File dest;
     protected int traceCounter;
 
-    public TraceTagRemovingAlgorithm(File src, File dest) {
-        this.src = src;
-        this.dest = dest;
+    public TraceTagRemovingAlgorithm(File srcFile) {
+        this.src = srcFile;
     }
 
     @Override
-    public void removeTraces() {
+    public XLog removeTraces() {
+        List<XLog> parsedLog = null;
+        XLog xLog = null;
         try {
             XesXmlParser xUniversalParser = new XesXmlParser();
-            List<XLog> parsedLog = null;
             if (xUniversalParser.canParse(src)) {
                 parsedLog = xUniversalParser.parse(src);
             }
-            XLog xLog = removalOfTraceTags(parsedLog);
+            xLog = removalOfTraceTags(parsedLog);
             xLog = sortEventsByTimestamp(xLog);
-            new XesXmlSerializer().serialize(xLog, new FileOutputStream(dest));
-        } catch (Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
+        return xLog;
     }
 
     private XLog removalOfTraceTags(List<XLog> parsedLog) {

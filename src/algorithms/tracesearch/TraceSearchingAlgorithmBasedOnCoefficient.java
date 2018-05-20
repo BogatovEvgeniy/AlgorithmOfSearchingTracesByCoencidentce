@@ -10,13 +10,15 @@ import org.deckfour.xes.model.impl.XAttributeMapImpl;
 import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.model.impl.XTraceImpl;
-import org.deckfour.xes.out.XesXmlSerializer;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.*;
 
 /**
+ *  _____________________________________
+ * |THE DESCRIPTION SHOULD BE UPDATED    |
+ * |_____________________________________|
+ *
  * The algorithm of parsing logs consists only of events
  * Algorithm allows to group events by traces basing on maximal coinsidence of comparing events.
  * While algorithm proceed sets of events we were assumed that
@@ -36,169 +38,43 @@ import java.util.*;
 
 public class TraceSearchingAlgorithmBasedOnCoefficient implements ITraceSearchingAlgorithm {
     private final File srcFile;
-    private final File resFile;
-    private Map<String, Float> correctionAtributesMap;
+    private final TraceValidator traceValidator = new TraceValidator();
+    private Map<String, Float> attributeCoefficientMap;
     private float minimalCoincidenceValue;
 
     private List<XEvent> undefinedEvents = new ArrayList<>();
     private XLog resultLog;
 
-    public TraceSearchingAlgorithmBasedOnCoefficient(File srcFile, File resFile, float minimalCoincidenceValue) {
+    public TraceSearchingAlgorithmBasedOnCoefficient(File srcFile, float minimalCoincidenceValue) {
         this.srcFile = srcFile;
-        this.resFile = resFile;
         this.minimalCoincidenceValue = minimalCoincidenceValue;
     }
 
-    public TraceSearchingAlgorithmBasedOnCoefficient(File srcFile, File resFile, Map<String, Float> correctionAttributesMap, float minimalCoincidenceValue) {
-        this(srcFile, resFile, minimalCoincidenceValue);
-        this.correctionAtributesMap = correctionAttributesMap;
+    public TraceSearchingAlgorithmBasedOnCoefficient(File srcFile, Map<String, Float> attributeCoefficientMap , float minimalCoincidenceValue) {
+        this(srcFile, minimalCoincidenceValue);
+        this.attributeCoefficientMap = attributeCoefficientMap;
     }
 
     @Override
-    public void proceed() {
+    public XLog proceed() throws LogParsingError {
         try {
             XesXmlParser xUniversalParser = new XesXmlParser();
             if (xUniversalParser.canParse(srcFile)) {
                 List<XLog> parsedLog = xUniversalParser.parse(srcFile);
-                if (validateLog(parsedLog)) return;
-                Map<String, Float> attributeCoefficientMap = prepareCoefficientMap(parsedLog);
+                if (traceValidator.validateIsEmpty(parsedLog)) return  new XLogImpl(new XAttributeMapLazyImpl<XAttributeMapImpl>(XAttributeMapImpl.class));
                 resultLog = buildTracesBasedOnInvariants(parsedLog, minimalCoincidenceValue, attributeCoefficientMap);
-
-                if (resultLog == null) {
-                    throw new LogParsingError("Result log is empty. Impossible to build output file");
-                }
-
-                new XesXmlSerializer().serialize(resultLog, new FileOutputStream(resFile));
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    private Map<String, Float> prepareCoefficientMap(List<XLog> parsedLog) {
-        Map<String, Float> attributeCoefficientMap = buildCoefficientMapForAttributes(parsedLog);
-        attributeCoefficientMap = coefficientsCorrectionBaseOnIncomeData(correctionAtributesMap, attributeCoefficientMap);
-        attributeCoefficientMap = rebalanceCoefficientsToValue(1, attributeCoefficientMap);
-        return attributeCoefficientMap;
-    }
-
-    private Map<String, Float> rebalanceCoefficientsToValue(float targetValue, Map<String, Float> attributeCoefficientMap) {
-        Iterator<String> iterator = attributeCoefficientMap.keySet().iterator();
-        float coefficientSum = 0;
-        while (iterator.hasNext()){
-            coefficientSum += attributeCoefficientMap.get(iterator.next());
+        if (resultLog == null) {
+            throw new LogParsingError("Result log is empty. Impossible to build output file");
         }
-
-        if (targetValue == coefficientSum) return attributeCoefficientMap;
-
-
-        /**
-         * The correction value calculates basing on expression below
-         * t - target value usually equals to 1
-         * n1...ni - the sum of coefficients in the map
-         * x - the correction value used to make values in map that sum of them was equals target val
-         *
-         * t = x + (n1...ni)
-         *
-         * x = t - (ni...ni)
-         *
-         * t = (n1...ni)(x/(n1...ni) + 1)
-         *
-         */
-
-        Map<String, Float> correctedMap = new HashMap<>();
-        // calculate (x/(n1...ni) + 1)
-        float correctionValue = ((targetValue - coefficientSum) / coefficientSum) + 1;
-
-        iterator = attributeCoefficientMap.keySet().iterator();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            correctedMap.put(key, attributeCoefficientMap.get(key) * correctionValue);
-        }
-
-        return correctedMap;
+        return resultLog;
     }
 
-    private Map<String, Float> coefficientsCorrectionBaseOnIncomeData(Map<String, Float> correctionAtributesMap, Map<String, Float> attributeCoefficientMap) {
-        Map<String, Float> resultMap = new HashMap<>();
-        Iterator<String> iterator = attributeCoefficientMap.keySet().iterator();
-        while (iterator.hasNext()){
-            String key = iterator.next();
-            float value = attributeCoefficientMap.get(key);
-            if (correctionAtributesMap.containsKey(key)) {
-                value = correctionAtributesMap.get(key) * attributeCoefficientMap.get(key);
-            }
-            resultMap.put(key, value);
-        }
-
-        return resultMap.size() > 0 ? resultMap : attributeCoefficientMap;
-    }
-
-    private Map<String, Float> buildCoefficientMapForAttributes(List<XLog> parsedLog) {
-        XTrace trace = parsedLog.get(0).get(0);
-        XAttributeMap attributes = trace.get(0).getAttributes();
-        Map<String, List<Pair<String, Integer>>> valuesMap = fillAttributeValuesMap(parsedLog, attributes);
-        return calculateCoefficientMapForEachAttribute(valuesMap, trace.size(), attributes.size());
-    }
-
-
-    private Map<String, Float> calculateCoefficientMapForEachAttribute(Map<String, List<Pair<String, Integer>>> valuesMap, int eventsInLog, int attributesPerEvent) {
-        Map<String, Float> resultMap = new HashMap<>();
-        Map<String, Float> varietyPerAttrMap = new HashMap<>();
-
-        float sumOfVarieties = 0;
-        for (String attributeName : valuesMap.keySet()) {
-            List<Pair<String, Integer>> pairs = valuesMap.get(attributeName);
-            float varietyOfEventsPerAttribute = (float) pairs.size()/eventsInLog;
-            varietyPerAttrMap.put(attributeName, varietyOfEventsPerAttribute);
-            sumOfVarieties += varietyOfEventsPerAttribute;
-        }
-
-        float variatePercentMultilayer = 1 / sumOfVarieties;
-        for (String attributeName : valuesMap.keySet()) {
-            resultMap.put(attributeName, (varietyPerAttrMap.get(attributeName) * variatePercentMultilayer));
-        }
-
-        return resultMap;
-    }
-
-    private Map<String, List<Pair<String, Integer>>> fillAttributeValuesMap(List<XLog> parsedLog, XAttributeMap attributes) {
-        Map<String, List<Pair<String, Integer>>> valuesMap = new HashMap<>();
-        for (String key : attributes.keySet()) {
-            if (key.contains("timestamp")) break;
-            for (XLog log : parsedLog) {
-                for (XTrace trace : log) {
-                    for (XEvent xEvent : trace) {
-                        String attrValue = String.valueOf(xEvent.getAttributes().get(key));
-                        if (!valuesMap.containsKey(key)) {
-                            ArrayList<Pair<String, Integer>> value = new ArrayList<>();
-                            valuesMap.put(key, value);
-                            value.add(new Pair<String, Integer>(attrValue, 1));
-                        } else {
-                            List<Pair<String, Integer>> attributeValueFrequencyList = valuesMap.get(key);
-                            int positionToInsert = -1;
-                            for (int i = 0; i < attributeValueFrequencyList.size(); i++) {
-                                if (attributeValueFrequencyList.get(i).getKey().equals(attrValue)) {
-                                    positionToInsert = i;
-                                    break;
-                                }
-                            }
-                            if (positionToInsert >= 0) {
-                                Integer currentAttrFrequency = attributeValueFrequencyList.get(positionToInsert).getValue().intValue();
-                                attributeValueFrequencyList.remove(positionToInsert);
-                                attributeValueFrequencyList.add(positionToInsert, new Pair<>(attrValue, currentAttrFrequency + 1));
-                            } else {
-                                attributeValueFrequencyList.add(new Pair<>(attrValue, 1));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return valuesMap;
-    }
-
-    private XLog  buildTracesBasedOnInvariants(List<XLog> parsedLog, float minimalCoincidenceValue, Map<String, Float> attributeCoefficientMap) {
+    private XLog buildTracesBasedOnInvariants(List<XLog> parsedLog, float minimalCoincidenceValue, Map<String, Float> attributeCoefficientMap) {
         resultLog = new XLogImpl(parsedLog.get(0).getAttributes());
         for (XEvent event : parsedLog.get(0).get(0)) {
             insertEventInLogByCriteria(resultLog, event, false, minimalCoincidenceValue, attributeCoefficientMap);
@@ -288,13 +164,5 @@ public class TraceSearchingAlgorithmBasedOnCoefficient implements ITraceSearchin
         }
 
         return new Pair<>(maxValueIndex, currentMaxValue);
-    }
-
-    private boolean validateLog(List<XLog> parsedLog) {
-        // If there are no resultLog, trace or event nothing will be written in file
-        if (parsedLog.size() == 0) return true;
-        if (parsedLog.get(0).size() == 0) return true;
-        if (parsedLog.get(0).get(0).size() == 0) return true;
-        return false;
     }
 }

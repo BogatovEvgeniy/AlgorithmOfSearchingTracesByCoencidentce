@@ -1,5 +1,7 @@
 package algorithms.traceremoval;
 
+import org.deckfour.xes.model.XLog;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,5 +11,5 @@ import java.io.OutputStream;
  */
 public interface ITraceRemovingAlgorithm {
 
-    void  removeTraces();
+    XLog removeTraces();
 }

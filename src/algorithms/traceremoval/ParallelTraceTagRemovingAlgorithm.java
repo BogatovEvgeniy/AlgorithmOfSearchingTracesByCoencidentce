@@ -1,6 +1,5 @@
 package algorithms.traceremoval;
 
-import algorithms.traceremoval.TraceTagRemovingAlgorithm;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
@@ -11,8 +10,15 @@ import java.util.List;
 
 public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm {
 
-    public ParallelTraceTagRemovingAlgorithm(File src, File dest) {
-        super(src, dest);
+    private final String[] attributesForComparision;
+
+    /**
+     * @param src - source file, the file where initial log is stored
+     * @param attributesForComparision - the set of attributes which should be taken into a count
+     */
+    public ParallelTraceTagRemovingAlgorithm(File src, String ... attributesForComparision) {
+        super(src);
+        this.attributesForComparision = attributesForComparision;
     }
 
     @Override
@@ -29,11 +35,15 @@ public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm
 
     private boolean traceContainsEventsWithSameTraceProduct(XTrace xTrace, XTrace currEvent) {
         for (XEvent xEvent : xTrace) {
-            XAttribute xAttribute = xEvent.getAttributes().get("product");
-            XAttribute product = currEvent.get(0).getAttributes().get("product");
-            if(xAttribute.toString().equals(product.toString())) {
-               return true;
-           }
+            for (String attr : attributesForComparision) {
+                XAttribute attrOfEventInLog = xEvent.getAttributes().get(attr);
+                XAttribute attrOfCurrentEvent = currEvent.get(0).getAttributes().get(attr);
+
+                if(!attrOfEventInLog.toString().equals(attrOfCurrentEvent.toString())) {
+                    break;
+                }
+                return true;
+            }
         }
         return false;
     }
