@@ -1,6 +1,5 @@
 import algorithms.traceremoval.ParallelTraceTagRemovingAlgorithm;
-import algorithms.traceremoval.TraceTagRemovingAlgorithm;
-import algorithms.tracesearch.TraceSearchingAlgorithmBasedOnCoefficient;
+import algorithms.tracesearch.coefficient.TraceSearchingAlgorithm;
 import exceptions.LogParsingError;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.out.XesXmlSerializer;
@@ -24,16 +23,12 @@ public class Main {
         XLog xLog = new ParallelTraceTagRemovingAlgorithm(new File(srcFilePath), "product").removeTraces();
         File savedLog = saveLog(xLog, DESTINATION_DIR, "ParallelProcessesRemoved_", destFileName, FILE_EXTENSION);
 
-        // Put all events in one trace
-//        xLog = new TraceTagRemovingAlgorithm(savedLog).removeTraces();
-//        savedLog = saveLog(xLog, DESTINATION_DIR, "TracesRemoved_", destFileName, FILE_EXTENSION);
-
         // Build an map which will reflect an majority of each attribute for future analyse
         Map<String, Float> correctionMap = calculateCoefficientsMap(savedLog);
 
         // Launch the algorithm of searching traces by coincidences of event's attributes values
         // also tacking in a count coefficientMap
-        xLog = new TraceSearchingAlgorithmBasedOnCoefficient(savedLog, correctionMap, 0.7f).proceed();
+        xLog = new TraceSearchingAlgorithm(savedLog, correctionMap, 0.7f).proceed();
         saveLog(xLog, DESTINATION_DIR, "TracesRestored_", destFileName, FILE_EXTENSION);
 
         // Track execution time
