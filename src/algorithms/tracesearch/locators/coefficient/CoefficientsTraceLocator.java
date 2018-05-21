@@ -1,4 +1,4 @@
-package algorithms.tracesearch.locators;
+package algorithms.tracesearch.locators.coefficient;
 
 import algorithms.ValidationFactory;
 import algorithms.tracesearch.ITraceSearchingAlgorithm;
@@ -43,10 +43,7 @@ public class CoefficientsTraceLocator implements ITraceSearchingAlgorithm.TraceL
         List<Integer> locatorResults = new LinkedList<>();
 
         Float[] coincidences = coincidencesMap.values().toArray(new Float[coincidencesMap.size()]);
-        Arrays.sort(coincidences, (Comparator) (o1, o2) -> {
-            if (o1 == o2) return 0;
-            return (Float) o1 > (Float) o2 ? 1 : -1;
-        });
+        Arrays.sort(coincidences, Comparator.comparing(o -> ((Float) o)));
 
         for (int resIndex = 0; resIndex < coincidences.length; resIndex++) {
             if (coincidences[resIndex] >= minimalCoincidence) {

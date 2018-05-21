@@ -1,5 +1,6 @@
 package algorithms.traceremoval;
 
+import io.ILogWriter;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
@@ -7,12 +8,14 @@ import org.deckfour.xes.model.XTrace;
 
 public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm {
 
+    private ILogWriter logWriter;
     private final String[] attributesForComparision;
 
     /**
      * @param attributesForComparision - the set of attributes which should be taken into a count
      */
-    public ParallelTraceTagRemovingAlgorithm(String... attributesForComparision) {
+    public ParallelTraceTagRemovingAlgorithm(ILogWriter logWriter, String... attributesForComparision) {
+        this.logWriter = logWriter;
         this.attributesForComparision = attributesForComparision;
     }
 
@@ -26,6 +29,15 @@ public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm
                 }
             }
         }
+    }
+
+    @Override
+    public XLog proceed(XLog originLog) {
+        this.originLog = originLog;
+        XLog xLog = removalOfTraceTags(originLog);
+        logWriter.write(xLog, "C:\\Users\\ievgen_bogatov\\Desktop\\", "WithoutParallelBP");
+        xLog = sortEventsByTimestamp(xLog);
+        return xLog;
     }
 
     private boolean traceContainsEventsWithSameTraceProduct(XTrace xTrace, XTrace currEvent) {

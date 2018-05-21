@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class TraceTagRemovingAlgorithm implements ILogAlgorithm {
 
-    private XLog originLog;
+    protected XLog originLog;
     protected int traceCounter;
 
     @Override
@@ -28,7 +28,7 @@ public class TraceTagRemovingAlgorithm implements ILogAlgorithm {
         return xLog;
     }
 
-    private XLog removalOfTraceTags(XLog originLog) {
+    protected XLog removalOfTraceTags(XLog originLog) {
         XLog tracesRemoved = new XLogImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class));
         XTrace xTrace = (XTrace) originLog.get(0).clone();
         tracesRemoved.add(xTrace);
@@ -45,12 +45,12 @@ public class TraceTagRemovingAlgorithm implements ILogAlgorithm {
         }
     }
 
-    private static XLog sortEventsByTimestamp(XLog xLog) {
+    protected static XLog sortEventsByTimestamp(XLog xLog) {
         XTrace trace = xLog.get(0);
         Comparator<Object> comparator = (o1, o2) -> {
             Date timestampO1 = ((XAttributeTimestamp) ((XEventImpl) o1).getAttributes().get(XTimeExtension.KEY_TIMESTAMP)).getValue();
             Date timestampO2 = ((XAttributeTimestamp) ((XEventImpl) o2).getAttributes().get(XTimeExtension.KEY_TIMESTAMP)).getValue();
-            return timestampO2.compareTo(timestampO1);
+            return timestampO1.compareTo(timestampO2);
         };
 
         Object[] events = trace.toArray();

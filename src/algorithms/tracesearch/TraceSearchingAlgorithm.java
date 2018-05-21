@@ -1,4 +1,4 @@
-package algorithms.tracesearch.coefficient;
+package algorithms.tracesearch;
 
 import algorithms.ValidationFactory;
 import algorithms.tracesearch.ILocatorResultMerger;
@@ -105,7 +105,7 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         }
 
         // Insert value in a trace with highest coefficient
-        if (traceLocatorResults == null && traceLocatorResults.length == 0) {
+        if (traceLocatorResults == null || traceLocatorResults.length == 0) {
             XTraceImpl trace = new XTraceImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class));
             resultLog.add(trace);
             trace.add(xEvent);

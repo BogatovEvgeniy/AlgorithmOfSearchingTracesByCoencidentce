@@ -1,10 +1,10 @@
-import algorithms.io.ILogReader;
-import algorithms.io.ILogWriter;
-import algorithms.io.XesLogReader;
-import algorithms.io.XesLogWriter;
+import io.ILogReader;
+import io.ILogWriter;
+import io.XesLogReader;
+import io.XesLogWriter;
 import algorithms.traceremoval.ParallelTraceTagRemovingAlgorithm;
-import algorithms.tracesearch.coefficient.TraceSearchingAlgorithm;
-import algorithms.tracesearch.locators.CoefficientsTraceLocator;
+import algorithms.tracesearch.TraceSearchingAlgorithm;
+import algorithms.tracesearch.locators.coefficient.CoefficientsTraceLocator;
 import org.deckfour.xes.model.XLog;
 
 import java.io.File;
@@ -28,7 +28,7 @@ public class Main {
         XLog originLog = logReader.parse(new File(srcFilePath)).get(0);
 
         // Remove traces which produces the same product, than put all events into a one trace
-        XLog xLog = new ParallelTraceTagRemovingAlgorithm("product").proceed(originLog);
+        XLog xLog = new ParallelTraceTagRemovingAlgorithm(logWriter, "product").proceed(originLog);
         File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
         // Build an map which will reflect an majority of each attribute for future analyse
@@ -38,7 +38,7 @@ public class Main {
         // also tacking in a count coefficientMap
         TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
         searchingAlgorithm.setTraceLocator(new CoefficientsTraceLocator(0.7f, correctionMap));
-        searchingAlgorithm.proceed(originLog);
+        xLog = searchingAlgorithm.proceed(xLog);
         logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
 
         // Track execution time

@@ -1,4 +1,4 @@
-package algorithms.io;
+package io;
 
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.out.XesXmlSerializer;
