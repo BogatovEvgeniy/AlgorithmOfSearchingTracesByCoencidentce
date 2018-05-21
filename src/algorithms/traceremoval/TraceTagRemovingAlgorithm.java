@@ -1,7 +1,7 @@
 package algorithms.traceremoval;
 
+import algorithms.ILogAlgorithm;
 import org.deckfour.xes.extension.std.XTimeExtension;
-import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XAttributeTimestamp;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
@@ -11,50 +11,35 @@ import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XEventImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
-public class TraceTagRemovingAlgorithm implements ITraceRemovingAlgorithm {
+public class TraceTagRemovingAlgorithm implements ILogAlgorithm {
 
-    private File src;
+    private XLog originLog;
     protected int traceCounter;
 
-    public TraceTagRemovingAlgorithm(File srcFile) {
-        this.src = srcFile;
-    }
-
     @Override
-    public XLog removeTraces() {
-        List<XLog> parsedLog = null;
-        XLog xLog = null;
-        try {
-            XesXmlParser xUniversalParser = new XesXmlParser();
-            if (xUniversalParser.canParse(src)) {
-                parsedLog = xUniversalParser.parse(src);
-            }
-            xLog = removalOfTraceTags(parsedLog);
-            xLog = sortEventsByTimestamp(xLog);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+    public XLog proceed(XLog originLog) {
+        this.originLog = originLog;
+        XLog xLog = removalOfTraceTags(originLog);
+        xLog = sortEventsByTimestamp(xLog);
         return xLog;
     }
 
-    private XLog removalOfTraceTags(List<XLog> parsedLog) {
-        XLog tracesRemoved = new XLogImpl(new XAttributeMapLazyImpl<XAttributeMapImpl>(XAttributeMapImpl.class));
-        XTrace xTrace = (XTrace) parsedLog.get(0).get(0).clone();
+    private XLog removalOfTraceTags(XLog originLog) {
+        XLog tracesRemoved = new XLogImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class));
+        XTrace xTrace = (XTrace) originLog.get(0).clone();
         tracesRemoved.add(xTrace);
-        addEvent(parsedLog, xTrace);
+        addEvent(originLog, xTrace);
         System.out.println("Traces added: " + traceCounter);
         return tracesRemoved;
     }
 
-    protected void addEvent(List<XLog> parsedLog, XTrace xTrace) {
-        for (int i = 1; i < parsedLog.get(0).size(); i++) {
-            for (XEvent event : parsedLog.get(0).get(i)) {
+    protected void addEvent(XLog originLog, XTrace xTrace) {
+        for (int i = 1; i < originLog.size(); i++) {
+            for (XEvent event : originLog.get(i)) {
                 xTrace.add(event);
             }
         }
@@ -63,8 +48,8 @@ public class TraceTagRemovingAlgorithm implements ITraceRemovingAlgorithm {
     private static XLog sortEventsByTimestamp(XLog xLog) {
         XTrace trace = xLog.get(0);
         Comparator<Object> comparator = (o1, o2) -> {
-            Date timestampO1 = ((XAttributeTimestamp)((XEventImpl) o1).getAttributes().get(XTimeExtension.KEY_TIMESTAMP)).getValue();
-            Date timestampO2 = ((XAttributeTimestamp)((XEventImpl) o2).getAttributes().get(XTimeExtension.KEY_TIMESTAMP)).getValue();
+            Date timestampO1 = ((XAttributeTimestamp) ((XEventImpl) o1).getAttributes().get(XTimeExtension.KEY_TIMESTAMP)).getValue();
+            Date timestampO2 = ((XAttributeTimestamp) ((XEventImpl) o2).getAttributes().get(XTimeExtension.KEY_TIMESTAMP)).getValue();
             return timestampO2.compareTo(timestampO1);
         };
 
@@ -77,5 +62,4 @@ public class TraceTagRemovingAlgorithm implements ITraceRemovingAlgorithm {
 
         return xLog;
     }
-
 }

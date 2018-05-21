@@ -2,13 +2,11 @@ package algorithms.tracesearch.locators;
 
 import algorithms.ValidationFactory;
 import algorithms.tracesearch.ITraceSearchingAlgorithm;
-import javafx.util.Pair;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CoincidenceTraceLocator implements ITraceSearchingAlgorithm.TraceLocator {
     private float minimalCoincidence;
@@ -27,7 +25,7 @@ public class CoincidenceTraceLocator implements ITraceSearchingAlgorithm.TraceLo
     @Override
     public int[] defineTrace(XLog xLog, XEvent xEvent) {
         Map<Integer, Float> coincidencesMap = buildCoincidenceMapForEvent(xLog, xEvent, attributesCoefficientMap);
-        int [] traceIndexCoincidenceValue = getKeyOfBestMatchValue(coincidencesMap);
+        return getTracesIndexSortedByCoincidence(coincidencesMap);
     }
 
 
@@ -43,20 +41,49 @@ public class CoincidenceTraceLocator implements ITraceSearchingAlgorithm.TraceLo
         return resultMap;
     }
 
-    private int [] getKeyOfBestMatchValue(Map<Integer, Float> coincidencesMap) {
-        Float firstValueInMap = coincidencesMap.get(0);
-        int maxValueIndex = 0;
-        float currentMaxValue = firstValueInMap;
-        Float[] coincidences = coincidencesMap.values().toArray(new Float[coincidencesMap.size()]);
+    private int [] getTracesIndexSortedByCoincidence(Map<Integer, Float> coincidencesMap) {
+        List<Integer> locatorResults = new LinkedList<>();
 
-        for (int i = 0; i < coincidences.length; i++) {
-            if (currentMaxValue < coincidences[i]) {
-                maxValueIndex = i;
-                currentMaxValue = coincidences[i];
+        Float[] coincidences = coincidencesMap.values().toArray(new Float[coincidencesMap.size()]);
+        Arrays.sort(coincidences, (Comparator) (o1, o2) -> {
+            if (o1 == o2) return 0;
+            return (Float)o1 > (Float)o2 ? 1 : -1;
+        });
+
+        for (int resIndex = 0; resIndex < coincidences.length; resIndex ++) {
+            if (coincidences[resIndex] >= minimalCoincidence) {
+                locatorResults.add(getIndexByVal(coincidencesMap, coincidences[resIndex]));
             }
         }
 
-        return new Pair<>(maxValueIndex, currentMaxValue);
+        if (locatorResults.size() == 0){
+            return null;
+        } else {
+            return convertInPrimitives(locatorResults);
+        }
+    }
+
+    private int[] convertInPrimitives(List<Integer> locatorResults) {
+        int [] result = new int[locatorResults.size()];
+        Arrays.fill(result, ITraceSearchingAlgorithm.TraceLocator.TRACE_INDEX_UNDEFINED_VALUE);
+        for (int i = 0; i < locatorResults.size(); i++) {
+            result[i] = locatorResults.get(i);
+        }
+        return result;
+    }
+
+    private int getIndexByVal(Map<Integer, Float> coincidencesMap, Float coincidence) {
+        Iterator<Integer> iterator = coincidencesMap.keySet().iterator();
+        Integer result = null;
+        while (iterator.hasNext()) {
+            Integer index = iterator.next();
+            if (coincidencesMap.get(index).equals(coincidence)) {
+                result = index;
+            }
+        }
+
+        if (result == null) throw  new IllegalStateException("Exceptional case. Wasn't found an trace with equals coincidence");
+        return result;
     }
 
 

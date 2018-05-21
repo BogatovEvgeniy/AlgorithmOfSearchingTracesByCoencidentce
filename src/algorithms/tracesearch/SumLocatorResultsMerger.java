@@ -6,10 +6,6 @@ public abstract class SumLocatorResultsMerger implements ILocatorResultMerger {
 
     @Override
     public int[] merge(int[] suitableTraces) {
-        if (mergeResults == null || mergeResults.length == 0) {
-            return mergeResults;
-        } else {
-            throw new UnsupportedOperationException();
-        }
+        throw new UnsupportedOperationException();
     }
 }
