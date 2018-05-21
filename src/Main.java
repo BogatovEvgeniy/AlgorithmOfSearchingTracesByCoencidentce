@@ -4,7 +4,7 @@ import algorithms.io.XesLogReader;
 import algorithms.io.XesLogWriter;
 import algorithms.traceremoval.ParallelTraceTagRemovingAlgorithm;
 import algorithms.tracesearch.coefficient.TraceSearchingAlgorithm;
-import algorithms.tracesearch.locators.CoincidenceTraceLocator;
+import algorithms.tracesearch.locators.CoefficientsTraceLocator;
 import org.deckfour.xes.model.XLog;
 
 import java.io.*;
@@ -37,7 +37,7 @@ public class Main {
         // Launch the algorithm of searching traces by coincidences of event's attributes values
         // also tacking in a count coefficientMap
         TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
-        searchingAlgorithm.setTraceLocator(new CoincidenceTraceLocator(0.7f, correctionMap));
+        searchingAlgorithm.setTraceLocator(new CoefficientsTraceLocator(0.7f, correctionMap));
         searchingAlgorithm.proceed(originLog);
         logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
 

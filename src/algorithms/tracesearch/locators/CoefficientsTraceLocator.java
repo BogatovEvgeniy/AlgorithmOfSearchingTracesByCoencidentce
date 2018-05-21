@@ -8,11 +8,11 @@ import org.deckfour.xes.model.XTrace;
 
 import java.util.*;
 
-public class CoincidenceTraceLocator implements ITraceSearchingAlgorithm.TraceLocator {
+public class CoefficientsTraceLocator implements ITraceSearchingAlgorithm.TraceLocator {
     private float minimalCoincidence;
     private Map<String, Float> attributesCoefficientMap;
 
-    public CoincidenceTraceLocator(float minimalCoincidence, Map<String, Float> attributesCoefficientMap) {
+    public CoefficientsTraceLocator(float minimalCoincidence, Map<String, Float> attributesCoefficientMap) {
         this.minimalCoincidence = minimalCoincidence;
         this.attributesCoefficientMap = attributesCoefficientMap;
     }
@@ -27,8 +27,6 @@ public class CoincidenceTraceLocator implements ITraceSearchingAlgorithm.TraceLo
         Map<Integer, Float> coincidencesMap = buildCoincidenceMapForEvent(xLog, xEvent, attributesCoefficientMap);
         return getTracesIndexSortedByCoincidence(coincidencesMap);
     }
-
-
 
     private Map<Integer, Float> buildCoincidenceMapForEvent(XLog xLog, XEvent xEvent, Map<String, Float> attributeCoefficientMap) {
         Map<Integer, Float> resultMap = new HashMap<>();
