@@ -78,7 +78,7 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
 
 
     @Override
-    public void setTraceLocators(ILocatorResultMerger locatorResultMerger, TraceLocator ... traceLocator) {
+    public void setTraceLocators(ILocatorResultMerger locatorResultMerger, TraceLocator... traceLocator) {
         if (traceLocators == null) traceLocators = new HashMap<>();
         traceLocators.clear();
         this.locatorResultMerger = locatorResultMerger;

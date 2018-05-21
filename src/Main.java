@@ -7,7 +7,7 @@ import algorithms.tracesearch.coefficient.TraceSearchingAlgorithm;
 import algorithms.tracesearch.locators.CoefficientsTraceLocator;
 import org.deckfour.xes.model.XLog;
 
-import java.io.*;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public class Main {
         long startTime = System.currentTimeMillis();
 
         String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
-        String destFileName ="BPI_Challenge_log";
+        String destFileName = "BPI_Challenge_log";
         String srcFilePath = DESTINATION_DIR + srcFileName + FILE_EXTENSION;
 
         ILogReader logReader = new XesLogReader();
@@ -28,7 +28,7 @@ public class Main {
         XLog originLog = logReader.parse(new File(srcFilePath)).get(0);
 
         // Remove traces which produces the same product, than put all events into a one trace
-        XLog xLog = new ParallelTraceTagRemovingAlgorithm( "product").proceed(originLog);
+        XLog xLog = new ParallelTraceTagRemovingAlgorithm("product").proceed(originLog);
         File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
         // Build an map which will reflect an majority of each attribute for future analyse

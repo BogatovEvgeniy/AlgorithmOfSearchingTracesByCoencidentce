@@ -12,7 +12,7 @@ public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm
     /**
      * @param attributesForComparision - the set of attributes which should be taken into a count
      */
-    public ParallelTraceTagRemovingAlgorithm(String ... attributesForComparision) {
+    public ParallelTraceTagRemovingAlgorithm(String... attributesForComparision) {
         this.attributesForComparision = attributesForComparision;
     }
 
@@ -34,7 +34,7 @@ public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm
                 XAttribute attrOfEventInLog = xEvent.getAttributes().get(attr);
                 XAttribute attrOfCurrentEvent = currEvent.get(0).getAttributes().get(attr);
 
-                if(!attrOfEventInLog.toString().equals(attrOfCurrentEvent.toString())) {
+                if (!attrOfEventInLog.toString().equals(attrOfCurrentEvent.toString())) {
                     break;
                 }
                 return true;

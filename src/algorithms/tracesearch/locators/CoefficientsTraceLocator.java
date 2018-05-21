@@ -39,22 +39,22 @@ public class CoefficientsTraceLocator implements ITraceSearchingAlgorithm.TraceL
         return resultMap;
     }
 
-    private int [] getTracesIndexSortedByCoincidence(Map<Integer, Float> coincidencesMap) {
+    private int[] getTracesIndexSortedByCoincidence(Map<Integer, Float> coincidencesMap) {
         List<Integer> locatorResults = new LinkedList<>();
 
         Float[] coincidences = coincidencesMap.values().toArray(new Float[coincidencesMap.size()]);
         Arrays.sort(coincidences, (Comparator) (o1, o2) -> {
             if (o1 == o2) return 0;
-            return (Float)o1 > (Float)o2 ? 1 : -1;
+            return (Float) o1 > (Float) o2 ? 1 : -1;
         });
 
-        for (int resIndex = 0; resIndex < coincidences.length; resIndex ++) {
+        for (int resIndex = 0; resIndex < coincidences.length; resIndex++) {
             if (coincidences[resIndex] >= minimalCoincidence) {
                 locatorResults.add(getIndexByVal(coincidencesMap, coincidences[resIndex]));
             }
         }
 
-        if (locatorResults.size() == 0){
+        if (locatorResults.size() == 0) {
             return null;
         } else {
             return convertInPrimitives(locatorResults);
@@ -62,7 +62,7 @@ public class CoefficientsTraceLocator implements ITraceSearchingAlgorithm.TraceL
     }
 
     private int[] convertInPrimitives(List<Integer> locatorResults) {
-        int [] result = new int[locatorResults.size()];
+        int[] result = new int[locatorResults.size()];
         Arrays.fill(result, ITraceSearchingAlgorithm.TraceLocator.TRACE_INDEX_UNDEFINED_VALUE);
         for (int i = 0; i < locatorResults.size(); i++) {
             result[i] = locatorResults.get(i);
@@ -80,7 +80,8 @@ public class CoefficientsTraceLocator implements ITraceSearchingAlgorithm.TraceL
             }
         }
 
-        if (result == null) throw  new IllegalStateException("Exceptional case. Wasn't found an trace with equals coincidence");
+        if (result == null)
+            throw new IllegalStateException("Exceptional case. Wasn't found an trace with equals coincidence");
         return result;
     }
 

@@ -4,5 +4,5 @@ import org.deckfour.xes.model.XLog;
 
 public interface ILogAlgorithm {
 
-   XLog proceed(XLog originLog);
+    XLog proceed(XLog originLog);
 }

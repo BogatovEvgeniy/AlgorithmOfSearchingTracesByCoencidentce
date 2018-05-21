@@ -30,7 +30,7 @@ public class CoefficientMapBuilder {
                 if (traceValidator.validateIsEmpty(parsedLog)) return new HashMap<>();
                 attributeCoefficientMap = prepareCoefficientMap(parsedLog);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

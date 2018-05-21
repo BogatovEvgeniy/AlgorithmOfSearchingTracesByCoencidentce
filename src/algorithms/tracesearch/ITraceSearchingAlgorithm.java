@@ -19,7 +19,7 @@ public interface ITraceSearchingAlgorithm extends ILogAlgorithm {
 
     void setTraceLocator(TraceLocator traceLocator);
 
-    void setTraceLocators(ILocatorResultMerger locatorResultMerger, TraceLocator ... traceLocator);
+    void setTraceLocators(ILocatorResultMerger locatorResultMerger, TraceLocator... traceLocator);
 
     interface TraceLocator {
 
@@ -40,6 +40,7 @@ public interface ITraceSearchingAlgorithm extends ILogAlgorithm {
          * @return Indexes of trace ordered descending by suitability. The NULL value can be returned in case of
          * no traces in log was suitable for the event value in parameters
          */
-        @Nullable int[] defineTrace(XLog xLog, XEvent event);
+        @Nullable
+        int[] defineTrace(XLog xLog, XEvent event);
     }
 }
