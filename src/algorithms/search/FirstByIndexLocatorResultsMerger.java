@@ -1,4 +1,4 @@
-package algorithms.tracesearch;
+package algorithms.search;
 
 public class FirstByIndexLocatorResultsMerger implements ILocatorResultMerger {
 

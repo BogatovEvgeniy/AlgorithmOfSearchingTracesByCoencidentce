@@ -1,4 +1,4 @@
-import algorithms.tracesearch.TraceValidator;
+import algorithms.search.TraceValidator;
 import javafx.util.Pair;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XAttributeMap;
@@ -40,12 +40,12 @@ public class CoefficientMapBuilder {
     private Map<String, Float> prepareCoefficientMap(List<XLog> parsedLog) {
         Map<String, Float> attributeCoefficientMap = buildCoefficientMapForAttributes(parsedLog);
         attributeCoefficientMap = coefficientsCorrectionBaseOnIncomeData(correctionMap, attributeCoefficientMap);
-        attributeCoefficientMap = rebalanceCoefficientsToValue(1, attributeCoefficientMap);
+        attributeCoefficientMap = balanceCoefficientsToValue(1, attributeCoefficientMap);
         System.out.println("Coefficient map: " + attributeCoefficientMap.toString());
         return attributeCoefficientMap;
     }
 
-    private Map<String, Float> rebalanceCoefficientsToValue(float targetValue, Map<String, Float> attributeCoefficientMap) {
+    private Map<String, Float> balanceCoefficientsToValue(float targetValue, Map<String, Float> attributeCoefficientMap) {
         Iterator<String> iterator = attributeCoefficientMap.keySet().iterator();
         float coefficientSum = 0;
         while (iterator.hasNext()) {

@@ -1,4 +1,4 @@
-package algorithms.tracesearch;
+package algorithms.search;
 
 import org.deckfour.xes.model.XLog;
 

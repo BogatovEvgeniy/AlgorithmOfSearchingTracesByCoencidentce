@@ -1,7 +1,7 @@
-package algorithms.tracesearch.locators.coefficient;
+package algorithms.search.locators.coefficient;
 
 import algorithms.ValidationFactory;
-import algorithms.tracesearch.ITraceSearchingAlgorithm;
+import algorithms.search.ITraceSearchingAlgorithm;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;

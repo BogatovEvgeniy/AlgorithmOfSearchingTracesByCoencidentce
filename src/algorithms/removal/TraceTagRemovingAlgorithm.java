@@ -1,4 +1,4 @@
-package algorithms.traceremoval;
+package algorithms.removal;
 
 import algorithms.ILogAlgorithm;
 import org.deckfour.xes.extension.std.XTimeExtension;

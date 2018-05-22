@@ -1,4 +1,4 @@
-package algorithms.traceremoval;
+package algorithms.removal;
 
 import io.ILogWriter;
 import org.deckfour.xes.model.XAttribute;

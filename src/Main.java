@@ -2,9 +2,9 @@ import io.ILogReader;
 import io.ILogWriter;
 import io.XesLogReader;
 import io.XesLogWriter;
-import algorithms.traceremoval.ParallelTraceTagRemovingAlgorithm;
-import algorithms.tracesearch.TraceSearchingAlgorithm;
-import algorithms.tracesearch.locators.coefficient.CoefficientsTraceLocator;
+import algorithms.removal.ParallelTraceTagRemovingAlgorithm;
+import algorithms.search.TraceSearchingAlgorithm;
+import algorithms.search.locators.coefficient.CoefficientsTraceLocator;
 import org.deckfour.xes.model.XLog;
 
 import java.io.File;

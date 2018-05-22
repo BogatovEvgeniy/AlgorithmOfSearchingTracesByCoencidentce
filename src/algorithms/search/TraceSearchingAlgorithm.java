@@ -1,8 +1,6 @@
-package algorithms.tracesearch;
+package algorithms.search;
 
 import algorithms.ValidationFactory;
-import algorithms.tracesearch.ILocatorResultMerger;
-import algorithms.tracesearch.ITraceSearchingAlgorithm;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.impl.XAttributeMapImpl;
