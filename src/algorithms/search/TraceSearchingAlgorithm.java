@@ -94,7 +94,7 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         Iterator<String> iterator = traceLocators.keySet().iterator();
         while (iterator.hasNext()) {
             String next = iterator.next();
-            int[] suitableTraces = traceLocators.get(next).defineTrace(xLog, xEvent);
+            int[] suitableTraces = traceLocators.get(next).defineSuitableTracesList(xLog, xEvent);
             if (traceLocators.size() > 1) {
                 traceLocatorResults = locatorResultMerger.merge(suitableTraces);
             } else {

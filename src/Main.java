@@ -1,15 +1,18 @@
+import algorithms.search.locators.invariant.InvariantsTraceLocator;
 import io.ILogReader;
 import io.ILogWriter;
 import io.XesLogReader;
 import io.XesLogWriter;
 import algorithms.removal.ParallelTraceTagRemovingAlgorithm;
 import algorithms.search.TraceSearchingAlgorithm;
-import algorithms.search.locators.coefficient.CoefficientsTraceLocator;
+import algorithms.search.locators.invariant.*;
 import org.deckfour.xes.model.XLog;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.List;
 
 public class Main {
 
@@ -37,7 +40,9 @@ public class Main {
         // Launch the algorithm of searching traces by coincidences of event's attributes values
         // also tacking in a count coefficientMap
         TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
-        searchingAlgorithm.setTraceLocator(new CoefficientsTraceLocator(0.7f, correctionMap));
+//        searchingAlgorithm.setTraceLocator(new CoefficientsTraceLocator(0.7f, correctionMap));
+        List<AttributeInvariant> attributeInvariants = new LinkedList<>();
+        searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(attributeInvariants));
         xLog = searchingAlgorithm.proceed(xLog);
         logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
 

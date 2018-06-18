@@ -33,7 +33,7 @@ public interface ITraceSearchingAlgorithm extends ILogAlgorithm {
         String getId();
 
         /**
-         * The method which defines most suitable traces for current event
+         * The method which defines most suitable traces for current event in #xLog
          *
          * @param xLog  - current log as result of current state of analyze
          * @param event - current event
@@ -41,6 +41,6 @@ public interface ITraceSearchingAlgorithm extends ILogAlgorithm {
          * no traces in log was suitable for the event value in parameters
          */
         @Nullable
-        int[] defineTrace(XLog xLog, XEvent event);
+        int[] defineSuitableTracesList(XLog xLog, XEvent event);
     }
 }
