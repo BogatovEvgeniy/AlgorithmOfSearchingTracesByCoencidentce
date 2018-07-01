@@ -1,18 +1,19 @@
-package algorithms.search.locators.coefficient;
+package algorithms.search.coefficient;
 
 import algorithms.ValidationFactory;
-import algorithms.search.ITraceSearchingAlgorithm;
+import algorithms.search.TraceSearchingAlgorithm;
+import algorithms.search.base.ITraceSearchingAlgorithm;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
 import java.util.*;
 
-public class CoefficientsTraceLocator implements ITraceSearchingAlgorithm.TraceLocator {
+public class LastEventCoefficientsTraceLocator implements ITraceSearchingAlgorithm.TraceLocator {
     private float minimalCoincidence;
     private Map<String, Float> attributesCoefficientMap;
 
-    public CoefficientsTraceLocator(float minimalCoincidence, Map<String, Float> attributesCoefficientMap) {
+    public LastEventCoefficientsTraceLocator(float minimalCoincidence, Map<String, Float> attributesCoefficientMap) {
         this.minimalCoincidence = minimalCoincidence;
         this.attributesCoefficientMap = attributesCoefficientMap;
     }
@@ -26,6 +27,11 @@ public class CoefficientsTraceLocator implements ITraceSearchingAlgorithm.TraceL
     public int[] defineSuitableTracesList(XLog xLog, XEvent xEvent) {
         Map<Integer, Float> coincidencesMap = buildCoincidenceMapForEvent(xLog, xEvent, attributesCoefficientMap);
         return getTracesIndexSortedByCoincidence(coincidencesMap);
+    }
+
+    @Override
+    public ILogValidator getLogValidator() {
+        return TraceSearchingAlgorithm.TraceLocator.ANY_LOG_VALIDATOR;
     }
 
     private Map<Integer, Float> buildCoincidenceMapForEvent(XLog xLog, XEvent xEvent, Map<String, Float> attributeCoefficientMap) {

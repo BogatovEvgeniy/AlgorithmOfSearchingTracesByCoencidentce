@@ -1,4 +1,6 @@
-package algorithms.search;
+package algorithms.search.base;
+
+import algorithms.search.base.ILocatorResultMerger;
 
 public class FirstByIndexLocatorResultsMerger implements ILocatorResultMerger {
 

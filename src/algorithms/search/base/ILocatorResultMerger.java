@@ -1,4 +1,4 @@
-package algorithms.search;
+package algorithms.search.base;
 
 public interface ILocatorResultMerger {
 

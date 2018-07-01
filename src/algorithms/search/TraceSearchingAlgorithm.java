@@ -1,6 +1,9 @@
 package algorithms.search;
 
 import algorithms.ValidationFactory;
+import algorithms.search.base.ILocatorResultMerger;
+import algorithms.search.base.ITraceSearchingAlgorithm;
+import com.sun.istack.internal.NotNull;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.impl.XAttributeMapImpl;
@@ -54,15 +57,15 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
 
 
     @Override
-    public XLog proceed(XLog originLog) {
+    public XLog proceed(@NotNull XLog originLog) {
         if (traceLocators == null || traceLocators.size() == 0) {
-            throw new IllegalStateException("Provide at least one provider for searching traces");
+            throw new IllegalStateException("Provide at least one trace locator instance for searching traces");
         }
 
         this.originLog = originLog;
         resultLog = new XLogImpl(originLog.getAttributes());
         for (XEvent event : originLog.get(0)) {
-            insertEventInLogByCriteria(resultLog, event, false);
+            insertEventInLogByLocators(resultLog, event);
         }
         return resultLog;
     }
@@ -86,23 +89,13 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     }
 
 
-    private void insertEventInLogByCriteria(XLog xLog, XEvent xEvent, boolean deepSearchByAllEvents) {
+    private void insertEventInLogByLocators(XLog xLog, XEvent xEvent) {
         // Insert first event if result log is empty
         if (proceedEventForEmptyResultLog(xLog, xEvent)) return;
 
         int[] traceLocatorResults = new int[]{};
-        Iterator<String> iterator = traceLocators.keySet().iterator();
-        while (iterator.hasNext()) {
-            String next = iterator.next();
-            int[] suitableTraces = traceLocators.get(next).defineSuitableTracesList(xLog, xEvent);
-            if (traceLocators.size() > 1) {
-                traceLocatorResults = locatorResultMerger.merge(suitableTraces);
-            } else {
-                traceLocatorResults = suitableTraces;
-            }
-        }
+        traceLocatorResults = getLocatorsMergedResults(xLog, xEvent, traceLocatorResults);
 
-        // Insert value in a trace with highest coefficient
         if (traceLocatorResults == null || traceLocatorResults.length == 0) {
             XTraceImpl trace = new XTraceImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class));
             resultLog.add(trace);
@@ -110,6 +103,23 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         } else {
             resultLog.get(traceLocatorResults[0]).add(xEvent);
         }
+    }
+
+    private int[] getLocatorsMergedResults(XLog xLog, XEvent xEvent, int[] traceLocatorResults) {
+        Iterator<String> iterator = traceLocators.keySet().iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            TraceLocator traceLocator = traceLocators.get(next);
+            if (traceLocator.getLogValidator().isValid(originLog)) {
+                int[] suitableTraces = traceLocator.defineSuitableTracesList(xLog, xEvent);
+                if (traceLocators.size() > 1) {
+                    traceLocatorResults = locatorResultMerger.merge(suitableTraces);
+                } else {
+                    traceLocatorResults = suitableTraces;
+                }
+            }
+        }
+        return traceLocatorResults;
     }
 
     private boolean proceedEventForEmptyResultLog(XLog xLog, XEvent xEvent) {
