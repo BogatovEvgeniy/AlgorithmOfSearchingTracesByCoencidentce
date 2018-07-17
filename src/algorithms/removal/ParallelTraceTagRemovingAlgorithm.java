@@ -2,9 +2,11 @@ package algorithms.removal;
 
 import io.ILogWriter;
 import org.deckfour.xes.model.XAttribute;
-import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm {
 
@@ -20,38 +22,32 @@ public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm
     }
 
     @Override
-    protected void addEvent(XLog originLog, XTrace xTrace) {
-        for (int i = 1; i < originLog.size(); i++) {
-            if (!traceContainsEventsWithSameTraceProduct(xTrace, originLog.get(i))) {
+    protected void addEvents(XLog originLog, XLog resLog) {
+        for (XTrace trace : originLog) {
+            if (isDuplicatesForAttrValsExists(trace, resLog)) {
                 traceCounter++;
-                for (XEvent event : originLog.get(i)) {
-                    xTrace.add(event);
-                }
+                resLog.add(trace);
             }
         }
     }
 
-    @Override
-    public XLog proceed(XLog originLog) {
-        this.originLog = originLog;
-        XLog xLog = removalOfTraceTags(originLog);
-        logWriter.write(xLog, "C:\\Users\\ievgen_bogatov\\Desktop\\", "WithoutParallelBP");
-        xLog = sortEventsByTimestamp(xLog);
-        return xLog;
-    }
-
-    private boolean traceContainsEventsWithSameTraceProduct(XTrace xTrace, XTrace currEvent) {
-        for (XEvent xEvent : xTrace) {
+    private boolean isDuplicatesForAttrValsExists(XTrace xTrace, XLog resLog) {
+        Map<String, Boolean> results = new HashMap<>();
+        for (XTrace trace : resLog) { // Contains duplicate
+            if (results.values().contains(true)){
+                break;
+            }
             for (String attr : attributesForComparision) {
-                XAttribute attrOfEventInLog = xEvent.getAttributes().get(attr);
-                XAttribute attrOfCurrentEvent = currEvent.get(0).getAttributes().get(attr);
+                XAttribute attrOfEventInLog = xTrace.get(0).getAttributes().get(attr);
+                XAttribute attrOfCurrentEvent = trace.get(0).getAttributes().get(attr);
 
-                if (!attrOfEventInLog.toString().equals(attrOfCurrentEvent.toString())) {
-                    break;
+                if (attrOfEventInLog.toString().equals(attrOfCurrentEvent.toString())) {
+                    results.put(attr, true);
+                } else {
+                    results.put(attr, false);
                 }
-                return true;
             }
         }
-        return false;
+        return results.values().contains(false);
     }
 }
