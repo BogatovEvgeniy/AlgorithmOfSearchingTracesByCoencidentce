@@ -5,7 +5,7 @@ import io.ILogReader;
 import io.ILogWriter;
 import io.XesLogReader;
 import io.XesLogWriter;
-import algorithms.removal.ParallelTraceTagRemovingAlgorithm;
+import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
 import algorithms.search.TraceSearchingAlgorithm;
 import org.deckfour.xes.model.XLog;
 
@@ -31,7 +31,7 @@ public class Main {
         AttributeInvariantTree<String> invariantTree = getInvariants();
 
         // Remove traces which produces the same product, than put all events into a one trace
-        XLog xLog = new ParallelTraceTagRemovingAlgorithm(logWriter, "product").proceed(originLog);
+        XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
         File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
         // Define first suitable for flowing analyze event

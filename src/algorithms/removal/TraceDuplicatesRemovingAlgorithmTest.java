@@ -15,7 +15,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
-public class ParallelTraceTagRemovingAlgorithmTest {
+public class TraceDuplicatesRemovingAlgorithmTest {
 
     @Test
     public void proceed() {
@@ -27,7 +27,7 @@ public class ParallelTraceTagRemovingAlgorithmTest {
             Assert.assertTrue(logList.size() == 1);
 
             ILogWriter logWriter = getLogWriterInstance();
-            XLog cleanedLog = new ParallelTraceTagRemovingAlgorithm(logWriter, "attr1").proceed(logList.get(0));
+            XLog cleanedLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "attr1").proceed(logList.get(0));
             Assert.assertThat(cleanedLog, notNullValue());
             Assert.assertThat(cleanedLog.size(), is(3));
         } catch (Exception e) {

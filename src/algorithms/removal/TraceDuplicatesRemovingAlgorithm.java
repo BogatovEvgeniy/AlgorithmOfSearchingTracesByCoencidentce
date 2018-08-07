@@ -8,7 +8,7 @@ import org.deckfour.xes.model.XTrace;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm {
+public class TraceDuplicatesRemovingAlgorithm extends TraceTagRemovingAlgorithm {
 
     private ILogWriter logWriter;
     private final String[] attributesForComparision;
@@ -16,7 +16,7 @@ public class ParallelTraceTagRemovingAlgorithm extends TraceTagRemovingAlgorithm
     /**
      * @param attributesForComparision - the set of attributes which should be taken into a count
      */
-    public ParallelTraceTagRemovingAlgorithm(ILogWriter logWriter, String... attributesForComparision) {
+    public TraceDuplicatesRemovingAlgorithm(ILogWriter logWriter, String... attributesForComparision) {
         this.logWriter = logWriter;
         this.attributesForComparision = attributesForComparision;
     }
