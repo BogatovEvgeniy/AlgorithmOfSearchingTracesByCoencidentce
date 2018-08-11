@@ -1,24 +1,71 @@
 import algorithms.preprocess.InvariantInitialEventSearchAlgorithm;
+import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
+import algorithms.search.TraceSearchingAlgorithm;
 import algorithms.search.invariant.AttributeInvariantTree;
 import algorithms.search.invariant.InvariantsTraceLocator;
 import io.ILogReader;
 import io.ILogWriter;
 import io.XesLogReader;
 import io.XesLogWriter;
-import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
-import algorithms.search.TraceSearchingAlgorithm;
 import org.deckfour.xes.model.XLog;
+import parser.WriterFactory;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Main {
 
     public static final String DESTINATION_DIR = "C:\\Users\\ievgen_bogatov\\Desktop\\";
     public static final String FILE_EXTENSION = ".xes";
+    public static final int COMMAND_INDEX = 0;
+    public static final int VALUE_INDEX = 1;
+    private static final int LOG_PATH_INDEX = 2;
+    private static LogWriter logWriter = new LogWriter();
 
     public static void main(String[] args) throws Exception {
+        if (args != null && args.length > 0) {
+            parseArguments(args);
+        } else {
+//            launchParsingAlgorithms();
+        }
+    }
+
+    private static boolean parseArguments(String[] args) throws Exception {
+        switch (args[COMMAND_INDEX]) {
+            case "-saveAs":
+                saveAs(args);
+            default:
+                return false;
+        }
+    }
+
+    private static Boolean saveAs(String[] args) {
+        try {
+            String logFilePath = args[LOG_PATH_INDEX];
+            File file = new File(logFilePath);
+            List<XLog> parsedLog = new XesLogReader().parse(file);
+            if (parsedLog != null & parsedLog.size() > 0) {
+                String currentDirPath = System.getProperty("user.dir") + File.separator;
+                WriterFactory.parserFor(args[VALUE_INDEX]).write(parsedLog.get(0), currentDirPath, file.getName());
+                return true;
+            } else {
+                logWriter.write("Unable to parse log");
+                return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            logWriter.write("Some of arguments missed. Arguments received:" + Arrays.toString(args));
+            logWriter.write("Input format should be -saveAs <Save as type> <Path to log file>" + Arrays.toString(args));
+        } catch (Exception e) {
+            logWriter.write("Something goes wrong. Arguments received:" + Arrays.toString(args));
+            logWriter.write(Arrays.toString(e.getStackTrace()));
+        }
+        return null;
+    }
+
+    private static void launchParsingAlgorithms() throws Exception {
         long startTime = System.currentTimeMillis();
 
         String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
