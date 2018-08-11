@@ -57,7 +57,7 @@ public class Main {
             }
         } catch (IndexOutOfBoundsException e) {
             logWriter.write("Some of arguments missed. Arguments received:" + Arrays.toString(args));
-            logWriter.write("Input format should be -saveAs <Save as type> <Path to log file>" + Arrays.toString(args));
+            logWriter.write("Input format should be <command>[-saveAs] <Save as type>[\"OpenXEStoCSV\"] <Path to log file>. Arguments received:" + Arrays.toString(args));
         } catch (Exception e) {
             logWriter.write("Something goes wrong. Arguments received:" + Arrays.toString(args));
             logWriter.write(Arrays.toString(e.getStackTrace()));
