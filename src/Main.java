@@ -25,7 +25,7 @@ public class Main {
     private static final int LOG_PATH_INDEX = 2;
     private static LogWriter logWriter = new LogWriter();
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         if (args != null && args.length > 0) {
             parseArguments(args);
         } else {
@@ -33,7 +33,7 @@ public class Main {
         }
     }
 
-    private static boolean parseArguments(String[] args) throws Exception {
+    private static boolean parseArguments(String[] args) {
         switch (args[COMMAND_INDEX]) {
             case "-saveAs":
                 saveAs(args);
