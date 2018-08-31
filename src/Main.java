@@ -3,10 +3,7 @@ import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
 import algorithms.search.TraceSearchingAlgorithm;
 import algorithms.search.invariant.AttributeInvariantTree;
 import algorithms.search.invariant.InvariantsTraceLocator;
-import io.ILogReader;
-import io.ILogWriter;
-import io.XesLogReader;
-import io.XesLogWriter;
+import io.*;
 import org.deckfour.xes.model.XLog;
 import parser.WriterFactory;
 
@@ -18,10 +15,11 @@ import java.util.Map;
 
 public class Main {
 
-    public static final String DESTINATION_DIR = "C:\\Users\\ievgen_bogatov\\Desktop\\";
-    public static final String FILE_EXTENSION = ".xes";
-    public static final int COMMAND_INDEX = 0;
-    public static final int VALUE_INDEX = 1;
+    private static final String SOURCE_DIR = "Sources" + File.separator;
+    private static final String DESTINATION_DIR = FileUtils.getCurrentDirectoryPath() + SOURCE_DIR;
+    private static final String FILE_EXTENSION = ".xes";
+    private static final int COMMAND_INDEX = 0;
+    private static final int VALUE_INDEX = 1;
     private static final int LOG_PATH_INDEX = 2;
     private static LogWriter logWriter = new LogWriter();
 
@@ -29,7 +27,8 @@ public class Main {
         if (args != null && args.length > 0) {
             parseArguments(args);
         } else {
-//            launchParsingAlgorithms();
+            new File(DESTINATION_DIR).mkdirs();
+            launchParsingAlgorithms();
         }
     }
 
@@ -57,7 +56,7 @@ public class Main {
             }
         } catch (IndexOutOfBoundsException e) {
             logWriter.write("Some of arguments missed. Arguments received:" + Arrays.toString(args));
-            logWriter.write("Input format should be <command>[-saveAs] <Save as type>[\"OpenXEStoCSV\"] <Path to log file>. Arguments received:" + Arrays.toString(args));
+            logWriter.write("Input format should be the next: <command>[-saveAs] <Save as type>[\"OpenXEStoCSV\"] <Path to log file>. Arguments received:" + Arrays.toString(args));
         } catch (Exception e) {
             logWriter.write("Something goes wrong. Arguments received:" + Arrays.toString(args));
             logWriter.write(Arrays.toString(e.getStackTrace()));
@@ -65,40 +64,44 @@ public class Main {
         return null;
     }
 
-    private static void launchParsingAlgorithms() throws Exception {
+    private static void launchParsingAlgorithms() {
         long startTime = System.currentTimeMillis();
 
         String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
         String destFileName = "BPI_Challenge_log";
         String srcFilePath = DESTINATION_DIR + srcFileName + FILE_EXTENSION;
 
-        ILogReader logReader = new XesLogReader();
-        ILogWriter logWriter = new XesLogWriter();
-        XLog originLog = logReader.parse(new File(srcFilePath)).get(0);
-        AttributeInvariantTree<String> invariantTree = getInvariants();
+        try {
+            ILogReader logReader = new XesLogReader();
+            ILogWriter logWriter = new XesLogWriter();
+            XLog originLog = logReader.parse(new File(srcFilePath)).get(0);
+            AttributeInvariantTree<String> invariantTree = getInvariants();
 
-        // Remove traces which produces the same product, than put all events into a one trace
-        XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
-        File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
+            // Remove traces which produces the same product, than put all events into a one trace
+            XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
+            File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
-        // Define first suitable for flowing analyze event
-        xLog = new InvariantInitialEventSearchAlgorithm(invariantTree).proceed(xLog);
+            // Define first suitable for flowing analyze event
+            xLog = new InvariantInitialEventSearchAlgorithm(invariantTree).proceed(xLog);
 
-        // Build an map which will reflect an majority of each attribute for future analyse
-        Map<String, Float> correctionMap = calculateCoefficientsMap(savedLog);
+            // Build an map which will reflect an majority of each attribute for future analyse
+            Map<String, Float> correctionMap = calculateCoefficientsMap(savedLog);
 
-        // Launch the algorithm of searching traces by coincidences of event's attributes values
-        // also tacking in a count coefficientMap
-        TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
+            // Launch the algorithm of searching traces by coincidences of event's attributes values
+            // also tacking in a count coefficientMap
+            TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
 //        searchingAlgorithm.setTraceLocator(new LastEventCoefficientsTraceLocator(0.7f, correctionMap));
 //        List<AttributeInvariantTree> attributeInvariantTrees = new LinkedList<>();
-        searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(xLog, invariantTree));
-        xLog = searchingAlgorithm.proceed(xLog);
-        logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
+            searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(xLog, invariantTree));
+            xLog = searchingAlgorithm.proceed(xLog);
+            logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
 
-        // Track execution time
-        final long endTime = System.currentTimeMillis();
-        System.out.println("Total execution time: " + (endTime - startTime));
+            // Track execution time
+            final long endTime = System.currentTimeMillis();
+            System.out.println("Total execution time: " + (endTime - startTime));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static AttributeInvariantTree<String> getInvariants() {

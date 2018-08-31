@@ -1,5 +1,6 @@
 package algorithms.removal;
 
+import io.FileUtils;
 import io.ILogWriter;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
@@ -19,9 +20,10 @@ public class TraceDuplicatesRemovingAlgorithmTest {
 
     @Test
     public void proceed() {
-        File testLog = new File("D:\\IntelliJProjects\\Diss\\AlgorithmOfSearchingTracesByCoencidentce\\TestLog_4unique_traces_each_duplicated_twice.xes");
-        XesXmlParser xUniversalParser = new XesXmlParser();
+        File testLog = new File(FileUtils.getCurrentDirectoryPath() + "TestLog_4unique_traces_each_duplicated_twice.xes");
         try {
+            FileUtils.createFileIfNeed(testLog);
+            XesXmlParser xUniversalParser = new XesXmlParser();
             List<XLog> logList = xUniversalParser.parse(testLog);
             Assert.assertFalse(logList.isEmpty());
             Assert.assertTrue(logList.size() == 1);

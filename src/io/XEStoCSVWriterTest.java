@@ -51,15 +51,17 @@ public class XEStoCSVWriterTest {
             + "11,val1,val1,val1,2010-04-12T11:05:58.036+0300,val1,";
     @Test
     public void write() {
-        File testLog = new File("D:\\IntelliJProjects\\Diss\\AlgorithmOfSearchingTracesByCoencidentce\\TestLog_4unique_traces_each_duplicated_twice.xes");
-        XesXmlParser xUniversalParser = new XesXmlParser();
+        String currentDirectoryPath = FileUtils.getCurrentDirectoryPath();
+        File testLog = new File(currentDirectoryPath + "TestLog_4unique_traces_each_duplicated_twice.xes");
         try {
+            FileUtils.createFileIfNeed(testLog);
+            XesXmlParser xUniversalParser = new XesXmlParser();
             List<XLog> logList = xUniversalParser.parse(testLog);
             Assert.assertFalse(logList.isEmpty());
             Assert.assertTrue(logList.size() == 1);
 
             ILogWriter logWriter = new XEStoCSVWriter();
-            File cvsTest = logWriter.write(logList.get(0), "D:\\IntelliJProjects\\Diss\\AlgorithmOfSearchingTracesByCoencidentce\\", "CVSTest");
+            File cvsTest = logWriter.write(logList.get(0), currentDirectoryPath, "CVSTest");
             FileReader fileReader = new FileReader(cvsTest);
             int read;
             StringBuffer controlStringBuffer = new StringBuffer();
