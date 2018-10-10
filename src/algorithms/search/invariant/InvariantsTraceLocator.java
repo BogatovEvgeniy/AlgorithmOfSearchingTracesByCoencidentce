@@ -17,15 +17,13 @@ import java.util.*;
  * <p>
  * To prepare log for using this locator use {@link InvariantInitialEventSearchAlgorithm}
  */
-public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLocator {
+public class InvariantsTraceLocator<V> implements ITraceSearchingAlgorithm.TraceLocator {
 
     private static ILogValidator LOG_VALIDATOR_INSTANCE;
-    private XLog origin;
-    private AttributeInvariantTree<String> attributeInvariantsTree;
+    private AttributeInvariantTree<V> tree;
 
-    public InvariantsTraceLocator(XLog origin, AttributeInvariantTree<String> attributeInvariants) {
-        this.origin = origin;
-        this.attributeInvariantsTree = attributeInvariants;
+    public InvariantsTraceLocator(AttributeInvariantTree<V> tree) {
+        this.tree = tree;
     }
 
     @Override
@@ -52,15 +50,14 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
 
             for (String key : event.getAttributes().keySet()) {
                 XAttribute comparisionAttr = event.getAttributes().get(key);
-                Set<AttributeInvariantTree.TreeNode<XAttribute, String>> invariantsForKey =
-                        attributeInvariantsTree.getInvariantsForKey(comparisionAttr);
-                Iterator<AttributeInvariantTree.TreeNode<XAttribute, String>> iterator = invariantsForKey.iterator();
+                AttributeInvariantTree.Node<V> invariantNode = tree.getInvariantNodeForKey(comparisionAttr);
+                Iterator<V> invariantIterator = invariantNode.getInvariantValues().iterator();
 
                 // Here we checking coincidence value for of events values and values of each invariant
                 // If value in an other invariant set will be more suitable then replace old attributeCoincidence value
                 // for current tread by current attribute with new one due current tread still suitable according to another invariant
-                while (iterator.hasNext()) {
-                    AttributeInvariantTree.TreeNode<XAttribute, String> next = iterator.next();
+                while (invariantIterator.hasNext()) {
+                    String next = invariantIterator.next();
                     List<String> values = next.getValues();
 
                     // Define val of coincidence for attribute value in invariant on I-place and value in the trace

@@ -8,7 +8,7 @@ import org.deckfour.xes.model.XTrace;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TraceDuplicatesRemovingAlgorithm extends TraceTagRemovingAlgorithm {
+public class TraceDuplicatesRemovingAlgorithm extends MergeEventsInOneTraceAndTraseTagsRemovingAlgorithm {
 
     private ILogWriter logWriter;
     private final String[] attributesForComparision;

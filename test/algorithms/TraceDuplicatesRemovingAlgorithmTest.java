@@ -1,5 +1,6 @@
-package algorithms.removal;
+package algorithms;
 
+import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
 import io.FileUtils;
 import io.ILogWriter;
 import org.deckfour.xes.in.XesXmlParser;

@@ -1,1 +1,1 @@
-8/11/18 2:01:46 PM EEST: java.lang.NullPointerException
+09.09.18 10:38:22 EEST: Input format should be the next: <command>[-saveAs] <Save as type>["OpenXEStoCSV"] <Path to log file>. Arguments received:[-saveAs, OpenXEStoCSV]

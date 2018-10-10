@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 
-public class TraceTagRemovingAlgorithm implements ILogAlgorithm {
+public class MergeEventsInOneTraceAndTraseTagsRemovingAlgorithm implements ILogAlgorithm {
 
     protected XLog originLog;
     protected int traceCounter;
