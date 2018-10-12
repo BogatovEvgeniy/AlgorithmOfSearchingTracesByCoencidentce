@@ -1,6 +1,7 @@
 import algorithms.preprocess.InvariantInitialEventSearchAlgorithm;
 import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
 import algorithms.search.TraceSearchingAlgorithm;
+import algorithms.search.coefficient.LastEventCoefficientsTraceLocator;
 import algorithms.search.invariant.AttributeInvariantTree;
 import algorithms.search.invariant.InvariantsTraceLocator;
 import io.*;
@@ -75,14 +76,14 @@ public class Main {
             ILogReader logReader = new XesLogReader();
             ILogWriter logWriter = new XesLogWriter();
             XLog originLog = logReader.parse(new File(srcFilePath)).get(0);
-            AttributeInvariantTree<String> invariantTree = getInvariants();
+            AttributeInvariantTree invariantTree = getInvariants();
 
             // Remove traces which produces the same product, than put all events into a one trace
             XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
             File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
             // Define first suitable for flowing analyze event
-            xLog = new InvariantInitialEventSearchAlgorithm(invariantTree).proceed(xLog);
+//            xLog = new InvariantInitialEventSearchAlgorithm(invariantTree).proceed(xLog);
 
             // Build an map which will reflect an majority of each attribute for future analyse
             Map<String, Float> correctionMap = calculateCoefficientsMap(savedLog);
@@ -90,9 +91,9 @@ public class Main {
             // Launch the algorithm of searching traces by coincidences of event's attributes values
             // also tacking in a count coefficientMap
             TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
-//        searchingAlgorithm.setTraceLocator(new LastEventCoefficientsTraceLocator(0.7f, correctionMap));
+        searchingAlgorithm.setTraceLocator(new LastEventCoefficientsTraceLocator(0.7f, correctionMap));
 //        List<AttributeInvariantTree> attributeInvariantTrees = new LinkedList<>();
-            searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(xLog, invariantTree));
+//            searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(invariantTree));
             xLog = searchingAlgorithm.proceed(xLog);
             logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
 
@@ -104,7 +105,7 @@ public class Main {
         }
     }
 
-    private static AttributeInvariantTree<String> getInvariants() {
+    private static AttributeInvariantTree getInvariants() {
         return null;
     }
 

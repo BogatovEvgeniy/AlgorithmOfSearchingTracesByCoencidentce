@@ -8,7 +8,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="openxes-1.1" />
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="OpenXES-20180810" level="project" />
+    <orderEntry type="library" name="OpenXES-XStream-20180810" level="project" />
+    <orderEntry type="library" name="com.google.guava:guava:26.0-jre" level="project" />
+    <orderEntry type="module" module-name="spex-master" />
   </component>
 </module>

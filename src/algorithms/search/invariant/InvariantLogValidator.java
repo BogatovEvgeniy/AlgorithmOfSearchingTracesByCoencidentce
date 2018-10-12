@@ -7,9 +7,9 @@ import java.util.List;
 
 public class InvariantLogValidator implements ITraceSearchingAlgorithm.TraceLocator.ILogValidator {
 
-    private AttributeInvariantTree<String> invariantTree;
+    private AttributeInvariantTree invariantTree;
 
-    public InvariantLogValidator(AttributeInvariantTree<String> invariantTree) {
+    public InvariantLogValidator(AttributeInvariantTree invariantTree) {
         this.invariantTree = invariantTree;
     }
 
@@ -19,9 +19,9 @@ public class InvariantLogValidator implements ITraceSearchingAlgorithm.TraceLoca
             for (XEvent xEvent : trace) {
                 XAttributeMap attributes = xEvent.getAttributes();
                 for (String key : attributes.keySet()) {
-                    List<AttributeInvariantTree.Node<XAttribute, String>> invariantsForKey = invariantTree.getInvariantNodeForKey(attributes.get(key));
-                    for (AttributeInvariantTree.Node<XAttribute, String> anInvariantsForKey : invariantsForKey) {
-                        if (anInvariantsForKey.getInvariantValues().get(0).equals(attributes.get(key).toString())) {
+                    AttributeInvariantTree.Node node = invariantTree.getInvariantNodeForKey(attributes.get(key));
+                    for (Object val : node.getInvariantValues()) {
+                        if (val.equals(attributes.get(key).toString())) {
                             return true;
                         }
                     }

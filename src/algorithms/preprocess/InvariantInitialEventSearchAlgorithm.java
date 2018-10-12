@@ -13,9 +13,9 @@ import java.util.List;
  * Search trace where event has attribute with value mentioned in invariant list
  */
 public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm {
-    private AttributeInvariantTree<String> invariantTree;
+    private AttributeInvariantTree invariantTree;
 
-    public InvariantInitialEventSearchAlgorithm(AttributeInvariantTree<String> invariantTree) {
+    public InvariantInitialEventSearchAlgorithm(AttributeInvariantTree invariantTree) {
         this.invariantTree = invariantTree;
     }
 
@@ -40,10 +40,10 @@ public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm {
                         break;
                     }
 
-                    List<AttributeInvariantTree.Node<XAttribute, String>> invariantsForKey = invariantTree.getInvariantNodeForKey(attributes.get(key));
-                    Iterator<AttributeInvariantTree.Node<XAttribute, String>> iterator = invariantsForKey.iterator();
+                    AttributeInvariantTree.Node<String> invariantsForKey = invariantTree.getInvariantNodeForKey(attributes.get(key));
+                    Iterator<String> iterator = invariantsForKey.getInvariantValues().iterator();
                     while (iterator.hasNext()) {
-                        if (isInvariantValueIsEqualsToEventVal(result, trace, xEvent, attributes, key, iterator)) break;
+                        if (isInvariantValueIsEqualsToEventVal(result, trace, xEvent, attributes, key, iterator.next())) break;
                     }
                 }
             }
@@ -51,8 +51,13 @@ public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm {
         return result;
     }
 
-    private boolean isInvariantValueIsEqualsToEventVal(XLog result, XTrace trace, XEvent xEvent, XAttributeMap attributes, String key, Iterator<AttributeInvariantTree.Node<XAttribute, String>> iterator) {
-        if (iterator.next().getInvariantValues().get(0).equals(attributes.get(key).toString())) {
+    private boolean isInvariantValueIsEqualsToEventVal(XLog result,
+                                                       XTrace trace,
+                                                       XEvent xEvent,
+                                                       XAttributeMap attributes,
+                                                       String key,
+                                                       String value) {
+        if (value.equals(attributes.get(key).toString())) {
             XTrace validTrace = new XTraceImpl(trace.getAttributes());
             validTrace.add(xEvent);
             result.add(trace);

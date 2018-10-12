@@ -7,11 +7,11 @@ import java.util.Map;
 
 public class CompareEventData {
 
-    Map<XAttribute, String> currentValues;
-    Map<XAttribute, List<String>> previousValues;
+    Map<XAttribute, String> eventValues;
+    Map<XAttribute, List<String>> inTraceValues;
 
-    public CompareEventData(Map<XAttribute, String> currentValues, Map<XAttribute, List<String>> previousValues) {
-        this.currentValues = currentValues;
-        this.previousValues = previousValues;
+    public CompareEventData(Map<XAttribute, String> eventValues, Map<XAttribute, List<String>> inTraceValues) {
+        this.eventValues = eventValues;
+        this.inTraceValues = inTraceValues;
     }
 }

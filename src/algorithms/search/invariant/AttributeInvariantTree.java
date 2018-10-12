@@ -13,10 +13,9 @@ import java.util.*;
  * Each attribute represents a set of invariants
  * Invariant is representing a list of values in order of their appearance in a real process
  *
- * @param <V> - a key type
  */
-public class AttributeInvariantTree<V> {
-    private Map<XAttribute, Node<V>> root;
+public class AttributeInvariantTree {
+    private Map<XAttribute, Node> root;
     ITraceSearchingAlgorithm.TraceLocator invariantsTraceLocator;
 
     public AttributeInvariantTree() {
@@ -24,15 +23,19 @@ public class AttributeInvariantTree<V> {
         invariantsTraceLocator = new InvariantsTraceLocator(this);
     }
 
-    public void addInvariantNode(XAttribute attribute, Node<V> invariant) {
+    public void addInvariantNode(XAttribute attribute, Node invariant) {
         root.put(attribute, invariant);
     }
 
-    public void addValue(XAttribute attribute, int attributeSetIndex, V value) {
-        root.get(attribute).addValue(attributeSetIndex, value);
+    public void addValue(XAttribute attribute, int traceIndex, Object value) {
+        root.get(attribute).addValue(traceIndex, value);
     }
 
-    public void addInvariant(XAttribute attribute, List<V> values) throws InvariantAlreadyExistsException {
+    public void addValue(String attributeKey, Object value) {
+        root.get(attributeKey).addValue(value);
+    }
+
+    public <V>  void addInvariant(XAttribute attribute, List<V> values) throws InvariantAlreadyExistsException {
         Node<V> node = root.get(attribute);
         if (node == null) {
             node.addInvariant(values);
@@ -41,8 +44,8 @@ public class AttributeInvariantTree<V> {
         }
     }
 
-    public void insertOrReplaceInvariant(XAttribute attribute, List<V> values) {
-        Node<V> node = root.get(attribute);
+    public void insertOrReplaceInvariant(XAttribute attribute, List values) {
+        Node node = root.get(attribute);
         root.remove(attribute);
         node.addInvariant(values);
     }
@@ -51,7 +54,7 @@ public class AttributeInvariantTree<V> {
         return root.get(key).traceAttributeValues.size();
     }
 
-    public Node<V> getInvariantNodeForKey(XAttribute attribute) {
+    public Node getInvariantNodeForKey(XAttribute attribute) {
         return root.get(attribute);
     }
 
@@ -67,7 +70,7 @@ public class AttributeInvariantTree<V> {
         List<V> attributeInvariant;
         List<List<V>> traceAttributeValues;
 
-        private Node() {
+        public Node() {
             attributeInvariant = new ArrayList<>();
             traceAttributeValues = new ArrayList<>();
         }
@@ -83,8 +86,20 @@ public class AttributeInvariantTree<V> {
             traceAttributeValues.add(invariantValues);
         }
 
-        boolean addValue(int valuesListIndex, V newVal) {
-            List<V> vs = traceAttributeValues.get(valuesListIndex);
+        boolean addValue(int traceIndex, V newVal) {
+            List<V> vs = traceAttributeValues.get(traceIndex);
+
+            if (vs != null) {
+                traceAttributeValues.add(new LinkedList<>());
+                vs  = traceAttributeValues.get(traceIndex);
+            }
+
+            return vs.add(newVal);
+        }
+
+        boolean addValue(V newVal) {
+            traceAttributeValues.add(new LinkedList<>());
+            List<V> vs = traceAttributeValues.get(traceAttributeValues.size() - 1);
             return vs.add(newVal);
         }
 
