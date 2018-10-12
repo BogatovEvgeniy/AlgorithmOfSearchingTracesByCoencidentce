@@ -83,7 +83,7 @@ public class Main {
             File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
             // Define first suitable for flowing analyze event
-//            xLog = new InvariantInitialEventSearchAlgorithm(invariantTree).proceed(xLog);
+            xLog = new InvariantInitialEventSearchAlgorithm(invariantTree).proceed(xLog);
 
             // Build an map which will reflect an majority of each attribute for future analyse
             Map<String, Float> correctionMap = calculateCoefficientsMap(savedLog);
@@ -91,9 +91,9 @@ public class Main {
             // Launch the algorithm of searching traces by coincidences of event's attributes values
             // also tacking in a count coefficientMap
             TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
-        searchingAlgorithm.setTraceLocator(new LastEventCoefficientsTraceLocator(0.7f, correctionMap));
+//        searchingAlgorithm.setTraceLocator(new LastEventCoefficientsTraceLocator(0.7f, correctionMap));
 //        List<AttributeInvariantTree> attributeInvariantTrees = new LinkedList<>();
-//            searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(invariantTree));
+            searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(invariantTree));
             xLog = searchingAlgorithm.proceed(xLog);
             logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
 
