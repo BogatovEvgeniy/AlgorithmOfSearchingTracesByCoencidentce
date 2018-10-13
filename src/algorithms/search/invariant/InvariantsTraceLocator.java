@@ -17,9 +17,9 @@ import java.util.*;
 public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLocator {
 
     private static ILogValidator LOG_VALIDATOR_INSTANCE;
-    private AttributeInvariantTree tree;
+    private TraceInvariantList tree;
 
-    public InvariantsTraceLocator(AttributeInvariantTree tree) {
+    public InvariantsTraceLocator(TraceInvariantList tree) {
         this.tree = tree;
     }
 
@@ -57,8 +57,8 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
             int comparedEvents = 0;
 
             XAttribute comparisionAttr = getEventAttributes.get(key);
-            AttributeInvariantTree.Node invariantNode = tree.getInvariantNodeForKey(comparisionAttr);
-            Iterator invariantIterator = invariantNode.getInvariantValues().iterator();
+            TraceInvariantList.Node invariantNode = tree.getInvariantNodeForKey(comparisionAttr.getKey());
+            Iterator invariantIterator = invariantNode.getAttributeInvariant().iterator();
 
             while (invariantIterator.hasNext()) {
                 Object next = invariantIterator.next();

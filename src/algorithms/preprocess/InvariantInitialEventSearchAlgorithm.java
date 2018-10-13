@@ -1,21 +1,20 @@
 package algorithms.preprocess;
 
 import algorithms.ILogAlgorithm;
-import algorithms.search.invariant.AttributeInvariantTree;
+import algorithms.search.invariant.TraceInvariantList;
 import org.deckfour.xes.model.*;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.model.impl.XTraceImpl;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Search trace where event has attribute with value mentioned in invariant list
  */
 public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm {
-    private AttributeInvariantTree invariantTree;
+    private TraceInvariantList invariantTree;
 
-    public InvariantInitialEventSearchAlgorithm(AttributeInvariantTree invariantTree) {
+    public InvariantInitialEventSearchAlgorithm(TraceInvariantList invariantTree) {
         this.invariantTree = invariantTree;
     }
 
@@ -40,8 +39,8 @@ public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm {
                         break;
                     }
 
-                    AttributeInvariantTree.Node<String> invariantsForKey = invariantTree.getInvariantNodeForKey(attributes.get(key));
-                    Iterator<String> iterator = invariantsForKey.getInvariantValues().iterator();
+                    TraceInvariantList.Node invariantsForKey = invariantTree.getInvariantNodeForKey(attributes.get(key).getKey());
+                    Iterator<String> iterator = invariantsForKey.getAttributeInvariant().iterator();
                     while (iterator.hasNext()) {
                         if (isInvariantValueIsEqualsToEventVal(result, trace, xEvent, attributes, key, iterator.next())) break;
                     }

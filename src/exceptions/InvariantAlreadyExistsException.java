@@ -1,10 +1,8 @@
 package exceptions;
 
-import org.deckfour.xes.model.XAttribute;
-
 public class InvariantAlreadyExistsException extends Exception {
 
-    public InvariantAlreadyExistsException(XAttribute attribute) {
-        super("Invariant for the \"" + attribute.getKey() + "\" attribute already exists");
+    public InvariantAlreadyExistsException(String key) {
+        super("Invariant for the \"" + key + "\" attribute already exists");
     }
 }

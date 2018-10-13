@@ -1,8 +1,7 @@
 import algorithms.preprocess.InvariantInitialEventSearchAlgorithm;
 import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
 import algorithms.search.TraceSearchingAlgorithm;
-import algorithms.search.coefficient.LastEventCoefficientsTraceLocator;
-import algorithms.search.invariant.AttributeInvariantTree;
+import algorithms.search.invariant.TraceInvariantList;
 import algorithms.search.invariant.InvariantsTraceLocator;
 import io.*;
 import org.deckfour.xes.model.XLog;
@@ -76,7 +75,7 @@ public class Main {
             ILogReader logReader = new XesLogReader();
             ILogWriter logWriter = new XesLogWriter();
             XLog originLog = logReader.parse(new File(srcFilePath)).get(0);
-            AttributeInvariantTree invariantTree = getInvariants();
+            TraceInvariantList invariantTree = getInvariants();
 
             // Remove traces which produces the same product, than put all events into a one trace
             XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
@@ -92,7 +91,7 @@ public class Main {
             // also tacking in a count coefficientMap
             TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
 //        searchingAlgorithm.setTraceLocator(new LastEventCoefficientsTraceLocator(0.7f, correctionMap));
-//        List<AttributeInvariantTree> attributeInvariantTrees = new LinkedList<>();
+//        List<TraceInvariantList> attributeInvariantTrees = new LinkedList<>();
             searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(invariantTree));
             xLog = searchingAlgorithm.proceed(xLog);
             logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
@@ -105,8 +104,8 @@ public class Main {
         }
     }
 
-    private static AttributeInvariantTree getInvariants() {
-        return null;
+    private static TraceInvariantList getInvariants() {
+        return new TraceInvariantList();
     }
 
 
