@@ -1,12 +1,10 @@
 package algorithms.search.invariant;
 
 import algorithms.search.base.ITraceSearchingAlgorithm;
-import com.google.common.annotations.VisibleForTesting;
 import exceptions.InvariantAlreadyExistsException;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
-import org.deckfour.xes.model.impl.XAttributeImpl;
 
 import java.util.*;
 
@@ -19,24 +17,13 @@ import java.util.*;
  */
 public class TraceInvariantList {
     private Map<String, Node> root;
-    ITraceSearchingAlgorithm.TraceLocator invariantsTraceLocator;
 
     public TraceInvariantList() {
         root = new HashMap<>();
-        invariantsTraceLocator = new InvariantsTraceLocator(this);
     }
 
     public void addInvariantNode(String key, Node node) {
         root.put(key, node);
-    }
-
-    public void addValue(String key, XLog xLog, XEvent xEvent) {
-        Node node = root.get(key);
-        if (node == null) {
-            root.put(key, new Node(key));
-        }
-
-        root.get(key).addValue(xLog, xEvent);
     }
 
     public void addInvariant(String key, List<String> values) throws InvariantAlreadyExistsException {
@@ -50,7 +37,7 @@ public class TraceInvariantList {
 
     public void insertOrReplaceInvariant(String key, List values) throws InvariantAlreadyExistsException {
         root.remove(key);
-        addInvariant(key,values);
+        addInvariant(key, values);
     }
 
     public int nodesPerKey(XAttribute key) {
@@ -94,23 +81,17 @@ public class TraceInvariantList {
             traceAttributeValues.remove(traceIndex);
         }
 
-        void addValue(XLog xLog, XEvent xEvent) {
-            int traceIndex = getMostSuitableTraceIndex(key);
+        void addValue(int traceIndex, String value) {
 
             if (traceAttributeValues != null) {
                 traceAttributeValues = new LinkedList<>();
             }
 
-            LinkedList<String> traceValues = new LinkedList<>();
-            String newVal = ((XAttributeImpl)xEvent.getAttributes().get(key)).toString();
-            traceValues.add(newVal);
-            traceAttributeValues.add(traceValues);
-
-            List<String> vs = traceAttributeValues.get(traceIndex);
-            vs.add(newVal);
+            List<String> traceValues = traceAttributeValues.get(traceIndex);
+            traceValues.add(value);
         }
 
-       
+
         int getMostSuitableTraceIndex(String key) {
             throw new IllegalStateException("Not implemented yet");
         }
