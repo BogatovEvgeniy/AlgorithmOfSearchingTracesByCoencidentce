@@ -91,15 +91,6 @@ public class TraceInvariantList {
             traceValues.add(value);
         }
 
-
-        int getMostSuitableTraceIndex(String key) {
-            throw new IllegalStateException("Not implemented yet");
-        }
-
-        public void addValuesList(String key, List<String> valuesList) {
-            // TODO should be implemented search method and call to find right place
-        }
-
         public String getKey() {
             return key;
         }
