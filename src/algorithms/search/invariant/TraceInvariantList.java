@@ -1,11 +1,5 @@
 package algorithms.search.invariant;
 
-import algorithms.search.base.ITraceSearchingAlgorithm;
-import exceptions.InvariantAlreadyExistsException;
-import org.deckfour.xes.model.XAttribute;
-import org.deckfour.xes.model.XEvent;
-import org.deckfour.xes.model.XLog;
-
 import java.util.*;
 
 /**
@@ -22,26 +16,15 @@ public class TraceInvariantList {
         root = new HashMap<>();
     }
 
-    public void addInvariantNode(String key, Node node) {
-        root.put(key, node);
+    public void addInvariantNode(Node node) {
+        root.put(node.getKey(), node);
     }
 
-    public void addInvariant(String key, List<String> values) throws InvariantAlreadyExistsException {
-        Node node = root.get(key);
-        if (node == null) {
-            node.addInvariant(values);
-        } else {
-            throw new InvariantAlreadyExistsException(key);
-        }
-    }
-
-    public void insertOrReplaceInvariant(String key, List values) throws InvariantAlreadyExistsException {
+    public void insertOrReplaceInvariant(String key, List values) {
         root.remove(key);
-        addInvariant(key, values);
-    }
-
-    public int nodesPerKey(XAttribute key) {
-        return root.get(key).traceAttributeValues.size();
+        Node node = new Node(key);
+        node.addInvariant(values);
+        root.put(key, node);
     }
 
     public Node getInvariantNodeForKey(String key) {
@@ -52,8 +35,8 @@ public class TraceInvariantList {
         root.clear();
     }
 
-    public void size() {
-        root.size();
+    public int size() {
+        return root.size();
     }
 
     public static class Node {
