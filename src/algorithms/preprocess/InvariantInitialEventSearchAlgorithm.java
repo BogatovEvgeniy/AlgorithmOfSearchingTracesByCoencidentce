@@ -1,6 +1,7 @@
 package algorithms.preprocess;
 
 import algorithms.ILogAlgorithm;
+import algorithms.search.invariant.Node;
 import algorithms.search.invariant.TraceInvariantList;
 import org.deckfour.xes.model.*;
 import org.deckfour.xes.model.impl.XLogImpl;
@@ -39,7 +40,7 @@ public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm {
                         break;
                     }
 
-                    TraceInvariantList.Node invariantsForKey = invariantTree.getInvariantNodeForKey(attributes.get(key).getKey());
+                    Node invariantsForKey = invariantTree.getInvariantNodeForKey(attributes.get(key).getKey());
                     Iterator<String> iterator = invariantsForKey.getAttributeInvariant().iterator();
                     while (iterator.hasNext()) {
                         if (isInvariantValueIsEqualsToEventVal(result, trace, xEvent, attributes, key, iterator.next())) break;

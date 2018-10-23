@@ -57,7 +57,7 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
             int comparedEvents = 0;
 
             XAttribute comparisionAttr = getEventAttributes.get(key);
-            TraceInvariantList.Node invariantNode = tree.getInvariantNodeForKey(comparisionAttr.getKey());
+            Node invariantNode = tree.getInvariantNodeForKey(comparisionAttr.getKey());
             Iterator invariantIterator = invariantNode.getAttributeInvariant().iterator();
 
             while (invariantIterator.hasNext()) {

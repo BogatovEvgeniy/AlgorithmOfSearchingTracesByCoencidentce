@@ -17,7 +17,7 @@ public class InvariantLogValidator implements ITraceSearchingAlgorithm.TraceLoca
             for (XEvent xEvent : trace) {
                 XAttributeMap attributes = xEvent.getAttributes();
                 for (String key : attributes.keySet()) {
-                    TraceInvariantList.Node node = invariantTree.getInvariantNodeForKey(attributes.get(key).getKey());
+                    Node node = invariantTree.getInvariantNodeForKey(attributes.get(key).getKey());
                     for (Object val : node.getAttributeInvariant()) {
                         if (val.equals(attributes.get(key).toString())) {
                             return true;

@@ -53,14 +53,14 @@ public class TraceInvariantListTest {
 
     @Test
     public void addInvariantNode() {
-        TraceInvariantList.Node node = new TraceInvariantList.Node(ATTR_KEY_1);
+        Node node = new Node(ATTR_KEY_1);
         List<String> valuesList = new LinkedList<>();
         String eventVal = log.get(0).get(0).getAttributes().get(ATTR_KEY_1).toString();
         valuesList.add(eventVal);
         node.addTrace(valuesList);
         invariantTree.addInvariantNode(node);
 
-        TraceInvariantList.Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
         assertNotNull(invariantNodeForKey);
         assertTrue(invariantNodeForKey.getAllAvailableValues().size() > 0);
         assertEquals(eventVal, invariantNodeForKey.getAllAvailableValues().get(0).get(0));
@@ -73,7 +73,7 @@ public class TraceInvariantListTest {
         invariantList.addAll(Arrays.asList(invariantListTestData));
         invariantTree.insertOrReplaceInvariant(ATTR_KEY_1, invariantList);
 
-        TraceInvariantList.Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
         List<String> attributeInvariant = invariantNodeForKey.getAttributeInvariant();
 
         assertNotNull(invariantNodeForKey);
@@ -89,7 +89,7 @@ public class TraceInvariantListTest {
         invariantList.addAll(Arrays.asList(invariantTestData));
         invariantTree.insertOrReplaceInvariant(ATTR_KEY_1, invariantList);
 
-        TraceInvariantList.Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
         List<String> attributeInvariant = invariantNodeForKey.getAttributeInvariant();
         assertNotNull(invariantNodeForKey);
         assertTrue(attributeInvariant.size() == invariantTestData.length);
@@ -110,14 +110,14 @@ public class TraceInvariantListTest {
 
     @Test
     public void getInvariantNodeForKey() {
-        TraceInvariantList.Node node = new TraceInvariantList.Node(ATTR_KEY_1);
+        Node node = new Node(ATTR_KEY_1);
         List<String> valuesList = new LinkedList<>();
         String eventVal = log.get(0).get(0).getAttributes().get(ATTR_KEY_1).toString();
         valuesList.add(eventVal);
         node.addTrace(valuesList);
         invariantTree.addInvariantNode(node);
 
-        TraceInvariantList.Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
         assertNotNull(invariantNodeForKey);
         assertTrue(invariantNodeForKey.equals(node));
     }
@@ -125,8 +125,8 @@ public class TraceInvariantListTest {
     @Test
     public void clear() {
         TraceInvariantList list = new TraceInvariantList();
-        TraceInvariantList.Node node1 = new TraceInvariantList.Node(ATTR_KEY_1);
-        TraceInvariantList.Node node2 = new TraceInvariantList.Node(ATTR_KEY_2);
+        Node node1 = new Node(ATTR_KEY_1);
+        Node node2 = new Node(ATTR_KEY_2);
         list.addInvariantNode(node1);
         list.addInvariantNode(node2);
         list.clear();
@@ -144,8 +144,8 @@ public class TraceInvariantListTest {
     @Test
     public void sizeIsTwo() {
         TraceInvariantList list = new TraceInvariantList();
-        TraceInvariantList.Node node1 = new TraceInvariantList.Node(ATTR_KEY_1);
-        TraceInvariantList.Node node2 = new TraceInvariantList.Node(ATTR_KEY_2);
+        Node node1 = new Node(ATTR_KEY_1);
+        Node node2 = new Node(ATTR_KEY_2);
         list.addInvariantNode(node1);
         list.addInvariantNode(node2);
 
