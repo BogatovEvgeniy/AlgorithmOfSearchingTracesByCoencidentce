@@ -9,12 +9,7 @@ public class Utils {
         Map<Integer, Float> result = new HashMap<>();
         List<Float> values = new LinkedList<>();
         values.addAll(traceCoincidenceMap.values());
-        Collections.sort(values, new Comparator<Float>() {
-            @Override
-            public int compare(Float o1, Float o2) {
-                return Float.compare(o1,o2);
-            }
-        });
+        Collections.sort(values, Float::compare);
 
         for (Integer traceIndex : traceCoincidenceMap.keySet()) {
             for (Float value : values) {

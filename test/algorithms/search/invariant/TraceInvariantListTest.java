@@ -1,5 +1,6 @@
 package algorithms.search.invariant;
 
+import base.LogTestBaseClass;
 import exceptions.InvariantAlreadyExistsException;
 import io.FileUtils;
 import org.deckfour.xes.in.XesXmlParser;
@@ -13,7 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class TraceInvariantListTest {
+public class TraceInvariantListTest extends LogTestBaseClass {
 
     private static XLog log;
     private TraceInvariantList invariantTree;
@@ -27,28 +28,15 @@ public class TraceInvariantListTest {
     private static String ATTR_TEST_VAL_TIME = "1970-01-01T00:00:00.000+01:00";
     private static float ATTR_TEST_VAL_FLOAT = 1.1F;
 
+    @BeforeClass
+    public static void initClassValues() {
+        log = getLogInstance();
+
+    }
+
     @Before
     public void initEnvironment() {
         invariantTree = new TraceInvariantList();
-    }
-
-    @BeforeClass
-    public static void initClassValues() {
-        File testLog = new File(FileUtils.getCurrentDirectoryPath() + "TestLog_4unique_traces_each_duplicated_twice.xes");
-        try {
-            FileUtils.createFileIfNeed(testLog);
-            XesXmlParser xUniversalParser = new XesXmlParser();
-            List<XLog> parse = xUniversalParser.parse(testLog);
-            if (parse == null || parse.size() == 0) {
-                assert false;
-            }
-
-            log = parse.get(0);
-
-        } catch (Exception e) {
-            assert false;
-        }
-
     }
 
     @Test

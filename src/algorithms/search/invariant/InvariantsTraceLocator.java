@@ -7,6 +7,8 @@ import org.deckfour.xes.model.*;
 
 import java.util.*;
 
+import static algorithms.search.invariant.CompareEventData.initCompareEventData;
+
 
 /**
  * While you are using this locator under the hood there is an assumption that log is prepeared
@@ -39,38 +41,18 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
 
         for (int traceIndex = 0; traceIndex < xLog.size(); traceIndex++) {
             float maxCoincidenceValueForAttr = 0;
-
             XTrace currTrace = xLog.get(traceIndex);
             CompareEventData compareEventData = initCompareEventData(event, currTrace);
-            maxCoincidenceValueForAttr = getMaxCoincidenceValueForAttr(event, maxCoincidenceValueForAttr, compareEventData);
-
+            maxCoincidenceValueForAttr = getMaxCoincidenceValueForEventByAttributes(event, maxCoincidenceValueForAttr, compareEventData);
             traceCoincidenceMap.put(traceIndex, maxCoincidenceValueForAttr);
         }
         return sortResults(traceCoincidenceMap);
     }
 
-    private float getMaxCoincidenceValueForAttr(XEvent event, float maxCoincidenceValueForAttr, CompareEventData compareEventData) {
+    private float getMaxCoincidenceValueForEventByAttributes(XEvent event, float maxCoincidenceValueForAttr, CompareEventData compareEventData) {
         XAttributeMap getEventAttributes = event.getAttributes();
         for (String key : getEventAttributes.keySet()) {
-            float coincidenceValue;
-            int attrCoincidenceValue = 0;
-            int comparedEvents = 0;
-
-            XAttribute comparisionAttr = getEventAttributes.get(key);
-            Node invariantNode = tree.getInvariantNodeForKey(comparisionAttr.getKey());
-            Iterator invariantIterator = invariantNode.getAttributeInvariant().iterator();
-
-            while (invariantIterator.hasNext()) {
-                Object next = invariantIterator.next();
-                Object attributeValue = compareEventData.inTraceValues.get(comparisionAttr).get(comparedEvents);
-                if (next.equals(attributeValue)) {
-                    attrCoincidenceValue++;
-                    comparedEvents++;
-                }
-                break;
-            }
-            coincidenceValue = Math.floorDiv(attrCoincidenceValue, comparedEvents);
-
+            float coincidenceValue = defineCoincidenceByInvariant(key, compareEventData);
             if (coincidenceValue > maxCoincidenceValueForAttr) {
                 maxCoincidenceValueForAttr = coincidenceValue;
             }
@@ -78,48 +60,32 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
         return maxCoincidenceValueForAttr;
     }
 
+    private float defineCoincidenceByInvariant(String key, CompareEventData compareEventData) {
+        float coincidenceValue;
+        int comparedEvents = 0;
+        long attrCoincidenceValue = 0;
+
+        Node invariantNode = tree.getInvariantNodeForKey(key);
+        Iterator invariantIterator = invariantNode.getAttributeInvariant().iterator();
+
+        while (invariantIterator.hasNext()) {
+            Object next = invariantIterator.next();
+            Object attributeValue = compareEventData.inTraceValues.get(key).get(comparedEvents);
+            if (next.equals(attributeValue)) {
+                attrCoincidenceValue++;
+                comparedEvents++;
+            }
+            break;
+        }
+
+        coincidenceValue = Math.floorDiv(attrCoincidenceValue, comparedEvents);
+        return coincidenceValue;
+    }
+
     private int[] sortResults(Map<Integer, Float> traceCoincidenceMap) {
         Map<Integer, Float> sortedMap = Utils.sortMap(traceCoincidenceMap);
         return Utils.toPrimitives(sortedMap.keySet());
     }
-
-
-    /**
-     * Get data of current event:
-     * - Get event attributes
-     * - Get values of each attribute of the event
-     * - Put each value in eventValues map
-     * <p>
-     * Assume that all events in traces have the same list of attributes
-     * Pass through event attributes for each event in trace
-     * ---> Result: Set of values for each attribute for the trace
-     *
-     * @param event
-     * @param trace
-     * @return
-     */
-    private CompareEventData initCompareEventData(XEvent event, XTrace trace) {
-        Map<XAttribute, String> currValues = new HashMap<>();
-        Set<String> attrKeys = event.getAttributes().keySet();
-
-        for (String key : attrKeys) {
-            XAttribute xAttribute = event.getAttributes().get(key);
-            String val = xAttribute.toString();
-            currValues.put(xAttribute, val);
-        }
-
-        Map<XAttribute, List<String>> traceAttributesValues = new HashMap<>();
-        for (String attrKey : attrKeys) {
-            List<String> attrValues = new LinkedList<>();
-            for (XEvent xEvent : trace) {
-                attrValues.add(xEvent.getAttributes().get(attrKey).toString());
-            }
-            traceAttributesValues.put(event.getAttributes().get(attrKey), attrValues);
-        }
-
-        return new CompareEventData(currValues, traceAttributesValues);
-    }
-
 
     @Override
     public ILogValidator getLogValidator() {
