@@ -3,6 +3,7 @@ package algorithms.search.invariant;
 import algorithms.Utils;
 import algorithms.preprocess.InvariantInitialEventSearchAlgorithm;
 import algorithms.search.base.ITraceSearchingAlgorithm;
+import com.google.common.annotations.VisibleForTesting;
 import org.deckfour.xes.model.*;
 
 import java.util.*;
@@ -30,6 +31,7 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
         return getClass().getSimpleName();
     }
 
+    @VisibleForTesting
     @Override
     public int[] defineSuitableTracesList(XLog xLog, XEvent event) {
 
@@ -49,6 +51,7 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
         return sortResults(traceCoincidenceMap);
     }
 
+    @VisibleForTesting
     private float getMaxCoincidenceValueForEventByAttributes(XEvent event, float maxCoincidenceValueForAttr, CompareEventData compareEventData) {
         XAttributeMap getEventAttributes = event.getAttributes();
         for (String key : getEventAttributes.keySet()) {
@@ -60,6 +63,7 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
         return maxCoincidenceValueForAttr;
     }
 
+    @VisibleForTesting
     private float defineCoincidenceByInvariant(String key, CompareEventData compareEventData) {
         float coincidenceValue;
         int comparedEvents = 0;
@@ -82,6 +86,7 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
         return coincidenceValue;
     }
 
+    @VisibleForTesting
     private int[] sortResults(Map<Integer, Float> traceCoincidenceMap) {
         Map<Integer, Float> sortedMap = Utils.sortMap(traceCoincidenceMap);
         return Utils.toPrimitives(sortedMap.keySet());
