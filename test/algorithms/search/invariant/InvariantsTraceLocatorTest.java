@@ -38,17 +38,30 @@ public class InvariantsTraceLocatorTest extends LogTestBaseClass {
     @Test
     public void defineSuitableTracesList() {
         XLog logInstance = getLogInstance();
+
+        //Check data
         List<String> invariantForAllKeys = Arrays.asList("val1", "val2", "val3");
+        List <String> trace_attr1 = Arrays.asList("val1", "val2", "val3");
+        List <String> trace_attr2 = Arrays.asList("val1", "val3");
+        List <String> trace_attr3 = Arrays.asList("val1", "val2");
+        List <String> trace_attr4 = Arrays.asList("val1");
+
         TraceInvariantList tree = new TraceInvariantList();
 
         Node nodeATTR_1 = new Node(ATTR_1);
-        nodeATTR_1.addInvariant(invariantForAllKeys);
         Node nodeATTR_2 = new Node(ATTR_2);
-        nodeATTR_2.addInvariant(invariantForAllKeys);
         Node nodeATTR_3 = new Node(ATTR_3);
-        nodeATTR_3.addInvariant(invariantForAllKeys);
         Node nodeATTR_4 = new Node(ATTR_4);
+
+        nodeATTR_1.addInvariant(invariantForAllKeys);
+        nodeATTR_2.addInvariant(invariantForAllKeys);
+        nodeATTR_3.addInvariant(invariantForAllKeys);
         nodeATTR_4.addInvariant(invariantForAllKeys);
+
+        tree.addInvariantNode(nodeATTR_1);
+        tree.addInvariantNode(nodeATTR_2);
+        tree.addInvariantNode(nodeATTR_3);
+        tree.addInvariantNode(nodeATTR_4);
 
         InvariantsTraceLocator invariantsTraceLocator = new InvariantsTraceLocator(tree);
         for (XTrace trace : logInstance) {
@@ -56,6 +69,26 @@ public class InvariantsTraceLocatorTest extends LogTestBaseClass {
                 invariantsTraceLocator.defineSuitableTracesList(logInstance, event);
             }
         }
+
+        assertTrue(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().get(0).containsAll(trace_attr1));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().get(1).containsAll(trace_attr1));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().get(2).containsAll(trace_attr1));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().get(3).containsAll(trace_attr1));
+
+        assertTrue(tree.getInvariantNodeForKey(ATTR_2).getAllAvailableValues().get(0).containsAll(trace_attr2));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_2).getAllAvailableValues().get(1).containsAll(trace_attr2));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_2).getAllAvailableValues().get(2).containsAll(trace_attr2));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_2).getAllAvailableValues().get(3).containsAll(trace_attr2));
+
+        assertTrue(tree.getInvariantNodeForKey(ATTR_3).getAllAvailableValues().get(0).containsAll(trace_attr3));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_3).getAllAvailableValues().get(1).containsAll(trace_attr3));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_3).getAllAvailableValues().get(2).containsAll(trace_attr3));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_3).getAllAvailableValues().get(3).containsAll(trace_attr3));
+
+        assertTrue(tree.getInvariantNodeForKey(ATTR_4).getAllAvailableValues().get(0).containsAll(trace_attr4));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_4).getAllAvailableValues().get(1).containsAll(trace_attr4));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_4).getAllAvailableValues().get(2).containsAll(trace_attr4));
+        assertTrue(tree.getInvariantNodeForKey(ATTR_4).getAllAvailableValues().get(3).containsAll(trace_attr4));
     }
 
     @Test

@@ -1,7 +1,5 @@
 package algorithms.search.invariant;
 
-import org.deckfour.xes.model.XTrace;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +8,7 @@ public class Node {
     private String key;
     private List<String> attributeInvariant;
     private List<List<String>> traceAttributeValues;
+    private int lastInsertionIndex;
 
     public Node(String key) {
         this.key = key;
@@ -40,12 +39,17 @@ public class Node {
             traceAttributeValues = new LinkedList<>();
         }
 
+        if (traceIndex == 0){
+            traceAttributeValues.add(new LinkedList<>());
+        }
+
         if (traceIndex > traceAttributeValues.size() - 1){
             throw  new IllegalStateException("There is no trace in node with such index");
         }
 
         List<String> traceValues = traceAttributeValues.get(traceIndex);
         traceValues.add(value);
+        lastInsertionIndex = traceIndex;
     }
 
     public String getKey() {
@@ -77,5 +81,15 @@ public class Node {
     public void clear() {
         traceAttributeValues = new LinkedList<>();
         attributeInvariant = new LinkedList<>();
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "key='" + key + '\'' +
+                ", attributeInvariant=" + attributeInvariant +
+                ", traceAttributeValues=" + traceAttributeValues +
+                ", lastInsertionIndex=" + lastInsertionIndex +
+                '}';
     }
 }

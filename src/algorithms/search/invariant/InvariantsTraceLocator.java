@@ -55,7 +55,7 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
     private float getMaxCoincidenceValueForEventByAttributes(XEvent event, float maxCoincidenceValueForAttr, CompareEventData compareEventData) {
         XAttributeMap getEventAttributes = event.getAttributes();
         for (String key : getEventAttributes.keySet()) {
-            float coincidenceValue = defineCoincidenceByInvariant(key, compareEventData);
+            float coincidenceValue = defineCoincidenceByInvariant(key, event);
             if (coincidenceValue > maxCoincidenceValueForAttr) {
                 maxCoincidenceValueForAttr = coincidenceValue;
             }
@@ -64,26 +64,66 @@ public class InvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLoc
     }
 
     @VisibleForTesting
-    private float defineCoincidenceByInvariant(String key, CompareEventData compareEventData) {
+    private float defineCoincidenceByInvariant(String key, XEvent xEvent) {
         float coincidenceValue;
         int comparedEvents = 0;
         long attrCoincidenceValue = 0;
 
         Node invariantNode = tree.getInvariantNodeForKey(key);
-        Iterator invariantIterator = invariantNode.getAttributeInvariant().iterator();
 
+        if (invariantNode == null) {
+            return 0;
+        }
+
+        Iterator<String> invariantIterator = invariantNode.getAttributeInvariant().iterator();
+        List<String> passedValues = new LinkedList<>();
         while (invariantIterator.hasNext()) {
-            Object next = invariantIterator.next();
-            Object attributeValue = compareEventData.inTraceValues.get(key).get(comparedEvents);
+            String next = invariantIterator.next();
+            String attributeValue = xEvent.getAttributes().get(key).toString();
             if (next.equals(attributeValue)) {
-                attrCoincidenceValue++;
-                comparedEvents++;
+                Integer traceWithTheBestCoincidence = getTraceWithTheBestCoincidence(invariantNode.getAllAvailableValues(), passedValues, attributeValue);
+                invariantNode.addValue(traceWithTheBestCoincidence, next);
+            } else {
+                passedValues.add(next);
             }
             break;
         }
 
+        System.out.println(invariantNode.toString());
+        System.out.println("Attr coins " + attrCoincidenceValue + " comparedEvents " + comparedEvents);
+
         coincidenceValue = Math.floorDiv(attrCoincidenceValue, comparedEvents);
         return coincidenceValue;
+    }
+
+    private Integer getTraceWithTheBestCoincidence(List<List<String>> allAvailableValues, List<String> passedValues, String currentEventVal) {
+        List<Integer> traceCoincidence = new ArrayList<>(passedValues.size());
+        if (passedValues.size() >0) {
+            for (int i = passedValues.size() - 1; i >= 0; i--) {
+                String valueForSearch = passedValues.get(i);
+                getTracesCoincidenceList(allAvailableValues, traceCoincidence, valueForSearch);
+            }
+        } else {
+            getTracesCoincidenceList(allAvailableValues, traceCoincidence, currentEventVal);
+        }
+
+        return traceCoincidence.size() == 0 ? 0 : Collections.max(traceCoincidence);
+    }
+
+    private void getTracesCoincidenceList(List<List<String>> allAvailableValues, List<Integer> traceCoincidence, String valueForSearch) {
+        for (int traceIndex = allAvailableValues.size() - 1; traceIndex >= 0; traceIndex--) {
+            for (int eventIndex = allAvailableValues.get(traceIndex).size() - 1; eventIndex >= 0; eventIndex--) {
+                String event = allAvailableValues.get(traceIndex).get(eventIndex);
+                if (event.equals(valueForSearch)) {
+                    int traceCoincidenceVal = traceCoincidence.get(traceIndex);
+                    traceCoincidence.add(traceIndex, traceCoincidenceVal);
+                } else if (eventIndex > 0) {
+                    continue;
+                } else {
+                    allAvailableValues.remove(traceIndex);
+                }
+            }
+        }
     }
 
     @VisibleForTesting
