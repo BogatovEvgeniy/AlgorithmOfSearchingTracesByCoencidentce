@@ -2,7 +2,7 @@ import algorithms.preprocess.InvariantInitialEventSearchAlgorithm;
 import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
 import algorithms.search.TraceSearchingAlgorithm;
 import algorithms.search.invariant.TraceInvariantList;
-import algorithms.search.invariant.InvariantsTraceLocator;
+import algorithms.search.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
 import io.*;
 import org.deckfour.xes.model.XLog;
 import parser.WriterFactory;
@@ -92,7 +92,7 @@ public class Main {
             TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
 //        searchingAlgorithm.setTraceLocator(new LastEventCoefficientsTraceLocator(0.7f, correctionMap));
 //        List<TraceInvariantList> attributeInvariantTrees = new LinkedList<>();
-            searchingAlgorithm.setTraceLocator(new InvariantsTraceLocator(invariantTree));
+            searchingAlgorithm.setTraceLocator(new ByFirstTraceCoincidenceInvariantsTraceLocator(0.0f, invariantTree));
             xLog = searchingAlgorithm.proceed(xLog);
             logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
 

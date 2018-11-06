@@ -25,6 +25,12 @@ public class Node {
         traceAttributeValues.add(traceValues);
     }
 
+    void addTrace(String traceValue) {
+        LinkedList<String> traceEvents = new LinkedList<>();
+        traceEvents.add(traceValue);
+        traceAttributeValues.add(traceEvents);
+    }
+
     void removeTrace(int traceIndex) {
         traceAttributeValues.remove(traceIndex);
     }
@@ -37,9 +43,6 @@ public class Node {
 
         if (traceAttributeValues == null) {
             traceAttributeValues = new LinkedList<>();
-        }
-
-        if (traceIndex == 0){
             traceAttributeValues.add(new LinkedList<>());
         }
 

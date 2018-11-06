@@ -11,7 +11,7 @@ public class LogTestBaseClass {
 
     protected static XLog getLogInstance() {
 
-        File testLog = new File(FileUtils.getCurrentDirectoryPath() + "TestLog_4unique_traces_each_duplicated_twice.xes");
+        File testLog = new File(FileUtils.getCurrentDirectoryPath() + "TestLog_4unique_traces_for_invariant_test.xes");
         XLog log = null;
 
         try {
