@@ -8,6 +8,7 @@ import org.deckfour.xes.model.*;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 
 /**
@@ -39,26 +40,44 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
 
         Map<Integer, Float> traceCoincidenceMap;
         if (xLog.isEmpty()) {
-            for (String key : event.getAttributes().keySet()) {
-                Node invariantNodeForKey = tree.getInvariantNodeForKey(key);
-                if (invariantNodeForKey != null) {
-                    String eventVal = event.getAttributes().get(key).toString();
-                    invariantNodeForKey.addTrace(eventVal);
-                }
-            }
+            addEventInInvariantTree(0, event);
             return null;
         } else {
             for (int traceIndex = 0; traceIndex < xLog.size(); traceIndex++) {
                 float maxCoincidenceValueForAttr = getMaxCoincidenceByAttr(event);
-                if (maxCoincidenceValueForAttr > minimalCoincidenceVal) {
-                    traceCoincidenceMap = new HashMap<>();
-                    traceCoincidenceMap.put(traceIndex, maxCoincidenceValueForAttr);
-                    return sortIndexesByValues(traceCoincidenceMap);
-                } else {
+
+                if (maxCoincidenceValueForAttr == NOT_INITIATED_INDEX) {
+                    addTraceInInvariantTree(event);
                     return null;
                 }
+
+                traceCoincidenceMap = new HashMap<>();
+                traceCoincidenceMap.put(traceIndex, maxCoincidenceValueForAttr);
+                int[] traceIndexes = sortIndexesByValues(traceCoincidenceMap);
+                addEventInInvariantTree(traceIndexes[traceIndexes.length - 1], event);
+                return traceIndexes;
             }
-            return null;
+        }
+        return null;
+    }
+
+    private void addEventInInvariantTree(int traceIndex, XEvent event) {
+        for (String key : event.getAttributes().keySet()) {
+            Node invariantNodeForKey = tree.getInvariantNodeForKey(key);
+            if (invariantNodeForKey != null) {
+                String eventVal = event.getAttributes().get(key).toString();
+                invariantNodeForKey.addValue(traceIndex, eventVal);
+            }
+        }
+    }
+
+    private void addTraceInInvariantTree(XEvent event) {
+        for (String key : event.getAttributes().keySet()) {
+            Node invariantNodeForKey = tree.getInvariantNodeForKey(key);
+            if (invariantNodeForKey != null) {
+                String eventVal = event.getAttributes().get(key).toString();
+                invariantNodeForKey.addTrace(eventVal);
+            }
         }
     }
 
@@ -80,55 +99,34 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             }
         }
 
+
+
         if (traceAttributesCoincidenceValues.isEmpty()) {
             return NOT_INITIATED_INDEX;
         } else {
             int[] sortedKeys = sortIndexesByValues(traceAttributesCoincidenceValues);
             int maxCoincidencePos = sortedKeys.length - 1;
-            return (float) sortedKeys[maxCoincidencePos] / getEventAttributes.keySet().size();
+            return traceAttributesCoincidenceValues.get(sortedKeys[maxCoincidencePos]) / getEventAttributes.keySet().size();
         }
     }
 
     @VisibleForTesting
     private int defineFirstSuitableTraceIndex(String key, String eventVal) {
-        long attrCoincidenceValue = 0;
 
         Node invariantNode = tree.getInvariantNodeForKey(key);
 
         if (invariantNode == null) {
-            return 0;
+            return NOT_INITIATED_INDEX;
         }
 
         String previousInvariantVal = defineInvariantPreviousValue(eventVal, invariantNode);
         if (previousInvariantVal == null) {
-            invariantNode.addTrace(eventVal);
-            return 0;
+            return NOT_INITIATED_INDEX;
         }
 
         int firstSuitableTrace = defineTraceWithSuitableValue(previousInvariantVal, invariantNode.getAllAvailableValues());
 
-        if (firstSuitableTrace == NOT_INITIATED_INDEX) {
-            invariantNode.addTrace(eventVal);
-        } else {
-            invariantNode.addValue(firstSuitableTrace, eventVal);
-        }
-
         return firstSuitableTrace;
-    }
-
-    private int defineTraceWithSuitableValue(String previousInvariantVal, List<List<String>> allAvailableValues) {
-        int suitableTraceIndex = NOT_INITIATED_INDEX;
-
-        for (int traceIndex = 0; traceIndex < allAvailableValues.size(); traceIndex++) {
-            int traceSize = allAvailableValues.get(traceIndex).size();
-
-            String lastValueInTrace = allAvailableValues.get(traceIndex).get(traceSize - 1);
-            if (lastValueInTrace.equals(previousInvariantVal)) {
-                suitableTraceIndex = traceIndex;
-                break;
-            }
-        }
-        return suitableTraceIndex;
     }
 
     @Nullable
@@ -145,6 +143,21 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             }
         }
         return previousInvariantVal;
+    }
+
+    private int defineTraceWithSuitableValue(String previousInvariantVal, List<List<String>> allAvailableValues) {
+        int suitableTraceIndex = NOT_INITIATED_INDEX;
+
+        for (int traceIndex = 0; traceIndex < allAvailableValues.size(); traceIndex++) {
+            int traceSize = allAvailableValues.get(traceIndex).size();
+
+            String lastValueInTrace = allAvailableValues.get(traceIndex).get(traceSize - 1);
+            if (lastValueInTrace.equals(previousInvariantVal)) {
+                suitableTraceIndex = traceIndex;
+                break;
+            }
+        }
+        return suitableTraceIndex;
     }
 
     @VisibleForTesting

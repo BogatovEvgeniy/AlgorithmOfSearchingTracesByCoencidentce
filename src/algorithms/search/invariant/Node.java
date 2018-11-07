@@ -43,6 +43,9 @@ public class Node {
 
         if (traceAttributeValues == null) {
             traceAttributeValues = new LinkedList<>();
+        }
+
+        if (traceAttributeValues.isEmpty()) {
             traceAttributeValues.add(new LinkedList<>());
         }
 
