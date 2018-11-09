@@ -8,7 +8,6 @@ import org.deckfour.xes.model.*;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.BiConsumer;
 
 
 /**
@@ -43,22 +42,16 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             addEventInInvariantTree(0, event);
             return null;
         } else {
-            for (int traceIndex = 0; traceIndex < xLog.size(); traceIndex++) {
-                float maxCoincidenceValueForAttr = getMaxCoincidenceByAttr(event);
+            int maxCoincidenceTrace = getMaxCoincidenceTraceIndexByAttr(event);
 
-                if (maxCoincidenceValueForAttr == NOT_INITIATED_INDEX) {
-                    addTraceInInvariantTree(event);
-                    return null;
-                }
-
-                traceCoincidenceMap = new HashMap<>();
-                traceCoincidenceMap.put(traceIndex, maxCoincidenceValueForAttr);
-                int[] traceIndexes = sortIndexesByValues(traceCoincidenceMap);
-                addEventInInvariantTree(traceIndexes[traceIndexes.length - 1], event);
-                return traceIndexes;
+            if (maxCoincidenceTrace == NOT_INITIATED_INDEX) {
+                addTraceInInvariantTree(event);
+                return null;
             }
+
+            addEventInInvariantTree(maxCoincidenceTrace, event);
+            return new int [] {maxCoincidenceTrace};
         }
-        return null;
     }
 
     private void addEventInInvariantTree(int traceIndex, XEvent event) {
@@ -82,7 +75,7 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
     }
 
     @VisibleForTesting
-    private float getMaxCoincidenceByAttr(XEvent event) {
+    private int getMaxCoincidenceTraceIndexByAttr(XEvent event) {
         XAttributeMap getEventAttributes = event.getAttributes();
         Map<Integer, Float> traceAttributesCoincidenceValues = new HashMap<>();
         for (String key : getEventAttributes.keySet()) {
@@ -100,13 +93,11 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
         }
 
 
-
         if (traceAttributesCoincidenceValues.isEmpty()) {
             return NOT_INITIATED_INDEX;
         } else {
             int[] sortedKeys = sortIndexesByValues(traceAttributesCoincidenceValues);
-            int maxCoincidencePos = sortedKeys.length - 1;
-            return traceAttributesCoincidenceValues.get(sortedKeys[maxCoincidencePos]) / getEventAttributes.keySet().size();
+            return sortedKeys[sortedKeys.length - 1];
         }
     }
 
@@ -126,6 +117,20 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
 
         int firstSuitableTrace = defineTraceWithSuitableValue(previousInvariantVal, invariantNode.getAllAvailableValues());
 
+        firstSuitableTrace = setLastInsertionIndexIfNonLastInvariantVal(invariantNode, firstSuitableTrace);
+
+        return firstSuitableTrace;
+    }
+
+    private int setLastInsertionIndexIfNonLastInvariantVal(Node invariantNode, int firstSuitableTrace) {
+        if (firstSuitableTrace == NOT_INITIATED_INDEX) {
+            List<String> traceValues= invariantNode.getAllAvailableValues().get(invariantNode.getLastInsertionIndex());
+            String lastValue = traceValues.get(traceValues.size() - 1);
+            List<String> attributeInvariant = invariantNode.getAttributeInvariant();
+            if (!lastValue.equals(attributeInvariant.get(attributeInvariant.size() - 1))) {
+                firstSuitableTrace = invariantNode.getLastInsertionIndex();
+            }
+        }
         return firstSuitableTrace;
     }
 
@@ -157,6 +162,7 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
                 break;
             }
         }
+
         return suitableTraceIndex;
     }
 

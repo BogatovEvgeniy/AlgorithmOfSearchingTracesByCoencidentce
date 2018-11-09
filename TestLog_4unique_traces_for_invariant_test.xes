@@ -43,7 +43,14 @@
 			<string key="attr3" value="val2"/>
 			<string key="attr4" value="val2"/>
 			<date key="time:timestamp" value="2010-04-12T10:05:58.000+02:00"/>
-		</event>                                                 
+		</event>
+		<event>
+       		<string key="attr1" value="val4"/>
+       		<string key="attr2" value="val4"/>
+       		<string key="attr3" value="val4"/>
+       		<string key="attr4" value="val4"/>
+       		<date key="time:timestamp" value="2010-04-12T10:05:58.000+02:00"/>
+        </event>
 		<event>                                                  
 			<string key="attr1" value="val3"/>                   
 			<string key="attr2" value="val3"/>                   

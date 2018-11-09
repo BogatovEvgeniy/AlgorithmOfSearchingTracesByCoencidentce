@@ -70,6 +70,10 @@ public class Node {
         return traceAttributeValues;
     }
 
+    public int getLastInsertionIndex() {
+        return lastInsertionIndex;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

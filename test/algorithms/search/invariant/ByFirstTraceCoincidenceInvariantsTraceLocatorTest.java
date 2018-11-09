@@ -45,7 +45,7 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocatorTest extends LogTestBa
 
         //Check data
         List<String> invariantForAllKeys = Arrays.asList("val1", "val2", "val3");
-        List<String> trace_attr1 = Arrays.asList("val1", "val2", "val3");
+        List<String> trace_attr1 = Arrays.asList("val1", "val2", "val4", "val3");
         List<String> trace_attr2 = Arrays.asList("val2", "val3");
         List<String> trace_attr3 = Arrays.asList("val1", "val2", "val3");
         List<String> trace_attr4 = Arrays.asList("val3");
