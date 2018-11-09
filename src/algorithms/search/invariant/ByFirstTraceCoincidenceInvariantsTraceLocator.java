@@ -37,7 +37,6 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
     @Override
     public int[] defineSuitableTracesList(XLog xLog, XEvent event) {
 
-        Map<Integer, Float> traceCoincidenceMap;
         if (xLog.isEmpty()) {
             addEventInInvariantTree(0, event);
             return null;
@@ -115,23 +114,12 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             return NOT_INITIATED_INDEX;
         }
 
-        int firstSuitableTrace = defineTraceWithSuitableValue(previousInvariantVal, invariantNode.getAllAvailableValues());
-
-        firstSuitableTrace = setLastInsertionIndexIfNonLastInvariantVal(invariantNode, firstSuitableTrace);
-
-        return firstSuitableTrace;
-    }
-
-    private int setLastInsertionIndexIfNonLastInvariantVal(Node invariantNode, int firstSuitableTrace) {
-        if (firstSuitableTrace == NOT_INITIATED_INDEX) {
-            List<String> traceValues= invariantNode.getAllAvailableValues().get(invariantNode.getLastInsertionIndex());
-            String lastValue = traceValues.get(traceValues.size() - 1);
-            List<String> attributeInvariant = invariantNode.getAttributeInvariant();
-            if (!lastValue.equals(attributeInvariant.get(attributeInvariant.size() - 1))) {
-                firstSuitableTrace = invariantNode.getLastInsertionIndex();
-            }
+        int firstSuitableTrace = NOT_INITIATED_INDEX;
+        if (invariantNode.getAttributeInvariant().contains(eventVal)) {
+            return defineTraceWithSuitableValue(previousInvariantVal, invariantNode.getAllAvailableValues());
+        } else {
+            return setTraceIndexForValuesOutOfInvariant(invariantNode, firstSuitableTrace);
         }
-        return firstSuitableTrace;
     }
 
     @Nullable
@@ -164,6 +152,23 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
         }
 
         return suitableTraceIndex;
+    }
+
+    private int setTraceIndexForValuesOutOfInvariant(Node invariantNode, int firstSuitableTrace) {
+        if (firstSuitableTrace == NOT_INITIATED_INDEX ) {
+            int lastInsertionIndex = invariantNode.getLastInsertionIndex();
+            List<String> traceValues= invariantNode.getAllAvailableValues().get(lastInsertionIndex);
+            String lastValue = traceValues.get(traceValues.size() - 1);
+            List<String> attributeInvariant = invariantNode.getAttributeInvariant();
+            if (!lastValue.equals(attributeInvariant.get(attributeInvariant.size() - 1))) {
+                firstSuitableTrace = lastInsertionIndex;
+            } else {
+                if(traceValues.size() > lastInsertionIndex) {
+                    firstSuitableTrace = ++lastInsertionIndex;
+                }
+            }
+        }
+        return firstSuitableTrace;
     }
 
     @VisibleForTesting
