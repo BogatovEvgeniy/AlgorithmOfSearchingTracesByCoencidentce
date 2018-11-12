@@ -1,13 +1,12 @@
 package algorithms.search.invariant;
 
+import algorithms.search.trace.locator.invariant.Node;
+import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import base.LogTestBaseClass;
 import exceptions.InvariantAlreadyExistsException;
-import io.FileUtils;
-import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
 import org.junit.*;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;

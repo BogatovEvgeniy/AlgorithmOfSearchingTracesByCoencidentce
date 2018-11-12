@@ -1,7 +1,6 @@
-package algorithms.search.invariant;
+package algorithms.search.trace.locator.invariant;
 
-import algorithms.search.base.ITraceSearchingAlgorithm;
-import org.deckfour.xes.model.XAttributeMap;
+import algorithms.search.trace.ITraceSearchingAlgorithm;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;

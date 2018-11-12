@@ -1,4 +1,4 @@
-package algorithms.search.invariant;
+package algorithms.search.trace.locator.invariant;
 
 import java.util.*;
 

@@ -1,8 +1,8 @@
-package algorithms.search.invariant;
+package algorithms.search.trace.locator.invariant;
 
 import algorithms.Utils;
 import algorithms.preprocess.InvariantInitialEventSearchAlgorithm;
-import algorithms.search.base.ITraceSearchingAlgorithm;
+import algorithms.search.trace.ITraceSearchingAlgorithm;
 import com.google.common.annotations.VisibleForTesting;
 import org.deckfour.xes.model.*;
 

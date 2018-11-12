@@ -1,4 +1,7 @@
 package algorithms.search.invariant;
+import algorithms.search.trace.locator.invariant.InvariantLogValidator;
+import algorithms.search.trace.locator.invariant.Node;
+import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import base.LogTestBaseClass;
 import org.deckfour.xes.model.*;
 import org.junit.Test;
@@ -18,7 +21,7 @@ public class InvariantLogValidatorTest extends LogTestBaseClass {
             list.addInvariantNode(new Node(key));
         }
 
-        InvariantLogValidator  invariantLogValidator = new InvariantLogValidator(list);
+        InvariantLogValidator invariantLogValidator = new InvariantLogValidator(list);
         assertTrue(invariantLogValidator.isValid(log));
     }
 

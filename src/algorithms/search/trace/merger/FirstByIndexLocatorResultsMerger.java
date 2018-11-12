@@ -1,6 +1,6 @@
-package algorithms.search.base;
+package algorithms.search.trace.merger;
 
-import algorithms.search.base.ILocatorResultMerger;
+import algorithms.search.trace.ILocatorResultMerger;
 
 public class FirstByIndexLocatorResultsMerger implements ILocatorResultMerger {
 

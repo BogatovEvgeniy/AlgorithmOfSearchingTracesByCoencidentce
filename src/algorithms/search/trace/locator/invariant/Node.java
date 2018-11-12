@@ -1,4 +1,4 @@
-package algorithms.search.invariant;
+package algorithms.search.trace.locator.invariant;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Node {
         traceAttributeValues = new LinkedList<>();
     }
 
-    void addInvariant(List<String> invariantValues) {
+    public void addInvariant(List<String> invariantValues) {
         attributeInvariant.clear();
         attributeInvariant.addAll(invariantValues);
     }

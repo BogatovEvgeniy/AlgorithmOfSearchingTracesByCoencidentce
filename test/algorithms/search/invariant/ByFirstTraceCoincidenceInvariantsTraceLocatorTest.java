@@ -1,6 +1,9 @@
 package algorithms.search.invariant;
 
-import algorithms.search.TraceSearchingAlgorithm;
+import algorithms.search.trace.TraceSearchingAlgorithm;
+import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
+import algorithms.search.trace.locator.invariant.Node;
+import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import base.LogTestBaseClass;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;

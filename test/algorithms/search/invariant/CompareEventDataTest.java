@@ -1,5 +1,6 @@
 package algorithms.search.invariant;
 
+import algorithms.search.trace.locator.invariant.CompareEventData;
 import base.LogTestBaseClass;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;

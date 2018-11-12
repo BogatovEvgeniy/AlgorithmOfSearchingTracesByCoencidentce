@@ -1,6 +1,7 @@
-package algorithms.search.base;
+package algorithms.search.trace;
 
 import algorithms.ILogAlgorithm;
+import algorithms.search.trace.ILocatorResultMerger;
 import com.sun.istack.internal.Nullable;
 import exceptions.LogParsingError;
 import org.deckfour.xes.model.XEvent;

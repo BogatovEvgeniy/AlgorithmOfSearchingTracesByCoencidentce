@@ -1,21 +1,19 @@
-import algorithms.search.TraceValidator;
+import algorithms.search.trace.TraceValidator;
 import javafx.util.Pair;
-import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
-import java.io.File;
 import java.util.*;
 
 public class CoefficientMapBuilder {
     private final TraceValidator traceValidator;
-    private File srcFile;
+    private XLog xLog;
     private Map<String, Float> correctionMap;
 
-    public CoefficientMapBuilder(File srcFile, Map<String, Float> correctionMap) {
-        this.srcFile = srcFile;
+    public CoefficientMapBuilder(XLog xLog, Map<String, Float> correctionMap) {
+        this.xLog = xLog;
         this.correctionMap = correctionMap;
         this.traceValidator = new TraceValidator();
     }
@@ -24,20 +22,17 @@ public class CoefficientMapBuilder {
     public Map<String, Float> build() {
         Map<String, Float> attributeCoefficientMap = new HashMap<>();
         try {
-            XesXmlParser xUniversalParser = new XesXmlParser();
-            if (xUniversalParser.canParse(srcFile)) {
-                List<XLog> parsedLog = xUniversalParser.parse(srcFile);
-                if (traceValidator.validateIsEmpty(parsedLog)) return new HashMap<>();
-                attributeCoefficientMap = prepareCoefficientMap(parsedLog);
-            }
-        } catch (Exception e) {
+            if (traceValidator.validateIsEmpty(xLog)) return new HashMap<>();
+            attributeCoefficientMap = prepareCoefficientMap(xLog);
+        } catch (
+                Exception e) {
             e.printStackTrace();
         }
 
         return attributeCoefficientMap;
     }
 
-    private Map<String, Float> prepareCoefficientMap(List<XLog> parsedLog) {
+    private Map<String, Float> prepareCoefficientMap(XLog parsedLog) {
         Map<String, Float> attributeCoefficientMap = buildCoefficientMapForAttributes(parsedLog);
         attributeCoefficientMap = coefficientsCorrectionBaseOnIncomeData(correctionMap, attributeCoefficientMap);
         attributeCoefficientMap = balanceCoefficientsToValue(1, attributeCoefficientMap);
@@ -97,8 +92,8 @@ public class CoefficientMapBuilder {
         return resultMap.size() > 0 ? resultMap : attributeCoefficientMap;
     }
 
-    private Map<String, Float> buildCoefficientMapForAttributes(List<XLog> parsedLog) {
-        XTrace trace = parsedLog.get(0).get(0);
+    private Map<String, Float> buildCoefficientMapForAttributes(XLog parsedLog) {
+        XTrace trace = parsedLog.get(0);
         XAttributeMap attributes = trace.get(0).getAttributes();
         Map<String, List<Pair<String, Integer>>> valuesMap = fillAttributeValuesMap(parsedLog, attributes);
         return calculateCoefficientMapForEachAttribute(valuesMap, trace.size(), attributes.size());
@@ -143,41 +138,39 @@ public class CoefficientMapBuilder {
      * @param attributes
      * @return
      */
-    private Map<String, List<Pair<String, Integer>>> fillAttributeValuesMap(List<XLog> parsedLog, XAttributeMap attributes) {
+    private Map<String, List<Pair<String, Integer>>> fillAttributeValuesMap(XLog parsedLog, XAttributeMap attributes) {
         Map<String, List<Pair<String, Integer>>> valuesMap = new HashMap<>();
         for (String key : attributes.keySet()) {
             if (key.contains("timestamp")) break;
-            for (XLog log : parsedLog) {
-                for (XTrace trace : log) {
-                    for (XEvent xEvent : trace) {
-                        String attrValue = String.valueOf(xEvent.getAttributes().get(key));
-                        if (!valuesMap.containsKey(key)) {
-                            // A value of an attribute was met first time
-                            ArrayList<Pair<String, Integer>> value = new ArrayList<>();
-                            valuesMap.put(key, value);
-                            value.add(new Pair<String, Integer>(attrValue, 1));
-                        } else {
-                            // Increase frequency value for value of current attribute
-                            List<Pair<String, Integer>> attributeValueFrequencyList = valuesMap.get(key);
-                            int positionToInsert = -1;
-                            for (int i = 0; i < attributeValueFrequencyList.size(); i++) {
-                                if (attributeValueFrequencyList.get(i).getKey().equals(attrValue)) {
-                                    positionToInsert = i;
-                                    break;
-                                }
+            for (XTrace trace : parsedLog) {
+                for (XEvent xEvent : trace) {
+                    String attrValue = String.valueOf(xEvent.getAttributes().get(key));
+                    if (!valuesMap.containsKey(key)) {
+                        // A value of an attribute was met first time
+                        ArrayList<Pair<String, Integer>> value = new ArrayList<>();
+                        valuesMap.put(key, value);
+                        value.add(new Pair<String, Integer>(attrValue, 1));
+                    } else {
+                        // Increase frequency value for value of current attribute
+                        List<Pair<String, Integer>> attributeValueFrequencyList = valuesMap.get(key);
+                        int positionToInsert = -1;
+                        for (int i = 0; i < attributeValueFrequencyList.size(); i++) {
+                            if (attributeValueFrequencyList.get(i).getKey().equals(attrValue)) {
+                                positionToInsert = i;
+                                break;
                             }
+                        }
 
-                            /** If value for some attribute was met before than increase value of frequencies this value
-                             *for an attribute
-                             * OR just add for an attribute new value with frequency equals to 1
-                             */
-                            if (positionToInsert >= 0) {
-                                Integer currentAttrFrequency = attributeValueFrequencyList.get(positionToInsert).getValue().intValue();
-                                attributeValueFrequencyList.remove(positionToInsert);
-                                attributeValueFrequencyList.add(positionToInsert, new Pair<>(attrValue, currentAttrFrequency + 1));
-                            } else {
-                                attributeValueFrequencyList.add(new Pair<>(attrValue, 1));
-                            }
+                        /** If value for some attribute was met before than increase value of frequencies this value
+                         *for an attribute
+                         * OR just add for an attribute new value with frequency equals to 1
+                         */
+                        if (positionToInsert >= 0) {
+                            Integer currentAttrFrequency = attributeValueFrequencyList.get(positionToInsert).getValue().intValue();
+                            attributeValueFrequencyList.remove(positionToInsert);
+                            attributeValueFrequencyList.add(positionToInsert, new Pair<>(attrValue, currentAttrFrequency + 1));
+                        } else {
+                            attributeValueFrequencyList.add(new Pair<>(attrValue, 1));
                         }
                     }
                 }

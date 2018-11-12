@@ -1,4 +1,4 @@
-package algorithms.search.invariant;
+package algorithms.search.trace.locator.invariant;
 
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XEvent;

@@ -1,17 +1,20 @@
 package algorithms.preprocess;
 
 import algorithms.ILogAlgorithm;
-import algorithms.search.invariant.Node;
-import algorithms.search.invariant.TraceInvariantList;
+import algorithms.search.trace.locator.invariant.Node;
+import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import org.deckfour.xes.model.*;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.model.impl.XTraceImpl;
 
 import java.util.Iterator;
 
+
+//TODO Requires recheck of logic
 /**
  * Search trace where event has attribute with value mentioned in invariant list
  */
+@Deprecated
 public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm {
     private TraceInvariantList invariantTree;
 
