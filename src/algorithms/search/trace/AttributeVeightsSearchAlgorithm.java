@@ -1,6 +1,7 @@
 package algorithms.search.trace;
 
 import algorithms.ILogAlgorithm;
+import com.google.common.collect.Maps;
 import javafx.util.Pair;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
@@ -22,20 +23,20 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
     public static final float VALUE_IS_EQUAL = 1F;
     public static final float VALUE_IS_DIFFERENT = 0F;
     private int stepSize;
-    private int maxFails;
+    private int maxAllowedFails;
     private float minimalCoinsidece;
     private Set<Pair<Integer, Integer>> rangeSet;
     private List<List<String>> attributeSets;
     private List<Map<String, Float>> coincidenceForEachAttributeInSet = new ArrayList<>();
 
     public AttributeVeightsSearchAlgorithm(int stepSize,
-                                           int maxFails,
+                                           int maxAllowedFails,
                                            float minimalCoinsidece,
                                            Set<Pair<Integer, Integer>> rangeSet,
                                            List<List<String>> attributeSets) {
 
         this.stepSize = stepSize;
-        this.maxFails = maxFails;
+        this.maxAllowedFails = maxAllowedFails;
         this.minimalCoinsidece = minimalCoinsidece;
         this.rangeSet = rangeSet;
         this.attributeSets = attributeSets;
@@ -45,10 +46,13 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
     public XLog proceed(XLog originLog) {
         checkLog(originLog);
         for (List<String> attributeSet : attributeSets) { // Attributes
-            for (Pair<Integer, Integer> firstLastIndesOfRange : rangeSet) {
+            for (Pair<Integer, Integer> firstLastIndexOfRange : rangeSet) {
                 // Get the first index of list due we have checked it before
-                List<XEvent> eventRange = originLog.get(0).subList(firstLastIndesOfRange.getKey(), firstLastIndesOfRange.getValue());
+                List<XEvent> eventRange = originLog.get(0).subList(firstLastIndexOfRange.getKey(), firstLastIndexOfRange.getValue());
                 Map<String, Float> rangeCoincidence = coincidenceInRange(eventRange, attributeSet);
+                if (rangeCoincidence == null){
+                    break;
+                }
                 coincidenceForEachAttributeInSet.add(rangeCoincidence);
             }
         }
@@ -58,14 +62,26 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
 
     private Map<String, Float> coincidenceInRange(List<XEvent> eventRange, List<String> attributeSet) {
         Map<String, Float> attributeSetCoincidenceOnRange = new HashMap<>();
+        int negativeTriesCounter = 0;
         for (int lastEventIndexInStep = 0; lastEventIndexInStep < eventRange.size(); lastEventIndexInStep += stepSize) {
             List<XEvent> inStepEvents = eventRange.subList(lastEventIndexInStep, lastEventIndexInStep + lastEventIndexInStep);
             Map<String, Float> stepCoincidence = calculateCoincidenceInStep(attributeSet, inStepEvents);
 
-            if (attributeSetCoincidenceOnRange.size() == 0) {
-                attributeSetCoincidenceOnRange = stepCoincidence;
+            if (stepCoincidence == null) {
+                negativeTriesCounter ++;
             } else {
-                attributeSetCoincidenceOnRange = mergeTwoMapsWithAverageValueInResult(stepCoincidence, attributeSetCoincidenceOnRange);
+                negativeTriesCounter = 0;
+            }
+
+            if (negativeTriesCounter > maxAllowedFails){
+                return null;
+            }
+            else {
+                if (attributeSetCoincidenceOnRange.size() == 0) {
+                    attributeSetCoincidenceOnRange = stepCoincidence;
+                } else {
+                    attributeSetCoincidenceOnRange = mergeTwoMapsWithAverageValueInResult(stepCoincidence, attributeSetCoincidenceOnRange);
+                }
             }
         }
         return attributeSetCoincidenceOnRange;
@@ -77,19 +93,10 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
             Map<String, Float> attributeCoincidence = calculateCoincidenceEventPair(attributeSet, inStepEvents, inStepEventIndex);
             coincidenceInStep = mergeTwoMapsWithAverageValueInResult(coincidenceInStep, attributeCoincidence);
         }
-        return coincidenceInStep;
-    }
 
-    private Map<String, Float> mergeTwoMapsWithAverageValueInResult(Map<String, Float> sourceMap, Map<String, Float> destinationMap
-    ) {
-        return Stream.concat(sourceMap.entrySet().stream(), destinationMap.entrySet().stream())
-                .collect(Collectors.toMap(
-                        entry -> entry.getKey(), // The key
-                        entry -> entry.getValue(), // The value
-                        // The "merger"
-                        (firstEntry, secondEntry) -> (firstEntry + secondEntry) / 2
-                        )
-                );
+        coincidenceInStep = Maps.transformValues(coincidenceInStep, value-> value / attributeSet.size());
+        coincidenceInStep = Maps.filterEntries(coincidenceInStep, value -> Float.compare(value.getValue(), minimalCoinsidece) > 0);
+        return coincidenceInStep;
     }
 
     private Map<String, Float> calculateCoincidenceEventPair(List<String> attributeSet, List<XEvent> inStepEvents, int inStepEventIndex) {
@@ -103,6 +110,18 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
             }
         }
         return resultMap;
+    }
+
+    private Map<String, Float> mergeTwoMapsWithAverageValueInResult(Map<String, Float> sourceMap, Map<String, Float> destinationMap
+    ) {
+        return Stream.concat(sourceMap.entrySet().stream(), destinationMap.entrySet().stream())
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey(), // The key
+                        entry -> entry.getValue(), // The value
+                        // The "merger"
+                        (firstEntry, secondEntry) -> (firstEntry + secondEntry) / 2
+                        )
+                );
     }
 
 
