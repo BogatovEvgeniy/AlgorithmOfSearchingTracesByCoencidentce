@@ -8,7 +8,7 @@ import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 
 
-public interface ITraceSearchingAlgorithm extends ILogAlgorithm {
+public interface ITraceSearchingAlgorithm extends ILogAlgorithm<XLog> {
 
     /**
      * Launch method execution

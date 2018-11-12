@@ -8,8 +8,8 @@ import java.util.*;
 
 public class CompareEventData {
 
-    Map<String, String> eventValues;
-    Map<String, List<String>> inTraceValues;
+    public Map<String, String> eventValues;
+    public Map<String, List<String>> inTraceValues;
 
     public CompareEventData(Map<String, String> eventValues, Map<String, List<String>> inTraceValues) {
         this.eventValues = eventValues;

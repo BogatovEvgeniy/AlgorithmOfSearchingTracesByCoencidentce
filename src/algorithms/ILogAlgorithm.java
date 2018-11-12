@@ -2,7 +2,7 @@ package algorithms;
 
 import org.deckfour.xes.model.XLog;
 
-public interface ILogAlgorithm {
+public interface ILogAlgorithm<T> {
 
-    XLog proceed(XLog originLog);
+    T proceed(XLog originLog);
 }

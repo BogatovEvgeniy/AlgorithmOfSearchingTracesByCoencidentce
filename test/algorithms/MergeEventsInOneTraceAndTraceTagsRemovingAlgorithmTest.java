@@ -1,6 +1,6 @@
 package algorithms;
 
-import algorithms.removal.MergeEventsInOneTraceAndTraseTagsRemovingAlgorithm;
+import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
 import io.FileUtils;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
@@ -13,7 +13,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
-public class MergeEventsInOneTraceAndTraseTagsRemovingAlgorithmTest {
+public class MergeEventsInOneTraceAndTraceTagsRemovingAlgorithmTest {
 
 
     @Test
@@ -27,10 +27,10 @@ public class MergeEventsInOneTraceAndTraseTagsRemovingAlgorithmTest {
             Assert.assertFalse(logList.isEmpty());
             Assert.assertTrue(logList.size() == 1);
 
-            XLog cleanedLog = new MergeEventsInOneTraceAndTraseTagsRemovingAlgorithm().proceed(logList.get(0));
+            XLog cleanedLog = new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm().proceed(logList.get(0));
             Assert.assertThat(cleanedLog, notNullValue());
             Assert.assertFalse(cleanedLog.isEmpty());
-            Assert.assertTrue(logList.get(0).size() == 12);
+            Assert.assertTrue(cleanedLog.get(0).size() == 12 * 3);
 
         } catch (Exception e) {
             assert false;

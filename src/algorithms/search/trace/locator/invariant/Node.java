@@ -21,7 +21,7 @@ public class Node {
         attributeInvariant.addAll(invariantValues);
     }
 
-    void addTrace(List<String> traceValues) {
+    public void addTrace(List<String> traceValues) {
         traceAttributeValues.add(traceValues);
     }
 
@@ -31,15 +31,15 @@ public class Node {
         traceAttributeValues.add(traceEvents);
     }
 
-    void removeTrace(int traceIndex) {
+    public void removeTrace(int traceIndex) {
         traceAttributeValues.remove(traceIndex);
     }
 
-    void removeTrace(List<String> trace) {
+    public void removeTrace(List<String> trace) {
         traceAttributeValues.remove(trace);
     }
 
-    void addValue(int traceIndex, String value) {
+    public void addValue(int traceIndex, String value) {
 
         if (traceAttributeValues == null) {
             traceAttributeValues = new LinkedList<>();

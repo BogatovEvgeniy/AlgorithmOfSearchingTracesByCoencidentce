@@ -3,18 +3,16 @@ package algorithms.removal;
 import algorithms.ILogAlgorithm;
 import org.deckfour.xes.extension.std.XTimeExtension;
 import org.deckfour.xes.model.XAttributeTimestamp;
+import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
-import org.deckfour.xes.model.impl.XAttributeMapImpl;
-import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
-import org.deckfour.xes.model.impl.XEventImpl;
-import org.deckfour.xes.model.impl.XLogImpl;
+import org.deckfour.xes.model.impl.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 
-public class MergeEventsInOneTraceAndTraseTagsRemovingAlgorithm implements ILogAlgorithm {
+public class MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm implements ILogAlgorithm<XLog> {
 
     protected XLog originLog;
     protected int traceCounter;
@@ -23,7 +21,7 @@ public class MergeEventsInOneTraceAndTraseTagsRemovingAlgorithm implements ILogA
     @Override
     public XLog proceed(XLog originLog) {
         this.originLog = originLog;
-        XLog xLog = getLogWithFirstClearTrace(originLog);
+        XLog xLog = initLogWithFirstClearTrace(originLog);
         //Start from second ite due first were added above
         addEvents(originLog, xLog);
         System.out.println("Traces added: " + traceCounter);
@@ -31,22 +29,24 @@ public class MergeEventsInOneTraceAndTraseTagsRemovingAlgorithm implements ILogA
         return xLog;
     }
 
-    protected XLog getLogWithFirstClearTrace(XLog originLog) {
+    protected XLog initLogWithFirstClearTrace(XLog originLog) {
         XLog clearLog = new XLogImpl(EMPTY_ATTRIBUTES);
-        XTrace trace = originLog.get(0);
-        clearLog.add(traceWithoutTags(trace));
+        XTrace trace = new XTraceImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class));
+        clearLog.add(removeTraceAttributes(trace));
         return clearLog;
     }
 
-    private XTrace traceWithoutTags(XTrace trace) {
+    private XTrace removeTraceAttributes(XTrace trace) {
         XTrace clearTrace = (XTrace) trace.clone();
         clearTrace.setAttributes(EMPTY_ATTRIBUTES);
         return clearTrace;
     }
 
     protected void addEvents(XLog originLog, XLog resLog) {
-        for (int i = 1; i < originLog.size(); i++) {
-            resLog.add(traceWithoutTags(originLog.get(i)));
+        for (XTrace trace : originLog) {
+            for (XEvent event : trace) {
+                resLog.get(0).add(event);
+            }
         }
     }
 

@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * which will throw exception in case of the log contains more then one trace
  */
 
-public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
+public class AttributeWeightsSearchAlgorithm implements ILogAlgorithm<List<Map<String, Float>>> {
 
     public static final float VALUE_IS_EQUAL = 1F;
     public static final float VALUE_IS_DIFFERENT = 0F;
@@ -29,7 +29,7 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
     private List<List<String>> attributeSets;
     private List<Map<String, Float>> coincidenceForEachAttributeInSet = new ArrayList<>();
 
-    public AttributeVeightsSearchAlgorithm(int stepSize,
+    public AttributeWeightsSearchAlgorithm(int stepSize,
                                            int maxAllowedFails,
                                            float minimalCoinsidece,
                                            Set<Pair<Integer, Integer>> rangeSet,
@@ -43,7 +43,7 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
     }
 
     @Override
-    public XLog proceed(XLog originLog) {
+    public List<Map<String, Float>> proceed(XLog originLog) {
         checkLog(originLog);
         for (List<String> attributeSet : attributeSets) { // Attributes
             for (Pair<Integer, Integer> firstLastIndexOfRange : rangeSet) {
@@ -57,14 +57,14 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
             }
         }
 
-        return null;
+        return coincidenceForEachAttributeInSet;
     }
 
     private Map<String, Float> coincidenceInRange(List<XEvent> eventRange, List<String> attributeSet) {
         Map<String, Float> attributeSetCoincidenceOnRange = new HashMap<>();
         int negativeTriesCounter = 0;
         for (int lastEventIndexInStep = 0; lastEventIndexInStep < eventRange.size(); lastEventIndexInStep += stepSize) {
-            List<XEvent> inStepEvents = eventRange.subList(lastEventIndexInStep, lastEventIndexInStep + lastEventIndexInStep);
+            List<XEvent> inStepEvents = eventRange.subList(lastEventIndexInStep, lastEventIndexInStep + stepSize);
             Map<String, Float> stepCoincidence = calculateCoincidenceInStep(attributeSet, inStepEvents);
 
             if (stepCoincidence == null) {
@@ -105,7 +105,7 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
             resultMap.put(attributeKey, VALUE_IS_DIFFERENT);
             Object currentInStepEventAttr = inStepEvents.get(inStepEventIndex).getAttributes().get(attributeKey);
             Object nextInStepEventAttr = inStepEvents.get(inStepEventIndex + 1).getAttributes().get(attributeKey);
-            if (currentInStepEventAttr.equals(nextInStepEventAttr)) {
+            if (currentInStepEventAttr != null && currentInStepEventAttr.equals(nextInStepEventAttr)) {
                 resultMap.put(attributeKey, VALUE_IS_EQUAL);
             }
         }
@@ -127,7 +127,7 @@ public class AttributeVeightsSearchAlgorithm implements ILogAlgorithm {
 
     private void checkLog(XLog originLog) {
         if (originLog == null || originLog.size() < 1 || originLog.size() > 1) {
-            throw new IllegalArgumentException("The log should be unstructured log? not NULL and contains only one trace with events");
+            throw new IllegalArgumentException("The log should be unstructured log: not NULL and contains only one trace with events");
         }
     }
 }

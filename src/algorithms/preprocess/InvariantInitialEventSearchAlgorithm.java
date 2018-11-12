@@ -15,7 +15,7 @@ import java.util.Iterator;
  * Search trace where event has attribute with value mentioned in invariant list
  */
 @Deprecated
-public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm {
+public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm<XLog> {
     private TraceInvariantList invariantTree;
 
     public InvariantInitialEventSearchAlgorithm(TraceInvariantList invariantTree) {

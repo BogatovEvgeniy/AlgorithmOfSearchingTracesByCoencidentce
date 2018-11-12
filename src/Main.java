@@ -1,19 +1,19 @@
+import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
 import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
+import algorithms.search.trace.AttributeWeightsSearchAlgorithm;
 import algorithms.search.trace.TraceSearchingAlgorithm;
 import algorithms.search.trace.ITraceSearchingAlgorithm;
 import algorithms.search.trace.locator.invariant.Node;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
 import io.*;
+import javafx.util.Pair;
 import org.deckfour.xes.model.XLog;
 import parser.WriterFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
@@ -82,21 +82,47 @@ public class Main {
             XLog originLog = logReader.parse(new File(srcFilePath)).get(0);
 
             // Remove traces which produces the same product, than put all events into a one trace
-            XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
-            File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
+//            XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
+//            File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
+            XLog xLog = new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm().proceed(originLog);
+            // Search for attributes weights
+            AttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
+            List<Map<String, Float>> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
+            System.out.println("Weights were defined: " + weightsValues.toString());
 
-            // Build an map which will reflect an majority of each attribute for future analyse
+            /*// Build an map which will reflect an majority of each attribute for future analyse
             ITraceSearchingAlgorithm searchingAlgorithm = initTraceSearchingAlgorithm(destFileName, logWriter, xLog);
 
             xLog = searchingAlgorithm.proceed(xLog);
             logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
-
+*/
             // Track execution time
             final long endTime = System.currentTimeMillis();
             System.out.println("Total execution time: " + (endTime - startTime));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static AttributeWeightsSearchAlgorithm initAttributeWeightsSearchAlgorithm() {
+        Set<Pair<Integer, Integer>> rangeSet = new HashSet<>();
+        rangeSet.add(new Pair<>(100, 1000));
+        rangeSet.add(new Pair<>(2000, 3500));
+        rangeSet.add(new Pair<>(3000, 4500));
+        rangeSet.add(new Pair<>(4000, 5400));
+        rangeSet.add(new Pair<>(6400, 7400));
+
+        List<List<String>> attributeSets = new LinkedList<>();
+//        attributeSets.add(Arrays.asList("org:group", "org:resource"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved"));
+//        attributeSets.add(Arrays.asList("org:group","org:resource","product"));
+        attributeSets.add(Arrays.asList("org:resource","product"));
+//        attributeSets.add(Arrays.asList("org:group","org:role","product"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource","org:role","product"));
+        return new AttributeWeightsSearchAlgorithm(5, 3, 0.5f, rangeSet, attributeSets);
     }
 
     private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(String destFileName, ILogWriter logWriter, XLog xLog) throws IOException {
