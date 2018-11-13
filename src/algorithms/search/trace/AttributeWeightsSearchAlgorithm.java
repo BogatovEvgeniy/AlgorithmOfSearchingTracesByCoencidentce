@@ -1,8 +1,8 @@
 package algorithms.search.trace;
 
 import algorithms.ILogAlgorithm;
-import com.google.common.collect.Maps;
 import javafx.util.Pair;
+import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 
@@ -18,24 +18,23 @@ import java.util.stream.Stream;
  * which will throw exception in case of the log contains more then one trace
  */
 
-public class AttributeWeightsSearchAlgorithm implements ILogAlgorithm<List<Map<String, Float>>> {
+public class AttributeWeightsSearchAlgorithm implements ILogAlgorithm<List<AttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange>> {
 
-    public static final float VALUE_IS_EQUAL = 1F;
-    public static final float VALUE_IS_DIFFERENT = 0F;
-    private int stepSize;
+    public static final int FAIL_COUNT_UNLIMITED = -1;
+    private int stepSizeInRange;
     private int maxAllowedFails;
     private float minimalCoinsidece;
     private Set<Pair<Integer, Integer>> rangeSet;
     private List<List<String>> attributeSets;
-    private List<Map<String, Float>> coincidenceForEachAttributeInSet = new ArrayList<>();
+    private List<AttributeSetCoincidenceOnRange> coincidenceForEachAttributeInSet = new ArrayList<>();
 
-    public AttributeWeightsSearchAlgorithm(int stepSize,
+    public AttributeWeightsSearchAlgorithm(int stepSizeInRange,
                                            int maxAllowedFails,
                                            float minimalCoinsidece,
                                            Set<Pair<Integer, Integer>> rangeSet,
                                            List<List<String>> attributeSets) {
 
-        this.stepSize = stepSize;
+        this.stepSizeInRange = stepSizeInRange;
         this.maxAllowedFails = maxAllowedFails;
         this.minimalCoinsidece = minimalCoinsidece;
         this.rangeSet = rangeSet;
@@ -43,83 +42,101 @@ public class AttributeWeightsSearchAlgorithm implements ILogAlgorithm<List<Map<S
     }
 
     @Override
-    public List<Map<String, Float>> proceed(XLog originLog) {
+    public List<AttributeSetCoincidenceOnRange> proceed(XLog originLog) {
         checkLog(originLog);
         for (List<String> attributeSet : attributeSets) { // Attributes
             for (Pair<Integer, Integer> firstLastIndexOfRange : rangeSet) {
                 // Get the first index of list due we have checked it before
                 List<XEvent> eventRange = originLog.get(0).subList(firstLastIndexOfRange.getKey(), firstLastIndexOfRange.getValue());
-                Map<String, Float> rangeCoincidence = coincidenceInRange(eventRange, attributeSet);
-                if (rangeCoincidence == null){
-                    break;
-                }
-                coincidenceForEachAttributeInSet.add(rangeCoincidence);
+                Float rangeCoincidence = coincidenceInRange(eventRange, attributeSet);
+
+                coincidenceForEachAttributeInSet.add(new AttributeSetCoincidenceOnRange(attributeSet, firstLastIndexOfRange, rangeCoincidence));
             }
         }
 
         return coincidenceForEachAttributeInSet;
     }
 
-    private Map<String, Float> coincidenceInRange(List<XEvent> eventRange, List<String> attributeSet) {
-        Map<String, Float> attributeSetCoincidenceOnRange = new HashMap<>();
+    private float coincidenceInRange(List<XEvent> eventRange, List<String> attributeSet) {
+        float attributeSetCoincidenceOnRange = 0f;
         int negativeTriesCounter = 0;
-        for (int lastEventIndexInStep = 0; lastEventIndexInStep < eventRange.size(); lastEventIndexInStep += stepSize) {
-            List<XEvent> inStepEvents = eventRange.subList(lastEventIndexInStep, lastEventIndexInStep + stepSize);
-            Map<String, Float> stepCoincidence = calculateCoincidenceInStep(attributeSet, inStepEvents);
+        for (int lastEventIndexInStep = 0; eventRange.size() - lastEventIndexInStep > stepSizeInRange; lastEventIndexInStep += stepSizeInRange) {
+            List<XEvent> inStepEvents = eventRange.subList(lastEventIndexInStep, lastEventIndexInStep + stepSizeInRange);
+            Float stepCoincidence = calculateCoincidenceInStep(attributeSet, inStepEvents);
 
-            if (stepCoincidence == null) {
-                negativeTriesCounter ++;
+            if (stepCoincidence == 0) {
+                negativeTriesCounter++;
             } else {
                 negativeTriesCounter = 0;
             }
 
-            if (negativeTriesCounter > maxAllowedFails){
-                return null;
-            }
-            else {
-                if (attributeSetCoincidenceOnRange.size() == 0) {
-                    attributeSetCoincidenceOnRange = stepCoincidence;
-                } else {
-                    attributeSetCoincidenceOnRange = mergeTwoMapsWithAverageValueInResult(stepCoincidence, attributeSetCoincidenceOnRange);
-                }
+            if (maxAllowedFails != FAIL_COUNT_UNLIMITED && negativeTriesCounter > maxAllowedFails) {
+                return 0;
+            } else {
+                attributeSetCoincidenceOnRange += stepCoincidence;
             }
         }
+
+        attributeSetCoincidenceOnRange = attributeSetCoincidenceOnRange / (eventRange.size() / stepSizeInRange);
         return attributeSetCoincidenceOnRange;
     }
 
-    private Map<String, Float> calculateCoincidenceInStep(List<String> attributeSet, List<XEvent> inStepEvents) {
-        Map<String, Float> coincidenceInStep = new HashMap<>();
-        for (int inStepEventIndex = 0; inStepEventIndex < inStepEvents.size() - 1; inStepEventIndex++) {
-            Map<String, Float> attributeCoincidence = calculateCoincidenceEventPair(attributeSet, inStepEvents, inStepEventIndex);
-            coincidenceInStep = mergeTwoMapsWithAverageValueInResult(coincidenceInStep, attributeCoincidence);
-        }
-
-        coincidenceInStep = Maps.transformValues(coincidenceInStep, value-> value / attributeSet.size());
-        coincidenceInStep = Maps.filterEntries(coincidenceInStep, value -> Float.compare(value.getValue(), minimalCoinsidece) > 0);
-        return coincidenceInStep;
-    }
-
-    private Map<String, Float> calculateCoincidenceEventPair(List<String> attributeSet, List<XEvent> inStepEvents, int inStepEventIndex) {
-        Map<String, Float> resultMap = new HashMap<>();
-        for (String attributeKey : attributeSet) {
-            resultMap.put(attributeKey, VALUE_IS_DIFFERENT);
-            Object currentInStepEventAttr = inStepEvents.get(inStepEventIndex).getAttributes().get(attributeKey);
-            Object nextInStepEventAttr = inStepEvents.get(inStepEventIndex + 1).getAttributes().get(attributeKey);
-            if (currentInStepEventAttr != null && currentInStepEventAttr.equals(nextInStepEventAttr)) {
-                resultMap.put(attributeKey, VALUE_IS_EQUAL);
+    private float calculateCoincidenceInStep(List<String> attributeSet, List<XEvent> inStepEvents) {
+        float coincidenceInStep = 0f;
+        int stepCounter = 0;
+        for (int firstComparisonValIndex = 0; firstComparisonValIndex < inStepEvents.size() - 1; firstComparisonValIndex++) {
+            // Here were added one more cycle to be able compare each event with the other in the step
+            for (int secondComparisionValIndex = firstComparisonValIndex + 1; secondComparisionValIndex < inStepEvents.size(); secondComparisionValIndex++) {
+                boolean isEquals = calculateCoincidenceEventPair(attributeSet, inStepEvents, firstComparisonValIndex, secondComparisionValIndex);
+                if (isEquals) {
+                    coincidenceInStep++;
+                }
+                stepCounter++;
             }
         }
-        return resultMap;
+
+        int finalStepCounter = stepCounter;
+        coincidenceInStep = coincidenceInStep / finalStepCounter;
+
+        if (coincidenceInStep > minimalCoinsidece) {
+            return coincidenceInStep;
+        } else {
+            return 0f;
+        }
     }
 
-    private Map<String, Float> mergeTwoMapsWithAverageValueInResult(Map<String, Float> sourceMap, Map<String, Float> destinationMap
+    private boolean calculateCoincidenceEventPair(List<String> attributeSet, List<XEvent> inStepEvents, int firstComparisonValIndex, int secondComparisionValIndex) {
+        XAttributeMap currentInStepEventAttr = inStepEvents.get(firstComparisonValIndex).getAttributes();
+        XAttributeMap nextInStepEventAttr = inStepEvents.get(secondComparisionValIndex).getAttributes();
+        for (String attributeKey : attributeSet) {
+            if (currentInStepEventAttr.get(attributeKey) != null
+                    &&!currentInStepEventAttr.get(attributeKey).equals(nextInStepEventAttr.get(attributeKey))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Map<String, Float> mergeTwoMapsWithSumInResult(Map<String, Float> sourceMap, Map<String, Float> destinationMap
     ) {
         return Stream.concat(sourceMap.entrySet().stream(), destinationMap.entrySet().stream())
                 .collect(Collectors.toMap(
-                        entry -> entry.getKey(), // The key
-                        entry -> entry.getValue(), // The value
+                        Map.Entry::getKey, // The key
+                        Map.Entry::getValue, // The value
                         // The "merger"
-                        (firstEntry, secondEntry) -> (firstEntry + secondEntry) / 2
+                        (firstEntry, secondEntry) -> firstEntry + secondEntry
+                        )
+                );
+    }
+
+    private Map<String, Float> mergeTwoMapsWithAverageValueInResult(Map<String, Float> sourceMap, Map<String, Float> destinationMap, int divider
+    ) {
+        return Stream.concat(sourceMap.entrySet().stream(), destinationMap.entrySet().stream())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, // The key
+                        Map.Entry::getValue, // The value
+                        // The "merger"
+                        (firstEntry, secondEntry) -> (firstEntry + secondEntry) / divider
                         )
                 );
     }
@@ -128,6 +145,27 @@ public class AttributeWeightsSearchAlgorithm implements ILogAlgorithm<List<Map<S
     private void checkLog(XLog originLog) {
         if (originLog == null || originLog.size() < 1 || originLog.size() > 1) {
             throw new IllegalArgumentException("The log should be unstructured log: not NULL and contains only one trace with events");
+        }
+    }
+
+    public class AttributeSetCoincidenceOnRange {
+        private List<String> attributeSet;
+        private Pair<Integer, Integer> firstLastIndexOfRange;
+        private Float rangeCoincidence;
+
+        public AttributeSetCoincidenceOnRange(List<String> attributeSet, Pair<Integer, Integer> firstLastIndexOfRange, Float rangeCoincidence) {
+            this.attributeSet = attributeSet;
+            this.firstLastIndexOfRange = firstLastIndexOfRange;
+            this.rangeCoincidence = rangeCoincidence;
+        }
+
+        @Override
+        public String toString() {
+            return "AttributeSetCoincidenceOnRange{" +
+                    "attributeSet=" + attributeSet +
+                    ", in a range [" + firstLastIndexOfRange.getKey() + "..." + firstLastIndexOfRange.getValue() + "]" +
+                    ", rangeCoincidence=" + rangeCoincidence +
+                    '}';
         }
     }
 }

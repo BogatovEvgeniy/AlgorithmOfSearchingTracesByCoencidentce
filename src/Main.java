@@ -87,8 +87,10 @@ public class Main {
             XLog xLog = new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm().proceed(originLog);
             // Search for attributes weights
             AttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
-            List<Map<String, Float>> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
-            System.out.println("Weights were defined: " + weightsValues.toString());
+            List<AttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
+            for (AttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange weightsValue : weightsValues) {
+                System.out.println(weightsValue);
+            }
 
             /*// Build an map which will reflect an majority of each attribute for future analyse
             ITraceSearchingAlgorithm searchingAlgorithm = initTraceSearchingAlgorithm(destFileName, logWriter, xLog);
@@ -113,16 +115,25 @@ public class Main {
         rangeSet.add(new Pair<>(6400, 7400));
 
         List<List<String>> attributeSets = new LinkedList<>();
-//        attributeSets.add(Arrays.asList("org:group", "org:resource"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved"));
-//        attributeSets.add(Arrays.asList("org:group","org:resource","product"));
+        attributeSets.add(Arrays.asList("product"));
+        attributeSets.add(Arrays.asList("org:group"));
+        attributeSets.add(Arrays.asList("org:resource"));
+        attributeSets.add(Arrays.asList("organization involved"));
+        attributeSets.add(Arrays.asList("org:role"));
         attributeSets.add(Arrays.asList("org:resource","product"));
-//        attributeSets.add(Arrays.asList("org:group","org:role","product"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource","org:role","product"));
-        return new AttributeWeightsSearchAlgorithm(5, 3, 0.5f, rangeSet, attributeSets);
+        attributeSets.add(Arrays.asList("org:group", "org:resource"));
+        attributeSets.add(Arrays.asList("org:group","org:role","product"));
+        attributeSets.add(Arrays.asList("org:group","org:resource","product"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource","org:role","product"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
+        return new AttributeWeightsSearchAlgorithm(3,
+                AttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
+                0.0f,
+                rangeSet,
+                attributeSets);
     }
 
     private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(String destFileName, ILogWriter logWriter, XLog xLog) throws IOException {
