@@ -72,7 +72,8 @@ public class Main {
     private static void launchParsingAlgorithms() {
         long startTime = System.currentTimeMillis();
 
-        String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
+        String srcFileName = "Hospital Billing - Event Log";
+//        String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
         String destFileName = "BPI_Challenge_log";
         String srcFilePath = DESTINATION_DIR + srcFileName + FILE_EXTENSION;
 
@@ -108,13 +109,44 @@ public class Main {
 
     private static AttributeWeightsSearchAlgorithm initAttributeWeightsSearchAlgorithm() {
         Set<Pair<Integer, Integer>> rangeSet = new HashSet<>();
-        rangeSet.add(new Pair<>(100, 1000));
-        rangeSet.add(new Pair<>(2000, 3500));
-        rangeSet.add(new Pair<>(3000, 4500));
-        rangeSet.add(new Pair<>(4000, 5400));
-        rangeSet.add(new Pair<>(6400, 7400));
+        rangeSet.add(new Pair<>(100, 30000));
+        rangeSet.add(new Pair<>(30000, 70000));
+        rangeSet.add(new Pair<>(100000, 150000));
+        rangeSet.add(new Pair<>(200000, 250000));
+        rangeSet.add(new Pair<>(260000, 300000));
+
 
         List<List<String>> attributeSets = new LinkedList<>();
+        attributeSets.add(Arrays.asList("isCancelled"));
+        attributeSets.add(Arrays.asList("caseType"));
+        attributeSets.add(Arrays.asList("speciality"));
+        attributeSets.add(Arrays.asList("org:resource"));
+        attributeSets.add(Arrays.asList("concept:name"));
+        attributeSets.add(Arrays.asList("blocked"));
+        attributeSets.add(Arrays.asList("isClosed"));
+        attributeSets.add(Arrays.asList("flagD"));
+        attributeSets.add(Arrays.asList("flagB"));
+        attributeSets.add(Arrays.asList("state"));
+        attributeSets.add(Arrays.asList("lifecycle:transition"));
+        attributeSets.add(Arrays.asList("diagnosis"));
+        attributeSets.add(Arrays.asList("flagD","flagB","speciality"));
+        attributeSets.add(Arrays.asList("isCancelled","blocked"));
+        attributeSets.add(Arrays.asList("flagD","flagB"));
+        attributeSets.add(Arrays.asList("concept:name","diagnosis"));
+        attributeSets.add(Arrays.asList("concept:name","state"));
+        attributeSets.add(Arrays.asList("lifecycle:transition","diagnosis"));
+
+
+//        Set<Pair<Integer, Integer>> rangeSet = initRangesFor400TracesLog();
+//        initAttributeSetsFor400TraceLog(attributeSets);
+        return new AttributeWeightsSearchAlgorithm(3,
+                AttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
+                0.0f,
+                rangeSet,
+                attributeSets);
+    }
+
+    private static void initAttributeSetsFor400TraceLog(List<List<String>> attributeSets) {
         attributeSets.add(Arrays.asList("product"));
         attributeSets.add(Arrays.asList("org:group"));
         attributeSets.add(Arrays.asList("org:resource"));
@@ -129,11 +161,16 @@ public class Main {
         attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role"));
         attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
         attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
-        return new AttributeWeightsSearchAlgorithm(3,
-                AttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
-                0.0f,
-                rangeSet,
-                attributeSets);
+    }
+
+    private static Set<Pair<Integer, Integer>> initRangesFor400TracesLog() {
+        Set<Pair<Integer, Integer>> rangeSet = new HashSet<>();
+        rangeSet.add(new Pair<>(100, 1000));
+        rangeSet.add(new Pair<>(2000, 3500));
+        rangeSet.add(new Pair<>(3000, 4500));
+        rangeSet.add(new Pair<>(4000, 5400));
+        rangeSet.add(new Pair<>(6400, 7400));
+        return rangeSet;
     }
 
     private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(String destFileName, ILogWriter logWriter, XLog xLog) throws IOException {

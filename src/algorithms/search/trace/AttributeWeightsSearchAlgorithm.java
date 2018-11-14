@@ -39,6 +39,8 @@ public class AttributeWeightsSearchAlgorithm implements ILogAlgorithm<List<Attri
         this.minimalCoinsidece = minimalCoinsidece;
         this.rangeSet = rangeSet;
         this.attributeSets = attributeSets;
+
+        System.out.println("Config:" + this.toString());
     }
 
     @Override
@@ -108,6 +110,19 @@ public class AttributeWeightsSearchAlgorithm implements ILogAlgorithm<List<Attri
     private boolean calculateCoincidenceEventPair(List<String> attributeSet, List<XEvent> inStepEvents, int firstComparisonValIndex, int secondComparisionValIndex) {
         XAttributeMap currentInStepEventAttr = inStepEvents.get(firstComparisonValIndex).getAttributes();
         XAttributeMap nextInStepEventAttr = inStepEvents.get(secondComparisionValIndex).getAttributes();
+        boolean containsAtLeastOneAttribute = true;
+
+        for (String aKey : attributeSet) {
+            if (!currentInStepEventAttr.keySet().contains(aKey)) {
+                containsAtLeastOneAttribute = false;
+                break;
+            }
+        }
+
+        if (!containsAtLeastOneAttribute){
+            return false;
+        }
+
         for (String attributeKey : attributeSet) {
             if (currentInStepEventAttr.get(attributeKey) != null
                     &&!currentInStepEventAttr.get(attributeKey).equals(nextInStepEventAttr.get(attributeKey))) {
@@ -167,6 +182,17 @@ public class AttributeWeightsSearchAlgorithm implements ILogAlgorithm<List<Attri
                     ", rangeCoincidence=" + rangeCoincidence +
                     '}';
         }
+    }
+
+    @Override
+    public String toString() {
+        return "AttributeWeightsSearchAlgorithm{" +
+                "stepSizeInRange=" + stepSizeInRange +
+                ", maxAllowedFails=" + maxAllowedFails +
+                ", minimalCoinsidece=" + minimalCoinsidece +
+                ", rangeSet=" + rangeSet +
+                ", attributeSets=" + attributeSets +
+                '}';
     }
 }
 
