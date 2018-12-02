@@ -1,6 +1,6 @@
 import io.FileUtils;
-import io.ILogWriter;
-import io.XEStoCSVWriter;
+import io.log.ILogWriter;
+import io.log.XEStoCSVWriter;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
 import org.junit.Assert;

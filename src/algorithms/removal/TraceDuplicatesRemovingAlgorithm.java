@@ -1,6 +1,6 @@
 package algorithms.removal;
 
-import io.ILogWriter;
+import io.log.ILogWriter;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;

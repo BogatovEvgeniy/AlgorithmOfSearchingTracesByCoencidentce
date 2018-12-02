@@ -1,12 +1,15 @@
 import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
-import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
-import algorithms.search.trace.AttributeWeightsSearchAlgorithm;
+import algorithms.search.trace.PredefibedAttributeWeightsSearchAlgorithm;
 import algorithms.search.trace.TraceSearchingAlgorithm;
 import algorithms.search.trace.ITraceSearchingAlgorithm;
 import algorithms.search.trace.locator.invariant.Node;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
 import io.*;
+import io.log.ILogReader;
+import io.log.ILogWriter;
+import io.log.XesLogReader;
+import io.log.XesLogWriter;
 import javafx.util.Pair;
 import org.deckfour.xes.model.XLog;
 import parser.WriterFactory;
@@ -72,9 +75,8 @@ public class Main {
     private static void launchParsingAlgorithms() {
         long startTime = System.currentTimeMillis();
 
-        String srcFileName = "Hospital Billing - Event Log";
-//        String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
-        String destFileName = "BPI_Challenge_log";
+        String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
+        String destFileName = "400_traces";
         String srcFilePath = DESTINATION_DIR + srcFileName + FILE_EXTENSION;
 
         try {
@@ -86,10 +88,11 @@ public class Main {
 //            XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
 //            File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
             XLog xLog = new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm().proceed(originLog);
+            logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
             // Search for attributes weights
-            AttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
-            List<AttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
-            for (AttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange weightsValue : weightsValues) {
+            PredefibedAttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
+            List<PredefibedAttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
+            for (PredefibedAttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange weightsValue : weightsValues) {
                 System.out.println(weightsValue);
             }
 
@@ -107,40 +110,12 @@ public class Main {
         }
     }
 
-    private static AttributeWeightsSearchAlgorithm initAttributeWeightsSearchAlgorithm() {
-        Set<Pair<Integer, Integer>> rangeSet = new HashSet<>();
-        rangeSet.add(new Pair<>(100, 30000));
-        rangeSet.add(new Pair<>(30000, 70000));
-        rangeSet.add(new Pair<>(100000, 150000));
-        rangeSet.add(new Pair<>(200000, 250000));
-        rangeSet.add(new Pair<>(260000, 300000));
-
-
+    private static PredefibedAttributeWeightsSearchAlgorithm initAttributeWeightsSearchAlgorithm() {
         List<List<String>> attributeSets = new LinkedList<>();
-        attributeSets.add(Arrays.asList("isCancelled"));
-        attributeSets.add(Arrays.asList("caseType"));
-        attributeSets.add(Arrays.asList("speciality"));
-        attributeSets.add(Arrays.asList("org:resource"));
-        attributeSets.add(Arrays.asList("concept:name"));
-        attributeSets.add(Arrays.asList("blocked"));
-        attributeSets.add(Arrays.asList("isClosed"));
-        attributeSets.add(Arrays.asList("flagD"));
-        attributeSets.add(Arrays.asList("flagB"));
-        attributeSets.add(Arrays.asList("state"));
-        attributeSets.add(Arrays.asList("lifecycle:transition"));
-        attributeSets.add(Arrays.asList("diagnosis"));
-        attributeSets.add(Arrays.asList("flagD","flagB","speciality"));
-        attributeSets.add(Arrays.asList("isCancelled","blocked"));
-        attributeSets.add(Arrays.asList("flagD","flagB"));
-        attributeSets.add(Arrays.asList("concept:name","diagnosis"));
-        attributeSets.add(Arrays.asList("concept:name","state"));
-        attributeSets.add(Arrays.asList("lifecycle:transition","diagnosis"));
-
-
-//        Set<Pair<Integer, Integer>> rangeSet = initRangesFor400TracesLog();
-//        initAttributeSetsFor400TraceLog(attributeSets);
-        return new AttributeWeightsSearchAlgorithm(3,
-                AttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
+        Set<Pair<Integer, Integer>> rangeSet = initRangesFor400TracesLog();
+        initAttributeSetsFor400TraceLog(attributeSets);
+        return new PredefibedAttributeWeightsSearchAlgorithm(3,
+                PredefibedAttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
                 0.0f,
                 rangeSet,
                 attributeSets);
@@ -166,10 +141,10 @@ public class Main {
     private static Set<Pair<Integer, Integer>> initRangesFor400TracesLog() {
         Set<Pair<Integer, Integer>> rangeSet = new HashSet<>();
         rangeSet.add(new Pair<>(100, 1000));
-        rangeSet.add(new Pair<>(2000, 3500));
-        rangeSet.add(new Pair<>(3000, 4500));
-        rangeSet.add(new Pair<>(4000, 5400));
-        rangeSet.add(new Pair<>(6400, 7400));
+//        rangeSet.add(new Pair<>(2000, 3500));
+//        rangeSet.add(new Pair<>(3000, 4500));
+//        rangeSet.add(new Pair<>(4000, 5400));
+//        rangeSet.add(new Pair<>(6400, 7400));
         return rangeSet;
     }
 

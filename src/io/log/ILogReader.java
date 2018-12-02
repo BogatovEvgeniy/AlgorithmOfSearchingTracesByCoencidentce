@@ -1,4 +1,4 @@
-package io;
+package io.log;
 
 import org.deckfour.xes.model.XLog;
 

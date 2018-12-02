@@ -2,7 +2,7 @@ package algorithms;
 
 import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
 import io.FileUtils;
-import io.ILogWriter;
+import io.log.ILogWriter;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.out.XesXmlSerializer;

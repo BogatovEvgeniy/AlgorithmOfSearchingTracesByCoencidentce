@@ -1,7 +1,7 @@
 package parser;
 
-import io.ILogWriter;
-import io.XEStoCSVWriter;
+import io.log.ILogWriter;
+import io.log.XEStoCSVWriter;
 
 public class WriterFactory {
 
