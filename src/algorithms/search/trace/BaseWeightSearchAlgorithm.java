@@ -7,6 +7,7 @@ import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,7 +126,11 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Pr
                     /**
                      * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
                      */
-                    DBWriter.insertEvents(currEvent, nextEvent);
+                    try {
+                        DBWriter.insertEvents(currEvent, nextEvent);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                     coincidenceInStep++;
                 }
                 stepCounter++;
