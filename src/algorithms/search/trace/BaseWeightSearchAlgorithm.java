@@ -16,8 +16,8 @@ import java.util.List;
  * So here we are assuming that we are working with unstructured log.
  * In {@link #proceed(XLog)} method first of all will be called {@link #checkLog(XLog)} method,
  * which will throw exception in case of the log contains more then one trace
- *
- *
+ * <p>
+ * <p>
  * 1. Define set of events / Define window size
  * 2. Define events in a window
  * 3. Define attributeSets per Window
@@ -30,9 +30,10 @@ import java.util.List;
  * 10. Calculate average value for all stored data on the 5th step
  */
 
-public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<PredefibedAttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange>> {
+public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<BaseWeightSearchAlgorithm.AttributeSetCoincidenceOnRange>> {
 
     public static final int FAIL_COUNT_UNLIMITED = -1;
+    private final DBWriter dbWriter;
     List<List<String>> attributeSets;
     private int windowSize;
     private int maxAllowedFails;
@@ -49,7 +50,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Pr
         this.windowSize = windowSize;
         this.maxAllowedFails = maxAllowedFails;
         this.minimalCoincidence = minimalCoincidence;
-        DBWriter.init();
+        dbWriter = DBWriter.init();
     }
 
 
@@ -78,36 +79,33 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Pr
                 Float rangeCoincidence = coincidenceInRange(eventRange, attributeSet);
                 coincidenceForEachAttributeInSet.add(new AttributeSetCoincidenceOnRange(attributeSet, new Pair<>(windowIndex, lastWindowEvent), rangeCoincidence));
             }
-            windowIndex +=windowSize;
+            windowIndex += windowSize;
         }
         return coincidenceForEachAttributeInSet;
     }
 
     private boolean moreEventsAvailable(XLog originLog, int windowIndex) {
-        return originLog.size() > windowIndex + windowSize;
+        return originLog.get(0).size() > windowIndex + windowSize; // Assumption that we have a log with only one trace
     }
 
-    float coincidenceInRange(List<XEvent> eventRange, List<String> attributeSet) {
+    float coincidenceInRange(List<XEvent> windowEvents, List<String> attributeSet) {
         float attributeSetCoincidenceOnRange = 0f;
         int negativeTriesCounter = 0;
-        for (int lastEventIndexInStep = 0; eventRange.size() - lastEventIndexInStep > windowSize; lastEventIndexInStep += windowSize) {
-            List<XEvent> inStepEvents = eventRange.subList(lastEventIndexInStep, lastEventIndexInStep + windowSize);
-            Float stepCoincidence = calculateCoincidenceInStep(attributeSet, inStepEvents);
+        Float stepCoincidence = calculateCoincidenceInStep(attributeSet, windowEvents);
 
-            if (stepCoincidence == 0) {
-                negativeTriesCounter++;
-            } else {
-                negativeTriesCounter = 0;
-            }
-
-            if (maxAllowedFails != FAIL_COUNT_UNLIMITED && negativeTriesCounter > maxAllowedFails) {
-                return 0;
-            } else {
-                attributeSetCoincidenceOnRange += stepCoincidence;
-            }
+        if (stepCoincidence == 0) {
+            negativeTriesCounter++;
+        } else {
+            negativeTriesCounter = 0;
         }
 
-        attributeSetCoincidenceOnRange = attributeSetCoincidenceOnRange / (eventRange.size() / windowSize);
+        if (maxAllowedFails != FAIL_COUNT_UNLIMITED && negativeTriesCounter > maxAllowedFails) {
+            return 0;
+        } else {
+            attributeSetCoincidenceOnRange += stepCoincidence;
+        }
+
+        attributeSetCoincidenceOnRange = attributeSetCoincidenceOnRange / (windowEvents.size() / windowSize);
         return attributeSetCoincidenceOnRange;
     }
 
@@ -126,11 +124,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Pr
                     /**
                      * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
                      */
-                    try {
-                        DBWriter.insertEvents(currEvent, nextEvent);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    dbWriter.insertEvents(currEvent, nextEvent);
                     coincidenceInStep++;
                 }
                 stepCounter++;
@@ -179,7 +173,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Pr
 
     abstract List<List<String>> getAttributeSet(XLog log, int windowIndex, int windowSize);
 
-    class AttributeSetCoincidenceOnRange {
+    public class AttributeSetCoincidenceOnRange {
         private List<String> attributeSet;
         private Pair<Integer, Integer> firstLastIndexOfRange;
         private Float rangeCoincidence;

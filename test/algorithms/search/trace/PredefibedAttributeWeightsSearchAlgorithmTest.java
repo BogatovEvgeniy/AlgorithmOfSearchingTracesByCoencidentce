@@ -24,12 +24,6 @@ public class PredefibedAttributeWeightsSearchAlgorithmTest extends LogTestBaseCl
     public void prepareAlgorithmInstance() {
         log = getLogInstance();
 
-        Set<Pair<Integer, Integer>> rangeSet = new HashSet<>();
-        rangeSet.add(new Pair<>(1, 3));
-        rangeSet.add(new Pair<>(4, 6));
-        rangeSet.add(new Pair<>(7, 9));
-        rangeSet.add(new Pair<>(10, 12));
-
         List<List<String>> attributeSets = new LinkedList<>();
         attributeSets.add(Lists.newArrayList(ATTR_KEY_1));
         attributeSets.add(Lists.newArrayList(ATTR_KEY_2));
@@ -46,7 +40,7 @@ public class PredefibedAttributeWeightsSearchAlgorithmTest extends LogTestBaseCl
         attributeSets.add(Lists.newArrayList(ATTR_KEY_2, ATTR_KEY_3, ATTR_KEY_4));
         attributeSets.add(Lists.newArrayList(ATTR_KEY_1, ATTR_KEY_3, ATTR_KEY_4));
 
-        algorithm = new PredefibedAttributeWeightsSearchAlgorithm(3, 3, 0.3f, rangeSet, attributeSets);
+        algorithm = new PredefibedAttributeWeightsSearchAlgorithm(3, 3, 0.3f, attributeSets);
     }
 
     @Test

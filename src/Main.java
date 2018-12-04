@@ -1,4 +1,5 @@
 import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
+import algorithms.search.trace.BaseWeightSearchAlgorithm;
 import algorithms.search.trace.PredefibedAttributeWeightsSearchAlgorithm;
 import algorithms.search.trace.TraceSearchingAlgorithm;
 import algorithms.search.trace.ITraceSearchingAlgorithm;
@@ -91,8 +92,8 @@ public class Main {
             logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
             // Search for attributes weights
             PredefibedAttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
-            List<PredefibedAttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
-            for (PredefibedAttributeWeightsSearchAlgorithm.AttributeSetCoincidenceOnRange weightsValue : weightsValues) {
+            List<BaseWeightSearchAlgorithm.AttributeSetCoincidenceOnRange> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
+            for (BaseWeightSearchAlgorithm.AttributeSetCoincidenceOnRange weightsValue : weightsValues) {
                 System.out.println(weightsValue);
             }
 
@@ -114,10 +115,9 @@ public class Main {
         List<List<String>> attributeSets = new LinkedList<>();
         Set<Pair<Integer, Integer>> rangeSet = initRangesFor400TracesLog();
         initAttributeSetsFor400TraceLog(attributeSets);
-        return new PredefibedAttributeWeightsSearchAlgorithm(3,
+        return new PredefibedAttributeWeightsSearchAlgorithm(5,
                 PredefibedAttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
                 0.0f,
-                rangeSet,
                 attributeSets);
     }
 
@@ -141,10 +141,10 @@ public class Main {
     private static Set<Pair<Integer, Integer>> initRangesFor400TracesLog() {
         Set<Pair<Integer, Integer>> rangeSet = new HashSet<>();
         rangeSet.add(new Pair<>(100, 1000));
-//        rangeSet.add(new Pair<>(2000, 3500));
-//        rangeSet.add(new Pair<>(3000, 4500));
-//        rangeSet.add(new Pair<>(4000, 5400));
-//        rangeSet.add(new Pair<>(6400, 7400));
+        rangeSet.add(new Pair<>(2000, 3500));
+        rangeSet.add(new Pair<>(3000, 4500));
+        rangeSet.add(new Pair<>(4000, 5400));
+        rangeSet.add(new Pair<>(6400, 7400));
         return rangeSet;
     }
 

@@ -1,9 +1,11 @@
 package io.db;
 
+import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -17,9 +19,13 @@ public class DBWriter {
     public static final String DISS_DB_ATTRIBUTES = "`diss_db`.`attributes`";
     private static final int NON_DEFINED_ID = -1;
 
-    //  Database credentials
+    // Database credentials
     static final String USER = "root";
     static final String PASS = "root";
+
+    // Common values
+
+    private static final String TABLE_ID = "id";
 
     // Attribute Table
     private static final String TABLE_ATTRIBUTE_NAME = "attributes";
@@ -46,8 +52,9 @@ public class DBWriter {
 
         //STEP 3: Open a connection
         System.out.println("Connecting to database...");
+        Connection conn = null;
         try {
-            Connection conn = getConnection();
+            conn = getConnection();
             forEachAttributeInEvent(getAttributeInsertionConsumerFunc(conn), events);
             for (XEvent event : events) {
                 putEventInEventAttributesTableConsumer(conn, event);
@@ -55,6 +62,14 @@ public class DBWriter {
         } catch (SQLException e) {
             e.printStackTrace();
 
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -75,13 +90,14 @@ public class DBWriter {
 
     private int getAttributeIdByName(Connection conn, String attrKey) throws SQLException {
         ResultSet attributes = getAttributes(conn);
-        while (attributes.next()){
+        while (attributes.next()) {
             if (attributes.getString(ATTRIBUTE_DB_KEY).equals(attrKey)) {
-               return  attributes.getInt(ATTRIBUTE_DB_ID);
+                return attributes.getInt(ATTRIBUTE_DB_ID);
             }
         }
         return NON_DEFINED_ID;
     }
+
     private Consumer<String> getAttributeInsertionConsumerFunc(Connection conn) {
         return key -> {
             try {
@@ -99,13 +115,6 @@ public class DBWriter {
                     e1.printStackTrace();
                 }
                 e.printStackTrace();
-            } finally {
-                assert conn != null;
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
             }
         };
     }
@@ -120,18 +129,62 @@ public class DBWriter {
     // ----------------------------------------- EventsAttributes Table ------------------------------------------ //
     private void insertEventValueInAttributeEventsTable(Connection conn, Map<String, Integer> attributeIds, XEvent event) throws SQLException {
         try {
-            getEventByAttributes(event);
-            int lastInsertEventIndex = conn.createStatement().executeUpdate("INSERT INTO" + TABLE_EVENT_NAME + "VALUES (NULL);");
-            for (String key : event.getAttributes().keySet()) {
-                conn.createStatement().executeUpdate("INSERT INTO" + TABLE_EVENT_ATTRIBUTES_TABLE + " (eventId, attributeId) " +
-                        "VALUES (" + lastInsertEventIndex + ","+ attributeIds.get(key)+ ");");
+            int eventId = getEventIdByAttributes(conn, event);
+            if (eventId == NON_DEFINED_ID) {
+                eventId = conn.createStatement().executeUpdate("INSERT INTO" + TABLE_EVENT_NAME + "VALUES (NULL);");
+                for (String key : event.getAttributes().keySet()) {
+                    conn.createStatement().executeUpdate("INSERT INTO" + TABLE_EVENT_ATTRIBUTES_TABLE + " (eventId, attributeId, attribute_val) " +
+                            "VALUES (" + eventId + "," + attributeIds.get(key) + ");");
+                }
+            } else {
+                for (String key : event.getAttributes().keySet()) {
+                    conn.createStatement().executeUpdate("INSERT INTO" + TABLE_EVENT_ATTRIBUTES_TABLE + " (eventId, attributeId, attribute_val) " +
+                            "VALUES (" + eventId + "," + attributeIds.get(key) + "," + event.getAttributes().get(key) + ")" +
+                            " WHERE eventId=" + eventId);
+                }
             }
+
+
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             conn.close();
         }
+    }
+
+    private int getEventIdByAttributes(Connection conn, XEvent event) throws SQLException {
+        Statement statement = conn.createStatement();
+        String selectEventByAttributeQuery = getSelectionQueryEventIdWithAttributes(event);
+        ResultSet resultSet = statement.executeQuery(selectEventByAttributeQuery);
+        if (resultSet.next()) {
+            return resultSet.getInt(TABLE_ID);
+        } else {
+            return NON_DEFINED_ID;
+        }
+    }
+
+    private String getSelectionQueryEventIdWithAttributes(XEvent event) {
+        StringBuilder selectEventByAttributeQuery = new StringBuilder("SELECT id FROM diss_db.test WHERE ");
+
+        XAttributeMap attributes = event.getAttributes();
+        Iterator<String> keys = attributes.keySet().iterator();
+        if (keys.hasNext()) {
+            String key = keys.next();
+            selectEventByAttributeQuery.append(key);
+            selectEventByAttributeQuery.append("=");
+            selectEventByAttributeQuery.append(attributes.get(key));
+        }
+
+        while (keys.hasNext()) {
+            String key = keys.next();
+            selectEventByAttributeQuery.append(" AND ");
+            selectEventByAttributeQuery.append(key);
+            selectEventByAttributeQuery.append("=");
+            selectEventByAttributeQuery.append(attributes.get(key));
+        }
+        return selectEventByAttributeQuery.toString();
     }
 
     private void forEachAttributeInEvent(Consumer consumer, XEvent... events) {
