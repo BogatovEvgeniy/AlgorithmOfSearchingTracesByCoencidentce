@@ -36,19 +36,26 @@ public class DBWriter {
     private static final String TABLE_EVENT_NAME = "events";
 
     // EventAttributes Table
-    private static final String TABLE_EVENT_ATTRIBUTES_TABLE = "event_attributes";
+    private static final String TABLE_EVENT_ATTRIBUTES = "event_attributes";
+    private static final String EVENT_ATTRIBUTES_EVENT_ID = "eventId";
+    private static final String EVENT_ATTRIBUTES_ATTRIBUTE_KEY = "attribute_key";
+    private static final String EVENT_ATTRIBUTES_ATTRIBUTE_VAL = "attribute_val";
 
     public static DBWriter init() {
         //STEP 2: Register JDBC driver
         try {
             Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException e) {
+            Connection conn = getConnection();
+            conn.createStatement().execute("DELETE FROM " + TABLE_EVENT_ATTRIBUTES);
+            conn.createStatement().execute("DELETE FROM " + TABLE_ATTRIBUTE_NAME);
+            conn.createStatement().execute("DELETE FROM " + TABLE_EVENT_NAME);
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return new DBWriter();
     }
 
-    public void insertEvents(XEvent... events) {
+    public void insertEvents(int initialEventIndex, XEvent... events) {
 
         //STEP 3: Open a connection
         System.out.println("Connecting to database...");
@@ -56,8 +63,8 @@ public class DBWriter {
         try {
             conn = getConnection();
             forEachAttributeInEvent(getAttributeInsertionConsumerFunc(conn), events);
-            for (XEvent event : events) {
-                putEventInEventAttributesTableConsumer(conn, event);
+            for (int i = 0; i < events.length; i++) {
+                insertEventValueInAttributeEventsTable(conn, events[i], initialEventIndex + i);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,7 +85,7 @@ public class DBWriter {
             Map<String, Integer> attributeIds = new HashMap<>();
             try {
                 attributeIds.put(key, getAttributeIdByName(conn, key));
-                insertEventValueInAttributeEventsTable(conn, attributeIds, event);
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -102,12 +109,13 @@ public class DBWriter {
         return key -> {
             try {
 
-                conn.setAutoCommit(false);
                 Statement stmt = conn.createStatement();
-                String insertEventQuery = "REPLACE INTO " + DISS_DB_ATTRIBUTES + " (`key`) VALUES (" + key + ");";
-                stmt.addBatch(insertEventQuery);
-                stmt.executeBatch();
-                conn.commit();
+                String selectAttributeQuery = "SELECT * FROM " + DISS_DB_ATTRIBUTES + " WHERE name = '" + key + "';";
+                ResultSet resultSet = stmt.executeQuery(selectAttributeQuery);
+                if (!resultSet.next()) {
+                    String insertAttributeQuery = "INSERT INTO " + DISS_DB_ATTRIBUTES + " VALUES ('" + key + "');";
+                    stmt.executeUpdate(insertAttributeQuery);
+                }
             } catch (SQLException e) {
                 try {
                     conn.rollback();
@@ -127,30 +135,33 @@ public class DBWriter {
 
 
     // ----------------------------------------- EventsAttributes Table ------------------------------------------ //
-    private void insertEventValueInAttributeEventsTable(Connection conn, Map<String, Integer> attributeIds, XEvent event) throws SQLException {
+    private void insertEventValueInAttributeEventsTable(Connection conn, XEvent event, int eventIndex) {
+
+//        try {
+//            int eventId = getEventIdByAttributes(conn, event);
+//            if (eventId == NON_DEFINED_ID) {
+//                eventId = conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_NAME + " VALUES (NULL);");
+//                for (String key : event.getAttributes().keySet()) {
+//                    conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
+//                            "VALUES (" + eventId + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
+//                }
+//            } else {
+//                for (String key : event.getAttributes().keySet()) {
+//                    conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
+//                            "VALUES (" + (eventId + 1) + ",'" + key + "','" + event.getAttributes().get(key) + "')");
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+
         try {
-            int eventId = getEventIdByAttributes(conn, event);
-            if (eventId == NON_DEFINED_ID) {
-                eventId = conn.createStatement().executeUpdate("INSERT INTO" + TABLE_EVENT_NAME + "VALUES (NULL);");
-                for (String key : event.getAttributes().keySet()) {
-                    conn.createStatement().executeUpdate("INSERT INTO" + TABLE_EVENT_ATTRIBUTES_TABLE + " (eventId, attributeId, attribute_val) " +
-                            "VALUES (" + eventId + "," + attributeIds.get(key) + ");");
-                }
-            } else {
-                for (String key : event.getAttributes().keySet()) {
-                    conn.createStatement().executeUpdate("INSERT INTO" + TABLE_EVENT_ATTRIBUTES_TABLE + " (eventId, attributeId, attribute_val) " +
-                            "VALUES (" + eventId + "," + attributeIds.get(key) + "," + event.getAttributes().get(key) + ")" +
-                            " WHERE eventId=" + eventId);
-                }
+            conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_NAME + " VALUES ('" + eventIndex + "');");
+            for (String key : event.getAttributes().keySet()) {
+                conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
+                        "VALUES (" + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
             }
-
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            conn.close();
         }
     }
 
@@ -159,31 +170,42 @@ public class DBWriter {
         String selectEventByAttributeQuery = getSelectionQueryEventIdWithAttributes(event);
         ResultSet resultSet = statement.executeQuery(selectEventByAttributeQuery);
         if (resultSet.next()) {
-            return resultSet.getInt(TABLE_ID);
+            return resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
         } else {
             return NON_DEFINED_ID;
         }
     }
 
     private String getSelectionQueryEventIdWithAttributes(XEvent event) {
-        StringBuilder selectEventByAttributeQuery = new StringBuilder("SELECT id FROM diss_db.test WHERE ");
+        StringBuilder selectEventByAttributeQuery = new StringBuilder("SELECT eventId FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE ");
 
         XAttributeMap attributes = event.getAttributes();
         Iterator<String> keys = attributes.keySet().iterator();
         if (keys.hasNext()) {
             String key = keys.next();
-            selectEventByAttributeQuery.append(key);
+            selectEventByAttributeQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
             selectEventByAttributeQuery.append("=");
-            selectEventByAttributeQuery.append(attributes.get(key));
+            selectEventByAttributeQuery.append("'" + key + "'");
+            selectEventByAttributeQuery.append(" AND ");
+            selectEventByAttributeQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_VAL);
+            selectEventByAttributeQuery.append("=");
+            selectEventByAttributeQuery.append("'" + attributes.get(key) + "'");
         }
 
         while (keys.hasNext()) {
             String key = keys.next();
-            selectEventByAttributeQuery.append(" AND ");
-            selectEventByAttributeQuery.append(key);
+            selectEventByAttributeQuery.append(" UNION ");
+            selectEventByAttributeQuery.append("SELECT eventId FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE ");
+            selectEventByAttributeQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
             selectEventByAttributeQuery.append("=");
-            selectEventByAttributeQuery.append(attributes.get(key));
+            selectEventByAttributeQuery.append("'" + key + "'");
+            selectEventByAttributeQuery.append(" AND ");
+            selectEventByAttributeQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_VAL);
+            selectEventByAttributeQuery.append("=");
+            selectEventByAttributeQuery.append("'" + attributes.get(key) + "'");
         }
+
+        selectEventByAttributeQuery.append(" GROUP BY eventId");
         return selectEventByAttributeQuery.toString();
     }
 

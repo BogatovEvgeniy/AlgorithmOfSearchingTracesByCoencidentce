@@ -124,7 +124,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
                     /**
                      * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
                      */
-                    dbWriter.insertEvents(currEvent, nextEvent);
+                    dbWriter.insertEvents(windowIndex, currEvent, nextEvent);
                     coincidenceInStep++;
                 }
                 stepCounter++;
