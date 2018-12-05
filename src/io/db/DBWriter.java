@@ -55,17 +55,16 @@ public class DBWriter {
         return new DBWriter();
     }
 
-    public void insertEvents(int initialEventIndex, XEvent... events) {
+    public void insertPairOfEvents(int firstEventIndex, int secondComparisionValIndex, XEvent firstEvent, XEvent secondEvent) {
 
         //STEP 3: Open a connection
         System.out.println("Connecting to database...");
         Connection conn = null;
         try {
             conn = getConnection();
-            forEachAttributeInEvent(getAttributeInsertionConsumerFunc(conn), events);
-            for (int i = 0; i < events.length; i++) {
-                insertEventValueInAttributeEventsTable(conn, events[i], initialEventIndex + i);
-            }
+            forEachAttributeInEvent(getAttributeInsertionConsumerFunc(conn), firstEvent, secondEvent);
+            insertEventValueInAttributeEventsTable(conn, firstEvent, firstEventIndex);
+            insertEventValueInAttributeEventsTable(conn, secondEvent, secondComparisionValIndex);
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -155,10 +154,13 @@ public class DBWriter {
 //            }
 
         try {
-            conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_NAME + " VALUES ('" + eventIndex + "');");
-            for (String key : event.getAttributes().keySet()) {
-                conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
-                        "VALUES (" + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
+            int eventId = getEventIdByAttributes(conn, event);
+            if (eventId == NON_DEFINED_ID) {
+                conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_NAME + " VALUES ('" + eventIndex + "');");
+                for (String key : event.getAttributes().keySet()) {
+                    conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
+                            "VALUES (" + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
