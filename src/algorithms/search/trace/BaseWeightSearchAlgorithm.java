@@ -113,23 +113,24 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
         float coincidenceInStep = 0f;
         int stepCounter = 0;
         for (int firstComparisonValIndex = 0; firstComparisonValIndex < inStepEvents.size() - 1; firstComparisonValIndex++) {
-            // Here were added one more cycle to be able compare each event with the other in the step
-            for (int secondComparisionValIndex = firstComparisonValIndex + 1; secondComparisionValIndex < inStepEvents.size(); secondComparisionValIndex++) {
-                XEvent currEvent = inStepEvents.get(firstComparisonValIndex);
-                XAttributeMap currentInStepEventAttr = currEvent.getAttributes();
-                XEvent nextEvent = inStepEvents.get(secondComparisionValIndex);
-                XAttributeMap nextInStepEventAttr = nextEvent.getAttributes();
-                boolean isEquals = calculateCoincidenceEventPair(attributeSet, currentInStepEventAttr, nextInStepEventAttr);
-                if (isEquals) {
-                    /**
-                     * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
-                     */
-                    dbWriter.insertPairOfEvents(firstComparisonValIndex, secondComparisionValIndex, currEvent, nextEvent);
-                    coincidenceInStep++;
-                }
-                stepCounter++;
+////             Here were added one more cycle to be able compare each event with the other in the step
+//            for (int secondComparisionValIndex = firstComparisonValIndex + 1; secondComparisionValIndex < inStepEvents.size(); secondComparisionValIndex++) {
+            int secondComparisionValIndex = firstComparisonValIndex + 1;
+            XEvent currEvent = inStepEvents.get(firstComparisonValIndex);
+            XAttributeMap currentInStepEventAttr = currEvent.getAttributes();
+            XEvent nextEvent = inStepEvents.get(secondComparisionValIndex);
+            XAttributeMap nextInStepEventAttr = nextEvent.getAttributes();
+            boolean isEquals = calculateCoincidenceEventPair(attributeSet, currentInStepEventAttr, nextInStepEventAttr);
+            if (isEquals) {
+                /**
+                 * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
+                 */
+                dbWriter.insertPairOfEvents(attributeSet, windowIndex + firstComparisonValIndex, windowIndex + secondComparisionValIndex, currEvent, nextEvent);
+                coincidenceInStep++;
             }
+            stepCounter++;
         }
+//        }
 
         int finalStepCounter = stepCounter;
         coincidenceInStep = coincidenceInStep / finalStepCounter;

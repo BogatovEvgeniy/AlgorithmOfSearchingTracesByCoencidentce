@@ -6,6 +6,7 @@ import org.deckfour.xes.model.XEvent;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -40,6 +41,8 @@ public class DBWriter {
     private static final String EVENT_ATTRIBUTES_EVENT_ID = "eventId";
     private static final String EVENT_ATTRIBUTES_ATTRIBUTE_KEY = "attribute_key";
     private static final String EVENT_ATTRIBUTES_ATTRIBUTE_VAL = "attribute_val";
+    public static final int ROW_SET_FIRST_COLUMN_INDEX = 1;
+    public static final int ROW_SET_EMPTY_INDEX = 0;
 
     public static DBWriter init() {
         //STEP 2: Register JDBC driver
@@ -55,7 +58,7 @@ public class DBWriter {
         return new DBWriter();
     }
 
-    public void insertPairOfEvents(int firstEventIndex, int secondComparisionValIndex, XEvent firstEvent, XEvent secondEvent) {
+    public void insertPairOfEvents(List<String> attributeSet, int firstEventIndex, int secondEventIndex, XEvent firstEvent, XEvent secondEvent) {
 
         //STEP 3: Open a connection
         System.out.println("Connecting to database...");
@@ -63,8 +66,8 @@ public class DBWriter {
         try {
             conn = getConnection();
             forEachAttributeInEvent(getAttributeInsertionConsumerFunc(conn), firstEvent, secondEvent);
-            insertEventValueInAttributeEventsTable(conn, firstEvent, firstEventIndex);
-            insertEventValueInAttributeEventsTable(conn, secondEvent, secondComparisionValIndex);
+            insertEventValueInAttributeEventsTable(conn, attributeSet, firstEvent, firstEventIndex);
+            insertEventValueInAttributeEventsTable(conn, attributeSet, secondEvent, secondEventIndex);
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -134,30 +137,13 @@ public class DBWriter {
 
 
     // ----------------------------------------- EventsAttributes Table ------------------------------------------ //
-    private void insertEventValueInAttributeEventsTable(Connection conn, XEvent event, int eventIndex) {
-
-//        try {
-//            int eventId = getEventIdByAttributes(conn, event);
-//            if (eventId == NON_DEFINED_ID) {
-//                eventId = conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_NAME + " VALUES (NULL);");
-//                for (String key : event.getAttributes().keySet()) {
-//                    conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
-//                            "VALUES (" + eventId + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
-//                }
-//            } else {
-//                for (String key : event.getAttributes().keySet()) {
-//                    conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
-//                            "VALUES (" + (eventId + 1) + ",'" + key + "','" + event.getAttributes().get(key) + "')");
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-
+    private void insertEventValueInAttributeEventsTable(Connection conn, List<String> attributeSet, XEvent event, int eventIndex) {
         try {
-            int eventId = getEventIdByAttributes(conn, event);
-            if (eventId == NON_DEFINED_ID) {
-                conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_NAME + " VALUES ('" + eventIndex + "');");
-                for (String key : event.getAttributes().keySet()) {
+            ResultSet resultSet = conn.createStatement().executeQuery("SELECT MAX(id) FROM " + TABLE_EVENT_NAME + ";");
+            int lastInsertedEvent = resultSet.next() ? resultSet.getInt(ROW_SET_FIRST_COLUMN_INDEX) : NON_DEFINED_ID;
+            if (lastInsertedEvent == ROW_SET_EMPTY_INDEX || eventIndex != lastInsertedEvent) {
+                conn.createStatement().executeUpdate(getInsertOrSkipIfExits(eventIndex));
+                for (String key : attributeSet) {
                     conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
                             "VALUES (" + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
                 }
@@ -165,6 +151,14 @@ public class DBWriter {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getInsertOrSkipIfExits(int eventIndex) {
+        return "INSERT INTO events (id)\n" +
+                "SELECT * FROM (SELECT '" + eventIndex + "') AS tmp\n" +
+                "WHERE NOT EXISTS (\n" +
+                "    SELECT id FROM events WHERE id = '" + eventIndex + "'\n" +
+                ") LIMIT 1;";
     }
 
     private int getEventIdByAttributes(Connection conn, XEvent event) throws SQLException {
