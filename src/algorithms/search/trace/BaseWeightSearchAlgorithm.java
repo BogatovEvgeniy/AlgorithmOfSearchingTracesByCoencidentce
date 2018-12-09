@@ -7,7 +7,6 @@ import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ import java.util.List;
  * 4. Calculate window coincidence
  * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
  * 6. Store in DB
- * 7. IF (window_size  + window_first_event_index < log_events_count) THEN go to 7 ELSE go to 9
+ * 7. IF (window_size  + window_first_event_index < log_events_count) THEN go to 8   ELSE go to 9
  * 8. Move window one event down
  * 9. Repeat 4 - 7
  * 10. Calculate average value for all stored data on the 5th step
@@ -71,57 +70,69 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
             /**
              * 3. Define attributeSets per Window
              */
-            attributeSets = getAttributeSet(originLog, windowIndex, windowSize);
-            for (List<String> attributeSet : attributeSets) {
-                /**
-                 *  4. Calculate window coincidence
-                 */
-                Float rangeCoincidence = coincidenceInRange(eventRange, attributeSet);
-                coincidenceForEachAttributeInSet.add(new AttributeSetCoincidenceOnRange(attributeSet, new Pair<>(windowIndex, lastWindowEvent), rangeCoincidence));
-            }
-            windowIndex += windowSize;
+            attributeCoincidence(originLog, lastWindowEvent, eventRange);
+
+            /**
+             *  8. Move window one event down
+             */
+            windowIndex ++;
+            System.out.println("Index:" + windowIndex);
         }
         return coincidenceForEachAttributeInSet;
     }
 
+    /**
+     * 3. Define attributeSets per Window
+     */
+    private void attributeCoincidence(XLog originLog, int lastWindowEvent, List<XEvent> eventRange) {
+        attributeSets = getAttributeSet(originLog, windowIndex, windowSize);
+        float attributeSetCoincidenceInWindow = 0;
+        for (List<String> attributeSet : attributeSets) {
+            /**
+             *  4. Calculate window coincidence
+             */
+            int negativeTriesCounter = 0;
+            float windowCoincidence = windowCoincidence(attributeSet, eventRange);
+            if (windowCoincidence == 0) {
+                negativeTriesCounter++;
+            } else {
+                negativeTriesCounter = 0;
+            }
+
+            if (maxAllowedFails != FAIL_COUNT_UNLIMITED && negativeTriesCounter > maxAllowedFails) {
+                return;
+            } else {
+                if (windowCoincidence > 0) {
+                    attributeSetCoincidenceInWindow += windowCoincidence;
+                }
+            }
+            coincidenceForEachAttributeInSet.add(new AttributeSetCoincidenceOnRange(attributeSet, attributeSetCoincidenceInWindow, windowIndex, lastWindowEvent));
+        }
+    }
+
+    /**
+     * 7. IF (window_size  + window_first_event_index < log_events_count) THEN go to 8   ELSE go to 9
+     */
     private boolean moreEventsAvailable(XLog originLog, int windowIndex) {
         return originLog.get(0).size() > windowIndex + windowSize; // Assumption that we have a log with only one trace
     }
 
-    float coincidenceInRange(List<XEvent> windowEvents, List<String> attributeSet) {
-        float attributeSetCoincidenceOnRange = 0f;
-        int negativeTriesCounter = 0;
-        Float stepCoincidence = calculateCoincidenceInStep(attributeSet, windowEvents);
-
-        if (stepCoincidence == 0) {
-            negativeTriesCounter++;
-        } else {
-            negativeTriesCounter = 0;
-        }
-
-        if (maxAllowedFails != FAIL_COUNT_UNLIMITED && negativeTriesCounter > maxAllowedFails) {
-            return 0;
-        } else {
-            attributeSetCoincidenceOnRange += stepCoincidence;
-        }
-
-        attributeSetCoincidenceOnRange = attributeSetCoincidenceOnRange / (windowEvents.size() / windowSize);
-        return attributeSetCoincidenceOnRange;
-    }
-
-    float calculateCoincidenceInStep(List<String> attributeSet, List<XEvent> inStepEvents) {
+    /**
+     * 4. Calculate window coincidence
+     */
+    float windowCoincidence(List<String> attributeSet, List<XEvent> inStepEvents) {
         float coincidenceInStep = 0f;
         int stepCounter = 0;
+        boolean isEqualsFound = false;
         for (int firstComparisonValIndex = 0; firstComparisonValIndex < inStepEvents.size() - 1; firstComparisonValIndex++) {
-////             Here were added one more cycle to be able compare each event with the other in the step
-//            for (int secondComparisionValIndex = firstComparisonValIndex + 1; secondComparisionValIndex < inStepEvents.size(); secondComparisionValIndex++) {
             int secondComparisionValIndex = firstComparisonValIndex + 1;
             XEvent currEvent = inStepEvents.get(firstComparisonValIndex);
             XAttributeMap currentInStepEventAttr = currEvent.getAttributes();
             XEvent nextEvent = inStepEvents.get(secondComparisionValIndex);
             XAttributeMap nextInStepEventAttr = nextEvent.getAttributes();
-            boolean isEquals = calculateCoincidenceEventPair(attributeSet, currentInStepEventAttr, nextInStepEventAttr);
-            if (isEquals) {
+            float attributeSetCoincidence = calculateCoincidenceEventPair(attributeSet, currentInStepEventAttr, nextInStepEventAttr);
+            if (attributeSetCoincidence > 0) {
+                isEqualsFound = true;
                 /**
                  * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
                  */
@@ -130,39 +141,32 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
             }
             stepCounter++;
         }
-//        }
 
-        int finalStepCounter = stepCounter;
-        coincidenceInStep = coincidenceInStep / finalStepCounter;
+        if (isEqualsFound) {
+            coincidenceInStep = coincidenceInStep / stepCounter;
 
-        if (coincidenceInStep > minimalCoincidence) {
-            return coincidenceInStep;
+            if (coincidenceInStep > minimalCoincidence) {
+                return coincidenceInStep;
+            } else {
+                return 0f;
+            }
         } else {
             return 0f;
         }
     }
 
-    boolean calculateCoincidenceEventPair(List<String> attributeSet, XAttributeMap currentInStepEventAttr, XAttributeMap nextInStepEventAttr) {
-        boolean containsAtLeastOneAttribute = true;
+    private float calculateCoincidenceEventPair(List<String> attributeSet, XAttributeMap
+            currentInStepEventAttr, XAttributeMap nextInStepEventAttr) {
 
-        for (String aKey : attributeSet) {
-            if (!currentInStepEventAttr.keySet().contains(aKey)) {
-                containsAtLeastOneAttribute = false;
-                break;
-            }
-        }
-
-        if (!containsAtLeastOneAttribute) {
-            return false;
-        }
-
+      float attributeCoincidence = 0;
         for (String attributeKey : attributeSet) {
-            if (currentInStepEventAttr.get(attributeKey) != null
-                    && !currentInStepEventAttr.get(attributeKey).equals(nextInStepEventAttr.get(attributeKey))) {
-                return false;
+            if (currentInStepEventAttr.get(attributeKey) != null && nextInStepEventAttr.get(attributeKey) != null
+                    && currentInStepEventAttr.get(attributeKey).equals(nextInStepEventAttr.get(attributeKey))) {
+                attributeCoincidence ++;
             }
         }
-        return true;
+
+        return attributeCoincidence/attributeSet.size();
     }
 
     void checkLog(XLog originLog) {
@@ -175,30 +179,32 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
     abstract List<List<String>> getAttributeSet(XLog log, int windowIndex, int windowSize);
 
     public class AttributeSetCoincidenceOnRange {
+        private final float commonConcidence;
+        private int windowIndex;
+        private int lastIndex;
         private List<String> attributeSet;
-        private Pair<Integer, Integer> firstLastIndexOfRange;
-        private Float rangeCoincidence;
 
-        public AttributeSetCoincidenceOnRange(List<String> attributeSet, Pair<Integer, Integer> firstLastIndexOfRange, Float rangeCoincidence) {
+        public AttributeSetCoincidenceOnRange(List<String> attributeSet, float commonCoincidence, int windowIndex, int lastIndex) {
             this.attributeSet = attributeSet;
-            this.firstLastIndexOfRange = firstLastIndexOfRange;
-            this.rangeCoincidence = rangeCoincidence;
+            this.commonConcidence = commonCoincidence;
+            this.windowIndex = windowIndex;
+            this.lastIndex = lastIndex;
         }
 
         @Override
         public String toString() {
             return "AttributeSetCoincidenceOnRange{" +
-                    "attributeSet=" + attributeSet +
-                    ", in a range [" + firstLastIndexOfRange.getKey() + "..." + firstLastIndexOfRange.getValue() + "]" +
-                    ", rangeCoincidence=" + rangeCoincidence +
+                    "commonConcidence=" + commonConcidence +
+                    ", windowIndex=" + windowIndex +
+                    ", lastIndex=" + lastIndex +
+                    ", attributeSet=" + attributeSet +
                     '}';
         }
-
     }
 
     @Override
     public String toString() {
-        return "PredefibedAttributeWeightsSearchAlgorithm{" +
+        return "BaseWeightSearchAlgorithm{" +
                 "windowSize=" + windowSize +
                 ", maxAllowedFails=" + maxAllowedFails +
                 ", minimalCoincidence=" + minimalCoincidence +

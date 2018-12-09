@@ -49,9 +49,9 @@ public class DBWriter {
         try {
             Class.forName(JDBC_DRIVER);
             Connection conn = getConnection();
-            conn.createStatement().execute("DELETE FROM " + TABLE_EVENT_ATTRIBUTES);
-            conn.createStatement().execute("DELETE FROM " + TABLE_ATTRIBUTE_NAME);
-            conn.createStatement().execute("DELETE FROM " + TABLE_EVENT_NAME);
+            conn.createStatement().execute("TRUNCATE TABLE " + TABLE_EVENT_ATTRIBUTES);
+            conn.createStatement().execute("TRUNCATE TABLE " + TABLE_ATTRIBUTE_NAME);
+            conn.createStatement().execute("TRUNCATE TABLE " + TABLE_EVENT_NAME);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -61,7 +61,6 @@ public class DBWriter {
     public void insertPairOfEvents(List<String> attributeSet, int firstEventIndex, int secondEventIndex, XEvent firstEvent, XEvent secondEvent) {
 
         //STEP 3: Open a connection
-        System.out.println("Connecting to database...");
         Connection conn = null;
         try {
             conn = getConnection();

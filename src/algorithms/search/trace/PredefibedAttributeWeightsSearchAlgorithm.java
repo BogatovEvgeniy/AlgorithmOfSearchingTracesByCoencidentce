@@ -1,11 +1,9 @@
 package algorithms.search.trace;
 
 
-import javafx.util.Pair;
 import org.deckfour.xes.model.XLog;
 
 import java.util.List;
-import java.util.Set;
 
 public class PredefibedAttributeWeightsSearchAlgorithm extends BaseWeightSearchAlgorithm {
 
