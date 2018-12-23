@@ -38,35 +38,54 @@ public class DBWriter {
 
     // EventAttributes Table
     private static final String TABLE_EVENT_ATTRIBUTES = "event_attributes";
+    private static final String EVENT_ATTRIBUTES_RANGE_NUM = "range_num";
     private static final String EVENT_ATTRIBUTES_EVENT_ID = "eventId";
     private static final String EVENT_ATTRIBUTES_ATTRIBUTE_KEY = "attribute_key";
     private static final String EVENT_ATTRIBUTES_ATTRIBUTE_VAL = "attribute_val";
     public static final int ROW_SET_FIRST_COLUMN_INDEX = 1;
     public static final int ROW_SET_EMPTY_INDEX = 0;
+    public static final String DISS_DB = "'diss_db'";
 
     public static DBWriter init() {
         //STEP 2: Register JDBC driver
-        try {
-            Class.forName(JDBC_DRIVER);
-            Connection conn = getConnection();
-            conn.createStatement().execute("TRUNCATE TABLE " + TABLE_EVENT_ATTRIBUTES);
-            conn.createStatement().execute("TRUNCATE TABLE " + TABLE_ATTRIBUTE_NAME);
-            conn.createStatement().execute("TRUNCATE TABLE " + TABLE_EVENT_NAME);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
+        truncateTables();
         return new DBWriter();
     }
 
-    public void insertPairOfEvents(List<String> attributeSet, int firstEventIndex, int secondEventIndex, XEvent firstEvent, XEvent secondEvent) {
+    private static void truncateTables() {
+        try {
+            Class.forName(JDBC_DRIVER);
+            Connection conn = getConnection();
+            conn.createStatement().execute("SET FOREIGN_KEY_CHECKS=0;");
+
+            ResultSet resultSet = conn.createStatement().executeQuery(
+                    "SELECT Concat('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';')" +
+                            " FROM INFORMATION_SCHEMA.TABLES where  table_schema in (" + DISS_DB + ");");
+
+            while (resultSet.next()) {
+                conn.createStatement().execute(resultSet.getString(1));
+            }
+            conn.createStatement().execute("SET FOREIGN_KEY_CHECKS=1;");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertPairOfEvents(List<String> attributeSet,
+                                   int rangeNum,
+                                   int attrSetIndex,
+                                   int firstEventIndex,
+                                   int secondEventIndex,
+                                   XEvent firstEvent,
+                                   XEvent secondEvent) {
 
         //STEP 3: Open a connection
         Connection conn = null;
         try {
             conn = getConnection();
             forEachAttributeInEvent(getAttributeInsertionConsumerFunc(conn), firstEvent, secondEvent);
-            insertEventValueInAttributeEventsTable(conn, attributeSet, firstEvent, firstEventIndex);
-            insertEventValueInAttributeEventsTable(conn, attributeSet, secondEvent, secondEventIndex);
+            insertEventValueInAttributeEventsTable(conn, rangeNum, attrSetIndex, attributeSet, firstEvent, firstEventIndex);
+            insertEventValueInAttributeEventsTable(conn, rangeNum, attrSetIndex, attributeSet, secondEvent, secondEventIndex);
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -136,15 +155,15 @@ public class DBWriter {
 
 
     // ----------------------------------------- EventsAttributes Table ------------------------------------------ //
-    private void insertEventValueInAttributeEventsTable(Connection conn, List<String> attributeSet, XEvent event, int eventIndex) {
+    private void insertEventValueInAttributeEventsTable(Connection conn, int rangeNum, int attrSetIndex, List<String> attributeSet, XEvent event, int eventIndex) {
         try {
             ResultSet resultSet = conn.createStatement().executeQuery("SELECT MAX(id) FROM " + TABLE_EVENT_NAME + ";");
             int lastInsertedEvent = resultSet.next() ? resultSet.getInt(ROW_SET_FIRST_COLUMN_INDEX) : NON_DEFINED_ID;
             if (lastInsertedEvent == ROW_SET_EMPTY_INDEX || eventIndex != lastInsertedEvent) {
                 conn.createStatement().executeUpdate(getInsertOrSkipIfExits(eventIndex));
                 for (String key : attributeSet) {
-                    conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (eventId, attribute_key, attribute_val) " +
-                            "VALUES (" + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
+                    conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (range_num, attr_set_index, eventId, attribute_key, attribute_val) " +
+                            "VALUES (" + rangeNum + "," + attrSetIndex + "," + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
                 }
             }
         } catch (SQLException e) {

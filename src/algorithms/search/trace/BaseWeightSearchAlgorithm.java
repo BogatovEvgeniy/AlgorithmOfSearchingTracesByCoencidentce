@@ -87,12 +87,14 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
     private void attributeCoincidence(XLog originLog, int lastWindowEvent, List<XEvent> eventRange) {
         attributeSets = getAttributeSet(originLog, windowIndex, windowSize);
         float attributeSetCoincidenceInWindow = 0;
-        for (List<String> attributeSet : attributeSets) {
+
+        for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
+
             /**
              *  4. Calculate window coincidence
              */
             int negativeTriesCounter = 0;
-            float windowCoincidence = windowCoincidence(attributeSet, eventRange);
+            float windowCoincidence = windowCoincidence(attrSetIndex, attributeSets.get(attrSetIndex), eventRange);
             if (windowCoincidence == 0) {
                 negativeTriesCounter++;
             } else {
@@ -106,7 +108,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
                     attributeSetCoincidenceInWindow += windowCoincidence;
                 }
             }
-            coincidenceForEachAttributeInSet.add(new AttributeSetCoincidenceOnRange(attributeSet, attributeSetCoincidenceInWindow, windowIndex, lastWindowEvent));
+            coincidenceForEachAttributeInSet.add(new AttributeSetCoincidenceOnRange(attributeSets.get(attrSetIndex), attributeSetCoincidenceInWindow, windowIndex, lastWindowEvent));
         }
     }
 
@@ -120,7 +122,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
     /**
      * 4. Calculate window coincidence
      */
-    float windowCoincidence(List<String> attributeSet, List<XEvent> inStepEvents) {
+    float windowCoincidence(int attributeSetIndex, List<String> attributeSet, List<XEvent> inStepEvents) {
         float coincidenceInStep = 0f;
         int stepCounter = 0;
         boolean isEqualsFound = false;
@@ -136,7 +138,10 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
                 /**
                  * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
                  */
-                dbWriter.insertPairOfEvents(attributeSet, windowIndex + firstComparisonValIndex, windowIndex + secondComparisionValIndex, currEvent, nextEvent);
+                dbWriter.insertPairOfEvents(attributeSet,
+                        windowIndex, attributeSetIndex,
+                        windowIndex + firstComparisonValIndex,windowIndex + secondComparisionValIndex,
+                        currEvent, nextEvent);
                 coincidenceInStep++;
             }
             stepCounter++;
