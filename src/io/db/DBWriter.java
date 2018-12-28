@@ -4,10 +4,7 @@ import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 
@@ -34,11 +31,12 @@ public class DBWriter {
     private static final String ATTRIBUTE_DB_KEY = "key";
 
     //Events Table
-    private static final String TABLE_EVENT_NAME = "events";
+    private static final String TABLE_EVENT = "events";
 
     // EventAttributes Table
     private static final String TABLE_EVENT_ATTRIBUTES = "event_attributes";
     private static final String EVENT_ATTRIBUTES_RANGE_NUM = "range_num";
+    private static final String EVENT_ATTRIBUTES_ATTR_SET_INDEX = "attr_set_index";
     private static final String EVENT_ATTRIBUTES_EVENT_ID = "eventId";
     private static final String EVENT_ATTRIBUTES_ATTRIBUTE_KEY = "attribute_key";
     private static final String EVENT_ATTRIBUTES_ATTRIBUTE_VAL = "attribute_val";
@@ -157,10 +155,10 @@ public class DBWriter {
     // ----------------------------------------- EventsAttributes Table ------------------------------------------ //
     private void insertEventValueInAttributeEventsTable(Connection conn, int rangeNum, int attrSetIndex, List<String> attributeSet, XEvent event, int eventIndex) {
         try {
-            ResultSet resultSet = conn.createStatement().executeQuery("SELECT MAX(id) FROM " + TABLE_EVENT_NAME + ";");
-            int lastInsertedEvent = resultSet.next() ? resultSet.getInt(ROW_SET_FIRST_COLUMN_INDEX) : NON_DEFINED_ID;
-            if (lastInsertedEvent == ROW_SET_EMPTY_INDEX || eventIndex != lastInsertedEvent) {
-                conn.createStatement().executeUpdate(getInsertOrSkipIfExits(eventIndex));
+            insertEventIfNotExist(conn, eventIndex);
+
+            List<Integer> eventIds= getEventsForPerRangeAndAttrSet(conn, event, rangeNum, attrSetIndex);
+            if (!eventIds.contains(eventIndex)) {
                 for (String key : attributeSet) {
                     conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (range_num, attr_set_index, eventId, attribute_key, attribute_val) " +
                             "VALUES (" + rangeNum + "," + attrSetIndex + "," + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
@@ -168,6 +166,30 @@ public class DBWriter {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private List<Integer> getEventsForPerRangeAndAttrSet(Connection conn, XEvent event, int rangeNum, int attrSetIndex) throws SQLException {
+        String sql = "SELECT eventId FROM " + TABLE_EVENT_ATTRIBUTES +
+                " WHERE range_num = " + rangeNum +
+                " AND attr_set_index=" + attrSetIndex;
+        ResultSet resultSet = conn.createStatement().executeQuery(sql);
+
+
+        List<Integer> eventIds = new LinkedList<>();
+        while (resultSet.next()) {
+            eventIds.add(resultSet.getInt(1));
+        }
+
+        return eventIds;
+    }
+
+
+    private void insertEventIfNotExist(Connection conn, int eventIndex) throws SQLException {
+        ResultSet resultSet = conn.createStatement().executeQuery("SELECT MAX(id) FROM " + TABLE_EVENT + ";");
+        int lastInsertedEvent = resultSet.next() ? resultSet.getInt(ROW_SET_FIRST_COLUMN_INDEX) : NON_DEFINED_ID;
+        if (lastInsertedEvent == ROW_SET_EMPTY_INDEX || eventIndex != lastInsertedEvent) {
+            conn.createStatement().executeUpdate(getInsertOrSkipIfExits(eventIndex));
         }
     }
 
@@ -179,9 +201,9 @@ public class DBWriter {
                 ") LIMIT 1;";
     }
 
-    private int getEventIdByAttributes(Connection conn, XEvent event) throws SQLException {
+    private int getEventIdByAttributes(Connection conn, XEvent event, int rangeNum, int attrSetIndex) throws SQLException {
         Statement statement = conn.createStatement();
-        String selectEventByAttributeQuery = getSelectionQueryEventIdWithAttributes(event);
+        String selectEventByAttributeQuery = getSelectionQueryEventIdWithAttributes(event, rangeNum, attrSetIndex);
         ResultSet resultSet = statement.executeQuery(selectEventByAttributeQuery);
         if (resultSet.next()) {
             return resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
@@ -190,13 +212,21 @@ public class DBWriter {
         }
     }
 
-    private String getSelectionQueryEventIdWithAttributes(XEvent event) {
+    private String getSelectionQueryEventIdWithAttributes(XEvent event, int rangeNum, int attrSetIndex) {
         StringBuilder selectEventByAttributeQuery = new StringBuilder("SELECT eventId FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE ");
 
         XAttributeMap attributes = event.getAttributes();
         Iterator<String> keys = attributes.keySet().iterator();
         if (keys.hasNext()) {
             String key = keys.next();
+            selectEventByAttributeQuery.append(EVENT_ATTRIBUTES_RANGE_NUM);
+            selectEventByAttributeQuery.append("=");
+            selectEventByAttributeQuery.append("'" + rangeNum + "'");
+            selectEventByAttributeQuery.append(" AND ");
+            selectEventByAttributeQuery.append(EVENT_ATTRIBUTES_ATTR_SET_INDEX);
+            selectEventByAttributeQuery.append("=");
+            selectEventByAttributeQuery.append("'" + attrSetIndex + "'");
+            selectEventByAttributeQuery.append(" AND ");
             selectEventByAttributeQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
             selectEventByAttributeQuery.append("=");
             selectEventByAttributeQuery.append("'" + key + "'");

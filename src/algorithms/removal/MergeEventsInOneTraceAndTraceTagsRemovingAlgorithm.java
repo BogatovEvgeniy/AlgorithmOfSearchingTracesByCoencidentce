@@ -22,6 +22,8 @@ public class MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm implements ILogA
     public XLog proceed(XLog originLog) {
         this.originLog = originLog;
         XLog xLog = initLogWithFirstClearTrace(originLog);
+        // add events of the first trace
+        xLog.get(0).addAll(originLog.get(0));
         //Start from second ite due first were added above
         addEvents(originLog, xLog);
         System.out.println("Traces added: " + traceCounter);

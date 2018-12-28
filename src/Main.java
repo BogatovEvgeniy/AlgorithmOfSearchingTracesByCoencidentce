@@ -1,4 +1,5 @@
 import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
+import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
 import algorithms.search.trace.BaseWeightSearchAlgorithm;
 import algorithms.search.trace.PredefibedAttributeWeightsSearchAlgorithm;
 import algorithms.search.trace.TraceSearchingAlgorithm;
@@ -92,9 +93,9 @@ public class Main {
             logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
             // Search for attributes weights
             PredefibedAttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
-            List<BaseWeightSearchAlgorithm.AttributeSetCoincidenceOnRange> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
-            for (BaseWeightSearchAlgorithm.AttributeSetCoincidenceOnRange weightsValue : weightsValues) {
-                System.out.println(weightsValue);
+            Map<Integer, Float> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
+            for (Integer attrSetIndex : weightsValues.keySet()) {
+                System.out.println(weightsValues.get(attrSetIndex));
             }
 
             /*// Build an map which will reflect an majority of each attribute for future analyse

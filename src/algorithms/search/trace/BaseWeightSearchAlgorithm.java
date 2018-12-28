@@ -2,13 +2,11 @@ package algorithms.search.trace;
 
 import algorithms.ILogAlgorithm;
 import io.db.DBWriter;
-import javafx.util.Pair;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Tha algorithm assumes that his input is an set of event in an one trace.
@@ -29,7 +27,7 @@ import java.util.List;
  * 10. Calculate average value for all stored data on the 5th step
  */
 
-public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<BaseWeightSearchAlgorithm.AttributeSetCoincidenceOnRange>> {
+public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Integer, Float>> {
 
     public static final int FAIL_COUNT_UNLIMITED = -1;
     private final DBWriter dbWriter;
@@ -37,7 +35,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
     private int windowSize;
     private int maxAllowedFails;
     private float minimalCoincidence;
-    private List<AttributeSetCoincidenceOnRange> coincidenceForEachAttributeInSet = new ArrayList<>();
+    private TreeMap<Integer, Float> coincidenceForEachAttributeInSet = new TreeMap<>();
     private int windowIndex;
 
 
@@ -57,7 +55,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
      * 1. Define set of events
      */
     @Override
-    public List<AttributeSetCoincidenceOnRange> proceed(XLog originLog) {
+    public Map<Integer, Float> proceed(XLog originLog) {
         checkLog(originLog);
         while (moreEventsAvailable(originLog, windowIndex)) {
 
@@ -70,23 +68,57 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
             /**
              * 3. Define attributeSets per Window
              */
-            attributeCoincidence(originLog, lastWindowEvent, eventRange);
+            attributeCoincidence(originLog, eventRange);
 
             /**
              *  8. Move window one event down
              */
-            windowIndex ++;
+            windowIndex++;
             System.out.println("Index:" + windowIndex);
         }
+
+        /**
+         *  10. Calculate average value for all stored data on the 5th step
+         */
+        for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
+            TreeMap<Integer, List<XEvent>> eventList = getEventListPerAttribute(attrSetIndex + 1);
+            coincidenceForEachAttributeInSet.put(attrSetIndex, calculateWeights(eventList));
+        }
+
         return coincidenceForEachAttributeInSet;
+    }
+
+    private TreeMap <Integer, List<XEvent>> getEventListPerAttribute(int attrSeIndex) {
+        return null;
+    }
+
+    // TODO Primitive code with MAGIC NUMBERS but it's enough here
+    private float calculateWeights(SortedMap<Integer, List<XEvent>> ranges) {
+        int rangeHalfSize = ranges.keySet().size() / 2;
+        while (rangeHalfSize != 2) {
+            float leftSide = calculateWeights(ranges.subMap(0, rangeHalfSize));
+            float rightSide = calculateWeights(ranges.subMap(rangeHalfSize, ranges.size()));
+            return (leftSide + rightSide) / 2;
+        }
+
+        if (ranges.size() == 2) {
+            float firstRangeWeight = calculateWeightPerRange(ranges.get(0));
+            float secondRangeWeight = calculateWeightPerRange(ranges.get(1));
+            return (firstRangeWeight + secondRangeWeight) / 2;
+        } else {
+            return calculateWeightPerRange(ranges.get(0));
+        }
+    }
+
+    private float calculateWeightPerRange(List<XEvent> events) {
+        return -1;
     }
 
     /**
      * 3. Define attributeSets per Window
      */
-    private void attributeCoincidence(XLog originLog, int lastWindowEvent, List<XEvent> eventRange) {
+    private void attributeCoincidence(XLog originLog, List<XEvent> eventRange) {
         attributeSets = getAttributeSet(originLog, windowIndex, windowSize);
-        float attributeSetCoincidenceInWindow = 0;
 
         for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
 
@@ -95,6 +127,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
              */
             int negativeTriesCounter = 0;
             float windowCoincidence = windowCoincidence(attrSetIndex, attributeSets.get(attrSetIndex), eventRange);
+
             if (windowCoincidence == 0) {
                 negativeTriesCounter++;
             } else {
@@ -103,12 +136,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
 
             if (maxAllowedFails != FAIL_COUNT_UNLIMITED && negativeTriesCounter > maxAllowedFails) {
                 return;
-            } else {
-                if (windowCoincidence > 0) {
-                    attributeSetCoincidenceInWindow += windowCoincidence;
-                }
             }
-            coincidenceForEachAttributeInSet.add(new AttributeSetCoincidenceOnRange(attributeSets.get(attrSetIndex), attributeSetCoincidenceInWindow, windowIndex, lastWindowEvent));
         }
     }
 
@@ -140,7 +168,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
                  */
                 dbWriter.insertPairOfEvents(attributeSet,
                         windowIndex, attributeSetIndex,
-                        windowIndex + firstComparisonValIndex,windowIndex + secondComparisionValIndex,
+                        windowIndex + firstComparisonValIndex, windowIndex + secondComparisionValIndex,
                         currEvent, nextEvent);
                 coincidenceInStep++;
             }
@@ -163,15 +191,15 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<Ba
     private float calculateCoincidenceEventPair(List<String> attributeSet, XAttributeMap
             currentInStepEventAttr, XAttributeMap nextInStepEventAttr) {
 
-      float attributeCoincidence = 0;
+        float attributeCoincidence = 0;
         for (String attributeKey : attributeSet) {
             if (currentInStepEventAttr.get(attributeKey) != null && nextInStepEventAttr.get(attributeKey) != null
                     && currentInStepEventAttr.get(attributeKey).equals(nextInStepEventAttr.get(attributeKey))) {
-                attributeCoincidence ++;
+                attributeCoincidence++;
             }
         }
 
-        return attributeCoincidence/attributeSet.size();
+        return attributeCoincidence / attributeSet.size();
     }
 
     void checkLog(XLog originLog) {
