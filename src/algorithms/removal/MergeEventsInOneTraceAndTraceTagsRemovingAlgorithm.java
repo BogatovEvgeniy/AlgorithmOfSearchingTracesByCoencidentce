@@ -45,8 +45,8 @@ public class MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm implements ILogA
     }
 
     protected void addEvents(XLog originLog, XLog resLog) {
-        for (XTrace trace : originLog) {
-            for (XEvent event : trace) {
+        for (int traceIndex = 1; traceIndex < originLog.size(); traceIndex++) {
+            for (XEvent event : originLog.get(traceIndex)) {
                 resLog.get(0).add(event);
             }
         }

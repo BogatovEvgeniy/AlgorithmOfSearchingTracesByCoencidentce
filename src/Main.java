@@ -77,7 +77,7 @@ public class Main {
     private static void launchParsingAlgorithms() {
         long startTime = System.currentTimeMillis();
 
-        String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
+        String srcFileName = "400_traces_of_BPI_Challenge";
         String destFileName = "400_traces";
         String srcFilePath = DESTINATION_DIR + srcFileName + FILE_EXTENSION;
 

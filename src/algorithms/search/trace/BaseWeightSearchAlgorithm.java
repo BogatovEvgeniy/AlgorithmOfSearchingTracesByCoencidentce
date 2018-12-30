@@ -1,6 +1,7 @@
 package algorithms.search.trace;
 
 import algorithms.ILogAlgorithm;
+import com.google.common.collect.Maps;
 import io.db.DBWriter;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
@@ -81,9 +82,10 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
          *  10. Calculate average value for all stored data on the 5th step
          */
 
-        for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++){
+        for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
             List<String> attributes = getAttrForIndex(attrSetIndex);
-            coincidenceForEachAttributeInSet.put(attrSetIndex, calculateWeights(attributes, attrSetIndex, 0, originLog.get(0).size()));
+            int rangeSize = originLog.get(0).size();
+            coincidenceForEachAttributeInSet.put(attrSetIndex, calculateWeights(attributes, attrSetIndex, 0, rangeSize));
         }
         return coincidenceForEachAttributeInSet;
     }
@@ -98,16 +100,17 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
 
     // TODO Primitive code with MAGIC NUMBERS but it's enough here
     private float calculateWeights(List<String> attributes, int attrSetIndex, int rangeFrom, int rangeTo) {
-        int rangeHalfSize = rangeTo - rangeFrom / 2;
-        while (rangeHalfSize > 2) {
+        int rangeSize = (rangeTo - rangeFrom);
+        int rangeHalfSize = (rangeTo - rangeFrom) / 2 + 1;
+        while (rangeSize > 2) {
             float leftSide = calculateWeights(attributes, attrSetIndex, rangeFrom, rangeHalfSize);
             float rightSide = calculateWeights(attributes, attrSetIndex, rangeHalfSize + 1, rangeTo);
             return (leftSide + rightSide) / 2;
         }
 
-        if (rangeTo - rangeFrom == 2) {
+        if (rangeTo != rangeFrom) {
             float firstRangeWeight = calculateWeightPerStep(getEventList(attrSetIndex, rangeFrom), attributes);
-            float secondRangeWeight = calculateWeightPerStep(getEventList(attrSetIndex, rangeFrom), attributes);
+            float secondRangeWeight = calculateWeightPerStep(getEventList(attrSetIndex, rangeTo - 1), attributes);
             return (firstRangeWeight + secondRangeWeight) / 2;
         } else {
             return calculateWeightPerStep(getEventList(attrSetIndex, rangeFrom), attributes);
@@ -115,8 +118,35 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
     }
 
     private float calculateWeightPerStep(List<XEvent> events, List<String> attributes) {
+        float coincidenceInWindow = 0f;
+        for (int firstComparisonValIndex = 0; firstComparisonValIndex < events.size() - 1; firstComparisonValIndex++) {
+            // Here were added one more cycle to be able compare each event with the other in the step
+            for (int secondComparisionValIndex = firstComparisonValIndex + 1; secondComparisionValIndex < events.size(); secondComparisionValIndex++) {
+                XAttributeMap firstEventAttributes = events.get(firstComparisonValIndex).getAttributes();
+                XAttributeMap secondEventAttributes = events.get(secondComparisionValIndex).getAttributes();
+                coincidenceInWindow = calculateCoincidenceEventPair(attributes, firstEventAttributes, secondEventAttributes);
+            }
+        }
 
-        return -1;
+        if (coincidenceInWindow > minimalCoincidence) {
+            return coincidenceInWindow;
+        } else {
+            return 0f;
+        }
+    }
+
+
+    private float calculateCoincidenceEventPair(List<String> attributeSet, XAttributeMap currentInStepEventAttr, XAttributeMap nextInStepEventAttr) {
+
+        float attributeCoincidence = 0;
+        for (String attributeKey : attributeSet) {
+            if (currentInStepEventAttr.get(attributeKey) != null && nextInStepEventAttr.get(attributeKey) != null
+                    && currentInStepEventAttr.get(attributeKey).equals(nextInStepEventAttr.get(attributeKey))) {
+                attributeCoincidence++;
+            }
+        }
+
+        return attributeCoincidence / attributeSet.size();
     }
 
     /**
@@ -191,20 +221,6 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
         } else {
             return 0f;
         }
-    }
-
-    private float calculateCoincidenceEventPair(List<String> attributeSet, XAttributeMap
-            currentInStepEventAttr, XAttributeMap nextInStepEventAttr) {
-
-        float attributeCoincidence = 0;
-        for (String attributeKey : attributeSet) {
-            if (currentInStepEventAttr.get(attributeKey) != null && nextInStepEventAttr.get(attributeKey) != null
-                    && currentInStepEventAttr.get(attributeKey).equals(nextInStepEventAttr.get(attributeKey))) {
-                attributeCoincidence++;
-            }
-        }
-
-        return attributeCoincidence / attributeSet.size();
     }
 
     void checkLog(XLog originLog) {
