@@ -81,41 +81,40 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
          *  10. Calculate average value for all stored data on the 5th step
          */
 
-            TreeMap<Integer, List<XEvent>> eventList = getEventListPerAttribute(attributeSets);
-            List<String> attributes = getAttrForIndex(attributeSets);
         for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++){
-            coincidenceForEachAttributeInSet.put(attrSetIndex, calculateWeights(attributes, eventList));
+            List<String> attributes = getAttrForIndex(attrSetIndex);
+            coincidenceForEachAttributeInSet.put(attrSetIndex, calculateWeights(attributes, attrSetIndex, 0, originLog.get(0).size()));
         }
         return coincidenceForEachAttributeInSet;
     }
 
-    private List<String> getAttrForIndex(List<List<String>> attributeSets) {
-        return dbWriter.getAttrsPerAttrSet(attributeSets);
+    private List<String> getAttrForIndex(int attrSetIndex) {
+        return dbWriter.getAttrsPerAttrSet(attrSetIndex);
     }
 
-    private TreeMap<Integer, List<XEvent>> getEventListPerAttribute(List<List<String>> attributeSets) {
-        return dbWriter.getEventsPerAttrSet(attributeSets);
+    private List<XEvent> getEventList(int attrSetIndex, int rangeId) {
+        return dbWriter.getEventsPerAttrSet(attrSetIndex, rangeId);
     }
 
     // TODO Primitive code with MAGIC NUMBERS but it's enough here
-    private float calculateWeights(List<String> attributes, SortedMap<Integer, List<XEvent>> ranges) {
-        int rangeHalfSize = ranges.keySet().size() / 2;
-        while (rangeHalfSize != 2) {
-            float leftSide = calculateWeights(attributes, ranges.subMap(0, rangeHalfSize));
-            float rightSide = calculateWeights(attributes, ranges.subMap(rangeHalfSize, ranges.size()));
+    private float calculateWeights(List<String> attributes, int attrSetIndex, int rangeFrom, int rangeTo) {
+        int rangeHalfSize = rangeTo - rangeFrom / 2;
+        while (rangeHalfSize > 2) {
+            float leftSide = calculateWeights(attributes, attrSetIndex, rangeFrom, rangeHalfSize);
+            float rightSide = calculateWeights(attributes, attrSetIndex, rangeHalfSize + 1, rangeTo);
             return (leftSide + rightSide) / 2;
         }
 
-        if (ranges.size() == 2) {
-            float firstRangeWeight = calculateWeightPerStep(ranges.get(0));
-            float secondRangeWeight = calculateWeightPerStep(ranges.get(1));
+        if (rangeTo - rangeFrom == 2) {
+            float firstRangeWeight = calculateWeightPerStep(getEventList(attrSetIndex, rangeFrom), attributes);
+            float secondRangeWeight = calculateWeightPerStep(getEventList(attrSetIndex, rangeFrom), attributes);
             return (firstRangeWeight + secondRangeWeight) / 2;
         } else {
-            return calculateWeightPerStep(ranges.get(0));
+            return calculateWeightPerStep(getEventList(attrSetIndex, rangeFrom), attributes);
         }
     }
 
-    private float calculateWeightPerStep(List<XEvent> events) {
+    private float calculateWeightPerStep(List<XEvent> events, List<String> attributes) {
 
         return -1;
     }

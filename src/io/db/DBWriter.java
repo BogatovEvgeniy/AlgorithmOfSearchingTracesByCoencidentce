@@ -269,12 +269,14 @@ public class DBWriter {
         return DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
-    public TreeMap<Integer, List<XEvent>> getEventsPerAttrSet(List<List<String>> attributeSets) {
-        TreeMap<Integer, List<XEvent>> events = new TreeMap<>();
-        List<XEvent> eventsPerAttribute = new LinkedList<>();
+    public List<XEvent> getEventsPerAttrSet(int attrSetIndex, int rangeId) {
+        List<XEvent> eventsPerAttributeSet = new LinkedList<>();
         try {
             Connection connection = getConnection();
-            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSeIndex);
+            ResultSet resultSet = connection.createStatement().executeQuery(
+                    "SELECT * FROM " + TABLE_EVENT_ATTRIBUTES +
+                    " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSetIndex +
+                    " AND " + EVENT_ATTRIBUTES_RANGE_NUM + "=" + rangeId);
 
             int lastEventId = -1;
             int attrS = -1;
@@ -284,7 +286,7 @@ public class DBWriter {
 
                 if (lastEventId >=0 || lastEventId != curEventId) {
                     currEvent = new XEventImpl();
-                    eventsPerAttribute.add(currEvent);
+                    eventsPerAttributeSet.add(currEvent);
                 }
 
                 lastEventId = curEventId;
@@ -292,17 +294,15 @@ public class DBWriter {
                 String key = resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
                 XAttribute attrVal = new XAttributeLiteralImpl(key, resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_VAL));
                 attributes.put(key, attrVal);
-
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return events;
+        return eventsPerAttributeSet;
     }
 
-    public List<String> getAttrsPerAttrSet(List<List<String>> attributeSets) {
+    public List<String> getAttrsPerAttrSet(int attrSetIndex) {
         List<String> keys = new LinkedList<>();
         try {
             Connection connection = getConnection();
