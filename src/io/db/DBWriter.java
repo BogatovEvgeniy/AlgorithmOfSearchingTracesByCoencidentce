@@ -1,7 +1,11 @@
 package io.db;
 
+import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
+import org.deckfour.xes.model.impl.XAttributeContainerImpl;
+import org.deckfour.xes.model.impl.XAttributeLiteralImpl;
+import org.deckfour.xes.model.impl.XEventImpl;
 
 import java.sql.*;
 import java.util.*;
@@ -263,5 +267,53 @@ public class DBWriter {
 
     private static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, USER, PASS);
+    }
+
+    public TreeMap<Integer, List<XEvent>> getEventsPerAttrSet(List<List<String>> attributeSets) {
+        TreeMap<Integer, List<XEvent>> events = new TreeMap<>();
+        List<XEvent> eventsPerAttribute = new LinkedList<>();
+        try {
+            Connection connection = getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSeIndex);
+
+            int lastEventId = -1;
+            int attrS = -1;
+            XEventImpl currEvent = null;
+            while (resultSet.next()) {
+                int curEventId = resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
+
+                if (lastEventId >=0 || lastEventId != curEventId) {
+                    currEvent = new XEventImpl();
+                    eventsPerAttribute.add(currEvent);
+                }
+
+                lastEventId = curEventId;
+                XAttributeMap attributes = currEvent.getAttributes();
+                String key = resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
+                XAttribute attrVal = new XAttributeLiteralImpl(key, resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_VAL));
+                attributes.put(key, attrVal);
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return events;
+    }
+
+    public List<String> getAttrsPerAttrSet(List<List<String>> attributeSets) {
+        List<String> keys = new LinkedList<>();
+        try {
+            Connection connection = getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT " + EVENT_ATTRIBUTES_ATTRIBUTE_KEY + " FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSetIndex);
+            while (resultSet.next()) {
+                keys.add(resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_KEY));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return keys;
     }
 }
