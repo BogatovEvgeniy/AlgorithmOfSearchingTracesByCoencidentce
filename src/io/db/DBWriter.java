@@ -161,7 +161,7 @@ public class DBWriter {
         try {
             insertEventIfNotExist(conn, eventIndex);
 
-            List<Integer> eventIds= getEventsForPerRangeAndAttrSet(conn, event, rangeNum, attrSetIndex);
+            List<Integer> eventIds = getEventsForPerRangeAndAttrSet(conn, event, rangeNum, attrSetIndex);
             if (!eventIds.contains(eventIndex)) {
                 for (String key : attributeSet) {
                     conn.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (range_num, attr_set_index, eventId, attribute_key, attribute_val) " +
@@ -275,16 +275,15 @@ public class DBWriter {
             Connection connection = getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(
                     "SELECT * FROM " + TABLE_EVENT_ATTRIBUTES +
-                    " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSetIndex +
-                    " AND " + EVENT_ATTRIBUTES_RANGE_NUM + "=" + rangeId);
+                            " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSetIndex +
+                            " AND " + EVENT_ATTRIBUTES_RANGE_NUM + "=" + rangeId);
 
             int lastEventId = -1;
-            int attrS = -1;
             XEventImpl currEvent = null;
             while (resultSet.next()) {
                 int curEventId = resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
 
-                if (lastEventId >=0 || lastEventId != curEventId) {
+                if (lastEventId <= 0 || lastEventId != curEventId) {
                     currEvent = new XEventImpl();
                     eventsPerAttributeSet.add(currEvent);
                 }
