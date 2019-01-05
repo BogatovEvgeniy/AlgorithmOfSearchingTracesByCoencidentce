@@ -1,15 +1,15 @@
 package algorithms.search.trace;
 
 import algorithms.ILogAlgorithm;
+import algorithms.Utils;
 import io.db.DBWriter;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
+import utils.AttributeUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Tha algorithm assumes that his input is an set of event in an one trace.
@@ -30,7 +30,7 @@ import java.util.TreeMap;
  * 10. Calculate average value for all stored data on the 5th step
  */
 
-public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Integer, Float>> {
+public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<AttrSetWeight>> {
 
     public static final int FAIL_COUNT_UNLIMITED = -1;
     private final DBWriter dbWriter;
@@ -38,7 +38,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
     private int windowSize;
     private int maxAllowedFails;
     private float minimalCoincidence;
-    private TreeMap<Integer, Float> coincidenceForEachAttributeInSet = new TreeMap<>();
+    private List<AttrSetWeight> coincidenceForEachAttributeInSet = new LinkedList<>();
     private int windowIndex;
 
 
@@ -58,7 +58,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
      * 1. Define set of events
      */
     @Override
-    public Map<Integer, Float> proceed(XLog originLog) {
+    public List<AttrSetWeight> proceed(XLog originLog) {
         checkLog(originLog);
         while (moreEventsAvailable(originLog, windowIndex)) {
 
@@ -83,12 +83,18 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
         /**
          *  10. Calculate average value for all stored data on the 5th step
          */
-
-        for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
-            List<String> attributes = getAttrForIndex(attrSetIndex);
-            int rangeSize = originLog.get(0).size();
-            int[] rangeIndexes = fillArrayOfInts(0, rangeSize);
-            coincidenceForEachAttributeInSet.put(attrSetIndex, calculateWeights(attributes, attrSetIndex, rangeIndexes));
+        try {
+            for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
+                List<String> attributes = getAttrForIndex(attrSetIndex);
+                int rangeSize = originLog.get(0).size();
+                List<XEvent> valueSetsPerAttr = getValuesForAttrIndex(attrSetIndex, attributes, 0, rangeSize);
+                int[] rangeIndexes = fillArrayOfInts(0, rangeSize);
+                for (XEvent xEvent : valueSetsPerAttr) {
+                    coincidenceForEachAttributeInSet.add(calculateWeights(attributes, attrSetIndex, rangeIndexes, xEvent.getAttributes()));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
         }
         return coincidenceForEachAttributeInSet;
     }
@@ -103,30 +109,38 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
         return result;
     }
 
-    private List<String> getAttrForIndex(int attrSetIndex) {
+    private List<String> getAttrForIndex(int attrSetIndex) throws SQLException {
         return dbWriter.getAttrsPerAttrSet(attrSetIndex);
     }
 
-    private List<XEvent> getEventList(int attrSetIndex, int rangeId) {
+    private List<XEvent> getValuesForAttrIndex(int attrSetIndex, List<String> attributes, int fromRangeIndex, int toRangeIndex) throws SQLException {
+        return dbWriter.getValueSetsPerAttrSet(attrSetIndex, attributes, fromRangeIndex, toRangeIndex);
+    }
+
+    private List<XEvent> getEventList(int attrSetIndex, int rangeId) throws SQLException {
         return dbWriter.getEventsPerAttrSet(attrSetIndex, rangeId);
     }
 
-    // TODO Primitive code with MAGIC NUMBERS but it's enough here
-    private float calculateWeights(List<String> attributes, int attrSetIndex, int[] ranges) {
-        int rangeHalfSize = ranges.length / 2;
-        while (rangeHalfSize > 1) {
-            float leftSide = calculateWeights(attributes, attrSetIndex, Arrays.copyOf(ranges, rangeHalfSize));
-            float rightSide = calculateWeights(attributes, attrSetIndex, Arrays.copyOfRange(ranges, rangeHalfSize, ranges.length));
-            return (leftSide + rightSide) / 2;
+    private AttrSetWeight calculateWeights(List<String> attributes, int attrSetIndex, int[] ranges, XAttributeMap valueSetPerAttr) throws SQLException {
+
+        float sumOfWeights = 0;
+        int comparedVals = 0;
+        Map<Integer, Float> rangesUsedInCalculation = new TreeMap<>();
+
+        for (int range : ranges) {
+            List<XEvent> eventList = getEventList(attrSetIndex, range);
+            boolean isWindowContainsValuesSet = AttributeUtils.eventListContainsEqualValues(eventList, valueSetPerAttr);
+
+            if (isWindowContainsValuesSet) {
+                float rangeWeight = calculateWeightPerStep(eventList, attributes);
+                sumOfWeights += rangeWeight;
+                comparedVals++;
+                rangesUsedInCalculation.put(range, rangeWeight);
+            }
         }
 
-        if (ranges.length == 2) {
-            float firstRangeWeight = calculateWeightPerStep(getEventList(attrSetIndex, ranges[0]), attributes);
-            float secondRangeWeight = calculateWeightPerStep(getEventList(attrSetIndex, ranges[1]), attributes);
-            return (firstRangeWeight + secondRangeWeight) / 2;
-        } else {
-            return calculateWeightPerStep(getEventList(attrSetIndex, ranges[0]), attributes);
-        }
+        return new AttrSetWeight(Utils.sortMap(rangesUsedInCalculation),
+                valueSetPerAttr, sumOfWeights / comparedVals);
     }
 
     private float calculateWeightPerStep(List<XEvent> events, List<String> attributes) {
@@ -242,38 +256,4 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<Map<Int
 
 
     abstract List<List<String>> getAttributeSet(XLog log, int windowIndex, int windowSize);
-
-    public class AttributeSetCoincidenceOnRange {
-        private final float commonConcidence;
-        private int windowIndex;
-        private int lastIndex;
-        private List<String> attributeSet;
-
-        public AttributeSetCoincidenceOnRange(List<String> attributeSet, float commonCoincidence, int windowIndex, int lastIndex) {
-            this.attributeSet = attributeSet;
-            this.commonConcidence = commonCoincidence;
-            this.windowIndex = windowIndex;
-            this.lastIndex = lastIndex;
-        }
-
-        @Override
-        public String toString() {
-            return "AttributeSetCoincidenceOnRange{" +
-                    "commonConcidence=" + commonConcidence +
-                    ", windowIndex=" + windowIndex +
-                    ", lastIndex=" + lastIndex +
-                    ", attributeSet=" + attributeSet +
-                    '}';
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "BaseWeightSearchAlgorithm{" +
-                "windowSize=" + windowSize +
-                ", maxAllowedFails=" + maxAllowedFails +
-                ", minimalCoincidence=" + minimalCoincidence +
-                ", attributeSets=" + attributeSets +
-                '}';
-    }
 }

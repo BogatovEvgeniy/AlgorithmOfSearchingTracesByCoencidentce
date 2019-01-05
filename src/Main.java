@@ -1,9 +1,6 @@
 import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
 import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
-import algorithms.search.trace.BaseWeightSearchAlgorithm;
-import algorithms.search.trace.PredefibedAttributeWeightsSearchAlgorithm;
-import algorithms.search.trace.TraceSearchingAlgorithm;
-import algorithms.search.trace.ITraceSearchingAlgorithm;
+import algorithms.search.trace.*;
 import algorithms.search.trace.locator.invariant.Node;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
@@ -77,7 +74,7 @@ public class Main {
     private static void launchParsingAlgorithms() {
         long startTime = System.currentTimeMillis();
 
-        String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
+        String srcFileName = "400_traces_of_BPI_Challenge";
         String destFileName = "400_traces";
         String srcFilePath = DESTINATION_DIR + srcFileName + FILE_EXTENSION;
 
@@ -93,9 +90,9 @@ public class Main {
             logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
             // Search for attributes weights
             PredefibedAttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
-            Map<Integer, Float> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
-            for (Integer attrSetIndex : weightsValues.keySet()) {
-                System.out.println(weightsValues.get(attrSetIndex));
+            List<AttrSetWeight> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
+            for (AttrSetWeight attrSetWeight : weightsValues) {
+                System.out.println(attrSetWeight);
             }
 
             /*// Build an map which will reflect an majority of each attribute for future analyse
@@ -116,7 +113,7 @@ public class Main {
         List<List<String>> attributeSets = new LinkedList<>();
         Set<Pair<Integer, Integer>> rangeSet = initRangesFor400TracesLog();
         initAttributeSetsFor400TraceLog(attributeSets);
-        return new PredefibedAttributeWeightsSearchAlgorithm(5,
+        return new PredefibedAttributeWeightsSearchAlgorithm(3,
                 PredefibedAttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
                 0.0f,
                 attributeSets);

@@ -6,7 +6,7 @@ public class Utils {
 
 
     public static Map<Integer, Float> sortMap(Map<Integer, Float> traceCoincidenceMap) {
-        Map<Integer, Float> result = new HashMap<>();
+        Map<Integer, Float> result = new TreeMap<>();
         List<Float> values = new LinkedList<>();
         values.addAll(traceCoincidenceMap.values());
         Collections.sort(values, Float::compare);

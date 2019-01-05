@@ -3,9 +3,9 @@ package io.db;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
-import org.deckfour.xes.model.impl.XAttributeContainerImpl;
 import org.deckfour.xes.model.impl.XAttributeLiteralImpl;
 import org.deckfour.xes.model.impl.XEventImpl;
+import utils.AttributeUtils;
 
 import java.sql.*;
 import java.util.*;
@@ -269,10 +269,10 @@ public class DBWriter {
         return DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
-    public List<XEvent> getEventsPerAttrSet(int attrSetIndex, int rangeId) {
+    public List<XEvent> getEventsPerAttrSet(int attrSetIndex, int rangeId) throws SQLException {
         List<XEvent> eventsPerAttributeSet = new LinkedList<>();
+        Connection connection = getConnection();
         try {
-            Connection connection = getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(
                     "SELECT * FROM " + TABLE_EVENT_ATTRIBUTES +
                             " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSetIndex +
@@ -283,7 +283,7 @@ public class DBWriter {
             while (resultSet.next()) {
                 int curEventId = resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
 
-                if (lastEventId <= 0 || lastEventId != curEventId) {
+                if (lastEventId < 0 || lastEventId != curEventId) {
                     currEvent = new XEventImpl();
                     eventsPerAttributeSet.add(currEvent);
                 }
@@ -294,25 +294,66 @@ public class DBWriter {
                 XAttribute attrVal = new XAttributeLiteralImpl(key, resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_VAL));
                 attributes.put(key, attrVal);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            connection.close();
         }
 
         return eventsPerAttributeSet;
     }
 
-    public List<String> getAttrsPerAttrSet(int attrSetIndex) {
+    public List<String> getAttrsPerAttrSet(int attrSetIndex) throws SQLException {
         List<String> keys = new LinkedList<>();
+        Connection connection = getConnection();
         try {
-            Connection connection = getConnection();
-            ResultSet resultSet = connection.createStatement().executeQuery("SELECT " + EVENT_ATTRIBUTES_ATTRIBUTE_KEY + " FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSetIndex);
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT " + EVENT_ATTRIBUTES_ATTRIBUTE_KEY + " FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSetIndex + " GROUP  BY " + EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
             while (resultSet.next()) {
                 keys.add(resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_KEY));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            connection.close();
         }
 
         return keys;
+    }
+
+    public List<XEvent> getValueSetsPerAttrSet(int attrSetIndex, List<String> attributeKeys, int fromRangeIndex, int toRangeIndex) throws SQLException {
+        List<XEvent> eventsPerAttributeSet = new LinkedList<>();
+
+        if (fromRangeIndex > toRangeIndex) {
+            throw new IllegalArgumentException("FROM  bigger than TO. Range indexes");
+        }
+
+        Connection connection = getConnection();
+        try {
+            ResultSet resultSet = connection.createStatement().executeQuery(
+                    "SELECT * FROM " + TABLE_EVENT_ATTRIBUTES +
+                            " WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX + "=" + attrSetIndex);
+
+            int lastEventId = -1;
+            XEventImpl currEvent = null;
+            while (resultSet.next()) {
+                int curEventId = resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
+
+                if (lastEventId < 0 || lastEventId != curEventId) {
+                    if(AttributeUtils.isKeyValSetAbsent(eventsPerAttributeSet, currEvent) ||
+                            (eventsPerAttributeSet.size() == 0 && currEvent != null)){
+                        eventsPerAttributeSet.add(currEvent);
+                    }
+
+                    currEvent = new XEventImpl();
+                }
+
+                lastEventId = curEventId;
+                XAttributeMap currEventAttr = currEvent.getAttributes();
+                String key = resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
+                XAttribute attrVal = new XAttributeLiteralImpl(key, resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_VAL));
+                if (attributeKeys.contains(key)) {
+                    currEventAttr.put(key, attrVal);
+                }
+            }
+        } finally {
+            connection.close();
+        }
+        return eventsPerAttributeSet;
     }
 }
