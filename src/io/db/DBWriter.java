@@ -1,5 +1,6 @@
 package io.db;
 
+import algorithms.search.trace.AttributeSetWeightPerRanges;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
@@ -47,6 +48,28 @@ public class DBWriter {
     public static final int ROW_SET_FIRST_COLUMN_INDEX = 1;
     public static final int ROW_SET_EMPTY_INDEX = 0;
     public static final String DISS_DB = "'diss_db'";
+
+
+    // AttrSets table
+    private static final String TABLE_ATTR_SETS = "attribute_sets";
+    private static final String ATTR_SETS_SET_ID = "attribute_set_id";
+    private static final String ATTR_SETS_ATTR_NAME = "attribute_name";
+
+    // ValueSets tab1le
+    private static final String TABLE_VALUE_SETS = "value_sets";
+    private static final String VALUE_SET_NUMBER = "value_set_num";
+    private static final String VALUE_SET_KEY = "attr_key";
+    private static final String VALUE_SET_NAME = "attr_value";
+
+    //WeightResultsTable
+    private static final String TABLE_WEIGHT_RESILTS = "weights_table";
+    private static final String WEIGHTS_TABLE_ID = "id";
+    private static final String WEIGHTS_RANGE_NUM = "range_num";
+    private static final String WEIGHTS_ATTR_SET_NUM = "attr_set_num";
+    private static final String WEIGHTS_VAL_SET_NUM = "val_set_num";
+    private static final String WEIGHTS_WEIGHT = "weight";
+    private static final String WEIGHTS_SUMMARY_WEIGHT = "summary_weight";
+    public static final int FIRST_INDEX_VALUE = 0;
 
     public static DBWriter init() {
         //STEP 2: Register JDBC driver
@@ -335,8 +358,8 @@ public class DBWriter {
                 int curEventId = resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
 
                 if (lastEventId < 0 || lastEventId != curEventId) {
-                    if(AttributeUtils.isKeyValSetAbsent(eventsPerAttributeSet, currEvent) ||
-                            (eventsPerAttributeSet.size() == 0 && currEvent != null)){
+                    if (AttributeUtils.isKeyValSetAbsent(eventsPerAttributeSet, currEvent) ||
+                            (eventsPerAttributeSet.size() == 0 && currEvent != null)) {
                         eventsPerAttributeSet.add(currEvent);
                     }
 
@@ -356,4 +379,100 @@ public class DBWriter {
         }
         return eventsPerAttributeSet;
     }
+
+    public void storeAttributeSets(List<List<String>> attributeSets) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            String[] attributes = attributeSets.get(FIRST_INDEX_VALUE).toArray(new String[]{});
+            String insertIntoPrefix = "INSERT INTO " + TABLE_ATTR_SETS + "(attribute_set_id, attribute_name)";
+            String insertQuery = insertIntoPrefix + " VALUES (" + FIRST_INDEX_VALUE + ", '" + attributes[FIRST_INDEX_VALUE] + "')";
+            connection.createStatement().executeUpdate(insertQuery);
+            for (int attrIndex = 1; attrIndex < attributes.length; attrIndex++) {
+                connection.createStatement().execute(insertIntoPrefix + " VALUES (" + FIRST_INDEX_VALUE + ", '" + attributes[attrIndex] + "')");
+            }
+
+            for (int attrSet = 1; attrSet < attributeSets.size(); attrSet++) {
+                for (int attrIndex = 0; attrIndex < attributeSets.get(attrSet).size(); attrIndex++) {
+                    connection.createStatement().execute(insertIntoPrefix + " VALUES (" + attrSet + ", '" + attributeSets.get(attrSet).get(attrIndex) + "')");
+                }
+            }
+        } catch (
+                SQLException ex)
+
+        {
+            ex.printStackTrace();
+        } finally
+
+        {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    public void storeValueSets(int attrSetIndex, List<XEvent> valueSetsPerAttr) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+
+            int lastEventSetNum = -1;
+
+            if (attrSetIndex > 0) {
+                ResultSet resultSet = connection.createStatement().executeQuery("SELECT MAX(value_set_num) FROM value_sets");
+                if (resultSet.next()) {
+                    lastEventSetNum = resultSet.getInt(1);
+                }
+            }
+
+            for (int eventIndex = 0; eventIndex < valueSetsPerAttr.size(); eventIndex++) {
+                lastEventSetNum ++;
+                XAttributeMap attributes = valueSetsPerAttr.get(eventIndex).getAttributes();
+                for (String key : attributes.keySet()) {
+                    String insertQuery = "INSERT INTO " + TABLE_VALUE_SETS + "(value_set_num, attr_set_id, attr_key, attr_value)" + " VALUES ("
+                            + lastEventSetNum
+                            + ", " + attrSetIndex
+                            + ", '" + key
+                            + "', '" + attributes.get(key)
+                            + "')";
+                    connection.createStatement().execute(insertQuery);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+//    public void storeWeightCalculations(AttributeSetWeightPerRanges weightPerRanges) {
+//        Connection connection = null;
+//        try {
+//            connection = getConnection();
+//            String insertQuery = ;
+//            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+//
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//        } finally {
+//            if (connection != null) {
+//                try {
+//                    connection.close();
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 }

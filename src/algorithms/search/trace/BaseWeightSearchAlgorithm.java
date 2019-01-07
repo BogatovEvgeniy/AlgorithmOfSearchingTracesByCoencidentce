@@ -28,9 +28,11 @@ import java.util.*;
  * 8. Move window one event down
  * 9. Repeat 4 - 7
  * 10. Calculate average value for all stored data on the 5th step
+ * 11. Store results in DB
+ * 12. Return results for print as a list of objects {@link AttributeSetWeightPerRanges} : values|keys|ranges|weights_per_range|summary_weight
  */
 
-public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<AttrSetWeight>> {
+public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<AttributeSetWeightPerRanges>> {
 
     public static final int FAIL_COUNT_UNLIMITED = -1;
     private final DBWriter dbWriter;
@@ -38,7 +40,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
     private int windowSize;
     private int maxAllowedFails;
     private float minimalCoincidence;
-    private List<AttrSetWeight> coincidenceForEachAttributeInSet = new LinkedList<>();
+    private List<AttributeSetWeightPerRanges> coincidenceForEachAttributeInSet = new LinkedList<>();
     private int windowIndex;
 
 
@@ -58,7 +60,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
      * 1. Define set of events
      */
     @Override
-    public List<AttrSetWeight> proceed(XLog originLog) {
+    public List<AttributeSetWeightPerRanges> proceed(XLog originLog) {
         checkLog(originLog);
         while (moreEventsAvailable(originLog, windowIndex)) {
 
@@ -83,20 +85,39 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         /**
          *  10. Calculate average value for all stored data on the 5th step
          */
+        calculateWeightsTable(originLog);
+
+        /**
+         * Return results for print
+         */
+        return coincidenceForEachAttributeInSet;
+    }
+
+    private void calculateWeightsTable(XLog originLog) {
+        dbWriter.storeAttributeSets(attributeSets);
+
         try {
             for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
                 List<String> attributes = getAttrForIndex(attrSetIndex);
                 int rangeSize = originLog.get(0).size();
                 List<XEvent> valueSetsPerAttr = getValuesForAttrIndex(attrSetIndex, attributes, 0, rangeSize);
+                dbWriter.storeValueSets(attrSetIndex, valueSetsPerAttr);
+
                 int[] rangeIndexes = fillArrayOfInts(0, rangeSize);
                 for (XEvent xEvent : valueSetsPerAttr) {
-                    coincidenceForEachAttributeInSet.add(calculateWeights(attributes, attrSetIndex, rangeIndexes, xEvent.getAttributes()));
+                    AttributeSetWeightPerRanges weightPerRanges = calculateWeights(attributes, attrSetIndex, rangeIndexes, xEvent.getAttributes());
+                    coincidenceForEachAttributeInSet.add(weightPerRanges);
+
+                    /**
+                     * 11. Store results in DB
+                     */
+//                    dbWriter.storeWeightCalculations(weightPerRanges);
                 }
             }
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return coincidenceForEachAttributeInSet;
+
     }
 
     private int[] fillArrayOfInts(int i, int rangeSize) {
@@ -121,7 +142,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         return dbWriter.getEventsPerAttrSet(attrSetIndex, rangeId);
     }
 
-    private AttrSetWeight calculateWeights(List<String> attributes, int attrSetIndex, int[] ranges, XAttributeMap valueSetPerAttr) throws SQLException {
+    private AttributeSetWeightPerRanges calculateWeights(List<String> attributes, int attrSetIndex, int[] ranges, XAttributeMap valueSetPerAttr) throws SQLException {
 
         float sumOfWeights = 0;
         int comparedVals = 0;
@@ -139,7 +160,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
             }
         }
 
-        return new AttrSetWeight(Utils.sortMap(rangesUsedInCalculation),
+        return new AttributeSetWeightPerRanges(Utils.sortMap(rangesUsedInCalculation),
                 valueSetPerAttr, sumOfWeights / comparedVals);
     }
 

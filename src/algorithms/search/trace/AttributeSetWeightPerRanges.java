@@ -4,16 +4,16 @@ import org.deckfour.xes.model.XAttributeMap;
 
 import java.util.Map;
 
-public class AttrSetWeight {
+public class AttributeSetWeightPerRanges {
 
     Map<Integer, Float> rangesWeights;
     XAttributeMap keysValues;
     float weight;
 
-    public AttrSetWeight() {
+    public AttributeSetWeightPerRanges() {
     }
 
-    public AttrSetWeight(Map<Integer, Float> rangesWeights, XAttributeMap keysValues, float weight) {
+    public AttributeSetWeightPerRanges(Map<Integer, Float> rangesWeights, XAttributeMap keysValues, float weight) {
         this.rangesWeights = rangesWeights;
         this.keysValues = keysValues;
         this.weight = weight;
@@ -45,7 +45,7 @@ public class AttrSetWeight {
 
     @Override
     public String toString() {
-        return "AttrSetWeight{" +
+        return "AttributeSetWeightPerRanges{" +
                 "rangeIndexes=" + rangesWeights.keySet().toString() +
                 ", rangeWeights=" + rangesWeights.values().toString() +
                 ", keys=" + keysValues.keySet().toString() +
