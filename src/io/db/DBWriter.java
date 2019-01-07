@@ -456,23 +456,41 @@ public class DBWriter {
         }
     }
 
-//    public void storeWeightCalculations(AttributeSetWeightPerRanges weightPerRanges) {
-//        Connection connection = null;
-//        try {
-//            connection = getConnection();
-//            String insertQuery = ;
-//            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-//
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        } finally {
-//            if (connection != null) {
-//                try {
-//                    connection.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
+    public void storeWeightCalculations(int attrSetIndex, AttributeSetWeightPerRanges weightPerRanges) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            Map<Integer, Float> rangeIndexes = weightPerRanges.getRangeIndexes();
+            for (Integer rangeNum : rangeIndexes.keySet()) {
+                StringBuilder insertQuery = new StringBuilder("INSERT INTO weights_table(range_num, weight, attr_set, value_set) VALUES(");
+                insertQuery.append(rangeNum);
+                insertQuery.append(",");
+                insertQuery.append(rangeIndexes.get(rangeNum));
+                insertQuery.append(",'");
+                insertQuery.append(attrSetIndex);
+                insertQuery.append("','");
+                insertQuery.append(weightPerRanges.getValues().values().toString());
+                insertQuery.append("')");
+                connection.createStatement().execute(insertQuery.toString());
+            }
+
+            StringBuilder insertQuery = new StringBuilder("INSERT INTO weights_table(attr_set, summary_weight) VALUES(");
+            insertQuery.append(attrSetIndex);
+            insertQuery.append(",");
+            insertQuery.append(weightPerRanges.getWeight());
+            insertQuery.append(")");
+            connection.createStatement().execute(insertQuery.toString());
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

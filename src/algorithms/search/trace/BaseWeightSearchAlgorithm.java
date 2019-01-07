@@ -111,7 +111,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
                     /**
                      * 11. Store results in DB
                      */
-//                    dbWriter.storeWeightCalculations(weightPerRanges);
+                    dbWriter.storeWeightCalculations(attrSetIndex, weightPerRanges);
                 }
             }
         } catch (SQLException e){
