@@ -73,7 +73,7 @@ public class Main {
     private static void launchParsingAlgorithms() {
         long startTime = System.currentTimeMillis();
 
-        String srcFileName = "400_traces_of_BPI_Challenge";
+        String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
         String destFileName = "400_traces";
         String srcFilePath = DESTINATION_DIR + srcFileName + FILE_EXTENSION;
 
@@ -132,7 +132,7 @@ public class Main {
         attributeSets.add(Arrays.asList("org:group", "org:resource","org:role","product"));
         attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role"));
         attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
-        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
+        attributeSets.add(Arrays.asList( ));
     }
 
     private static Set<Pair<Integer, Integer>> initRangesFor400TracesLog() {

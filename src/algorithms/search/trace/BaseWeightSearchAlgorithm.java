@@ -62,25 +62,25 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
     @Override
     public List<AttributeSetWeightPerRanges> proceed(XLog originLog) {
         checkLog(originLog);
-        while (moreEventsAvailable(originLog, windowIndex)) {
-
-            /**
-             *  2. Define events in a window
-             */
-            int lastWindowEvent = windowIndex + windowSize;
-            List<XEvent> eventRange = originLog.get(0).subList(windowIndex, lastWindowEvent);
-
-            /**
-             * 3. Define attributeSets per Window
-             */
-            attributeCoincidence(originLog, eventRange);
-
-            /**
-             *  8. Move window one event down
-             */
-            windowIndex++;
-            System.out.println("Index:" + windowIndex);
-        }
+//        while (moreEventsAvailable(originLog, windowIndex)) {
+//
+//            /**
+//             *  2. Define events in a window
+//             */
+//            int lastWindowEvent = windowIndex + windowSize;
+//            List<XEvent> eventRange = originLog.get(0).subList(windowIndex, lastWindowEvent);
+//
+//            /**
+//             * 3. Define attributeSets per Window
+//             */
+//            attributeCoincidence(originLog, eventRange);
+//
+//            /**
+//             *  8. Move window one event down
+//             */
+//            windowIndex++;
+//            System.out.println("Index:" + windowIndex);
+//        }
 
         /**
          *  10. Calculate average value for all stored data on the 5th step
@@ -103,8 +103,8 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
                 List<XEvent> valueSetsPerAttr = getValuesForAttrIndex(attrSetIndex, attributes, 0, rangeSize);
                 dbWriter.storeValueSets(attrSetIndex, valueSetsPerAttr);
 
-                int[] rangeIndexes = fillArrayOfInts(0, rangeSize);
                 for (XEvent xEvent : valueSetsPerAttr) {
+                    List<Integer> rangeIndexes = dbWriter.getRangeSetPerValueSet(attrSetIndex, xEvent.getAttributes());
                     AttributeSetWeightPerRanges weightPerRanges = calculateWeights(attributes, attrSetIndex, rangeIndexes, xEvent.getAttributes());
                     coincidenceForEachAttributeInSet.add(weightPerRanges);
 
@@ -142,7 +142,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         return dbWriter.getEventsPerAttrSet(attrSetIndex, rangeId);
     }
 
-    private AttributeSetWeightPerRanges calculateWeights(List<String> attributes, int attrSetIndex, int[] ranges, XAttributeMap valueSetPerAttr) throws SQLException {
+    private AttributeSetWeightPerRanges calculateWeights(List<String> attributes, int attrSetIndex, List<Integer>  ranges, XAttributeMap valueSetPerAttr) throws SQLException {
 
         float sumOfWeights = 0;
         int comparedVals = 0;
@@ -166,17 +166,19 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
 
     private float calculateWeightPerStep(List<XEvent> events, List<String> attributes) {
         float coincidenceInWindow = 0f;
+        int countOfComparision = 0;
         for (int firstComparisonValIndex = 0; firstComparisonValIndex < events.size() - 1; firstComparisonValIndex++) {
             // Here were added one more cycle to be able compare each event with the other in the step
             for (int secondComparisionValIndex = firstComparisonValIndex + 1; secondComparisionValIndex < events.size(); secondComparisionValIndex++) {
                 XAttributeMap firstEventAttributes = events.get(firstComparisonValIndex).getAttributes();
                 XAttributeMap secondEventAttributes = events.get(secondComparisionValIndex).getAttributes();
-                coincidenceInWindow = calculateCoincidenceEventPair(attributes, firstEventAttributes, secondEventAttributes);
+                coincidenceInWindow += calculateCoincidenceEventPair(attributes, firstEventAttributes, secondEventAttributes);
+                countOfComparision ++;
             }
         }
 
         if (coincidenceInWindow > minimalCoincidence) {
-            return coincidenceInWindow;
+            return coincidenceInWindow/countOfComparision;
         } else {
             return 0f;
         }

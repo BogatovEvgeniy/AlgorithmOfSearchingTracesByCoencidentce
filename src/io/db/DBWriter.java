@@ -73,7 +73,7 @@ public class DBWriter {
 
     public static DBWriter init() {
         //STEP 2: Register JDBC driver
-        truncateTables();
+//        truncateTables();
         return new DBWriter();
     }
 
@@ -431,7 +431,7 @@ public class DBWriter {
             }
 
             for (int eventIndex = 0; eventIndex < valueSetsPerAttr.size(); eventIndex++) {
-                lastEventSetNum ++;
+                lastEventSetNum++;
                 XAttributeMap attributes = valueSetsPerAttr.get(eventIndex).getAttributes();
                 for (String key : attributes.keySet()) {
                     String insertQuery = "INSERT INTO " + TABLE_VALUE_SETS + "(value_set_num, attr_set_id, attr_key, attr_value)" + " VALUES ("
@@ -492,5 +492,45 @@ public class DBWriter {
                 }
             }
         }
+    }
+
+    public List<Integer> getRangeSetPerValueSet(int attrSetIndex, XAttributeMap attributes) {
+        List<Integer> ranges = new LinkedList<>();
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            StringBuilder selectQuery = new StringBuilder("SELECT range_num FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE ");
+            selectQuery.append(EVENT_ATTRIBUTES_ATTR_SET_INDEX);
+            selectQuery.append("=");
+            selectQuery.append(attrSetIndex);
+            for (String key : attributes.keySet()) {
+                selectQuery.append(" AND ");
+                selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
+                selectQuery.append("='");
+                selectQuery.append(key);
+                selectQuery.append("'");
+                selectQuery.append(" AND ");
+                selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_VAL);
+                selectQuery.append("='");
+                selectQuery.append(attributes.get(key));
+                selectQuery.append("'");
+                selectQuery.append(" GROUP BY range_num");
+            }
+            ResultSet resultSet = connection.createStatement().executeQuery(selectQuery.toString());
+            while (resultSet.next()){
+                ranges.add(resultSet.getInt(EVENT_ATTRIBUTES_RANGE_NUM));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ranges;
     }
 }
