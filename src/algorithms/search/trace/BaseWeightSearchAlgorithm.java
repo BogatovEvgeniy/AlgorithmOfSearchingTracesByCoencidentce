@@ -62,25 +62,25 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
     @Override
     public List<AttributeSetWeightPerRanges> proceed(XLog originLog) {
         checkLog(originLog);
-//        while (moreEventsAvailable(originLog, windowIndex)) {
-//
-//            /**
-//             *  2. Define events in a window
-//             */
-//            int lastWindowEvent = windowIndex + windowSize;
-//            List<XEvent> eventRange = originLog.get(0).subList(windowIndex, lastWindowEvent);
-//
-//            /**
-//             * 3. Define attributeSets per Window
-//             */
-//            attributeCoincidence(originLog, eventRange);
-//
-//            /**
-//             *  8. Move window one event down
-//             */
-//            windowIndex++;
-//            System.out.println("Index:" + windowIndex);
-//        }
+        while (moreEventsAvailable(originLog, windowIndex)) {
+
+            /**
+             *  2. Define events in a window
+             */
+            int lastWindowEvent = windowIndex + windowSize;
+            List<XEvent> eventRange = originLog.get(0).subList(windowIndex, lastWindowEvent);
+
+            /**
+             * 3. Define attributeSets per Window
+             */
+            attributeCoincidence(originLog, eventRange);
+
+            /**
+             *  8. Move window one event down
+             */
+            windowIndex++;
+            System.out.println("Index:" + windowIndex);
+        }
 
         /**
          *  10. Calculate average value for all stored data on the 5th step
