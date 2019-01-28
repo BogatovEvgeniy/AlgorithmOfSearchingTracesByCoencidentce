@@ -42,6 +42,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
     private float minimalCoincidence;
     private List<AttributeSetWeightPerRanges> coincidenceForEachAttributeInSet = new LinkedList<>();
     private int windowIndex;
+    private XLog originLog;
 
 
     // TODO Replace minimalCoincidence. Minimal coincidence through function or through listener. Window or Log or Range -> CoincidenceProcessor
@@ -61,6 +62,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
      */
     @Override
     public List<AttributeSetWeightPerRanges> proceed(XLog originLog) {
+        this.originLog = originLog;
         checkLog(originLog);
         while (moreEventsAvailable(originLog, windowIndex)) {
 
@@ -104,7 +106,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
                 dbWriter.storeValueSets(attrSetIndex, valueSetsPerAttr);
 
                 for (XEvent xEvent : valueSetsPerAttr) {
-                    List<Integer> rangeIndexes = dbWriter.getRangeSetPerValueSet(attrSetIndex, xEvent.getAttributes());
+                    List<Integer> rangeIndexes = dbWriter.getRangeSetPerValueSet(attrSetIndex, xEvent.getAttributes(), attributes);
                     AttributeSetWeightPerRanges weightPerRanges = calculateWeights(attributes, attrSetIndex, rangeIndexes, xEvent.getAttributes());
                     coincidenceForEachAttributeInSet.add(weightPerRanges);
 
@@ -161,7 +163,12 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         }
 
         return new AttributeSetWeightPerRanges(Utils.sortMap(rangesUsedInCalculation),
-                valueSetPerAttr, sumOfWeights / comparedVals);
+                valueSetPerAttr, sumOfWeights / getEventsCountInLog());
+    }
+
+    // Here we assume that the log is one big set of events
+    private int getEventsCountInLog() {
+        return originLog.get(0).size();
     }
 
     private float calculateWeightPerStep(List<XEvent> events, List<String> attributes) {

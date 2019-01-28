@@ -358,7 +358,7 @@ public class DBWriter {
                 int curEventId = resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
 
                 if (lastEventId < 0 || lastEventId != curEventId) {
-                    if (AttributeUtils.isKeyValSetAbsent(eventsPerAttributeSet, currEvent) ||
+                    if (AttributeUtils.isKeyValSetDifferent(eventsPerAttributeSet, currEvent) ||
                             (eventsPerAttributeSet.size() == 0 && currEvent != null)) {
                         eventsPerAttributeSet.add(currEvent);
                     }
@@ -494,7 +494,7 @@ public class DBWriter {
         }
     }
 
-    public List<Integer> getRangeSetPerValueSet(int attrSetIndex, XAttributeMap attributes) {
+    public List<Integer> getRangeSetPerValueSet(int attrSetIndex, XAttributeMap eventAttributes, List<String> attributes) {
         List<Integer> ranges = new LinkedList<>();
         Connection connection = null;
         try {
@@ -503,19 +503,34 @@ public class DBWriter {
             selectQuery.append(EVENT_ATTRIBUTES_ATTR_SET_INDEX);
             selectQuery.append("=");
             selectQuery.append(attrSetIndex);
-            for (String key : attributes.keySet()) {
-                selectQuery.append(" AND ");
+            selectQuery.append(" AND (");
+
+            // Travers only through attributes in the attribute set
+            selectQuery.append("(");
+            selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
+            selectQuery.append("='");
+            selectQuery.append(attributes.get(0));
+            selectQuery.append("'");
+            selectQuery.append(" AND ");
+            selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_VAL);
+            selectQuery.append("='");
+            selectQuery.append(eventAttributes.get(attributes.get(0)));
+            selectQuery.append("')");
+
+            for (int attributeIndex = 1; attributeIndex < attributes.size(); attributeIndex++) {
+                selectQuery.append(" OR (");
                 selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
                 selectQuery.append("='");
-                selectQuery.append(key);
+                selectQuery.append(attributes.get(attributeIndex));
                 selectQuery.append("'");
                 selectQuery.append(" AND ");
                 selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_VAL);
                 selectQuery.append("='");
-                selectQuery.append(attributes.get(key));
-                selectQuery.append("'");
-                selectQuery.append(" GROUP BY range_num");
+                selectQuery.append(eventAttributes.get(attributes.get(attributeIndex)));
+                selectQuery.append("')");
             }
+
+            selectQuery.append(") GROUP BY range_num");
             ResultSet resultSet = connection.createStatement().executeQuery(selectQuery.toString());
             while (resultSet.next()){
                 ranges.add(resultSet.getInt(EVENT_ATTRIBUTES_RANGE_NUM));
