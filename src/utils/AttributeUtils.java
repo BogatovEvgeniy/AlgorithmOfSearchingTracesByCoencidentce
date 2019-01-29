@@ -8,33 +8,36 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AttributeUtils {
-    public static boolean isKeyValSetDifferent(List<XEvent> eventsPerAttributeSet, XEventImpl currEvent) {
+    public static boolean containsDuplicate(List<XEvent> eventsPerAttributeSet, XEventImpl currEvent) {
+
+        boolean containsSameEvent = false;
 
         if (currEvent == null || eventsPerAttributeSet == null || eventsPerAttributeSet.size() == 0) {
-            return false;
+            return true;
         }
 
-        boolean isAbsent = false;
         for (XEvent xEvent : eventsPerAttributeSet) {
 
+            if (containsSameEvent){
+                break;
+            }
 
             XAttributeMap attributes = xEvent.getAttributes();
+            boolean attributesComparision = false;
             for (String key : attributes.keySet()) {
                 boolean isValuesEqual = attributes.get(key).equals(currEvent.getAttributes().get(key));
+                // if difference was found stop search. Events are different
                 if (isValuesEqual) {
-                    isAbsent = false;
+                    attributesComparision = true;
                 } else {
-                    isAbsent = true;
+                    attributesComparision = false;
                     break;
                 }
             }
 
-            // Some absent key-value attribute was found
-            if (isAbsent) {
-                break;
-            }
+            containsSameEvent = attributesComparision;
         }
-        return isAbsent;
+        return containsSameEvent;
     }
 
     public static List<String> convertToValuesList(XAttributeMap valueSetPerAttr) {

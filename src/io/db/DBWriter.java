@@ -73,7 +73,7 @@ public class DBWriter {
 
     public static DBWriter init() {
         //STEP 2: Register JDBC driver
-        truncateTables();
+//        truncateTables();
         return new DBWriter();
     }
 
@@ -358,7 +358,7 @@ public class DBWriter {
                 int curEventId = resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
 
                 if (lastEventId < 0 || lastEventId != curEventId) {
-                    if (AttributeUtils.isKeyValSetDifferent(eventsPerAttributeSet, currEvent) ||
+                    if (!AttributeUtils.containsDuplicate(eventsPerAttributeSet, currEvent) ||
                             (eventsPerAttributeSet.size() == 0 && currEvent != null)) {
                         eventsPerAttributeSet.add(currEvent);
                     }
