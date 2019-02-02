@@ -499,14 +499,14 @@ public class DBWriter {
         Connection connection = null;
         try {
             connection = getConnection();
-            StringBuilder selectQuery = new StringBuilder("SELECT range_num FROM " + TABLE_EVENT_ATTRIBUTES + " WHERE ");
-            selectQuery.append(EVENT_ATTRIBUTES_ATTR_SET_INDEX);
+            StringBuilder selectQuery = new StringBuilder("SELECT range_num FROM ");
+            selectQuery.append("(SELECT " + EVENT_ATTRIBUTES_RANGE_NUM + " FROM " + TABLE_EVENT_ATTRIBUTES);
+            selectQuery.append(" WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX);
             selectQuery.append("=");
             selectQuery.append(attrSetIndex);
-            selectQuery.append(" AND (");
+            selectQuery.append(" AND ");
 
             // Travers only through attributes in the attribute set
-            selectQuery.append("(");
             selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
             selectQuery.append("='");
             selectQuery.append(attributes.get(0));
@@ -515,24 +515,16 @@ public class DBWriter {
             selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_VAL);
             selectQuery.append("='");
             selectQuery.append(eventAttributes.get(attributes.get(0)));
-            selectQuery.append("')");
+            selectQuery.append("' AND ");
+            selectQuery.append(EVENT_ATTRIBUTES_RANGE_NUM);
+            selectQuery.append(" IN (");
+            selectQuery.append(wrapKeyValuesInRangeSubQueries(attrSetIndex, eventAttributes, attributes, 1));
+            selectQuery.append(")");
 
-            for (int attributeIndex = 1; attributeIndex < attributes.size(); attributeIndex++) {
-                selectQuery.append(" OR (");
-                selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
-                selectQuery.append("='");
-                selectQuery.append(attributes.get(attributeIndex));
-                selectQuery.append("'");
-                selectQuery.append(" AND ");
-                selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_VAL);
-                selectQuery.append("='");
-                selectQuery.append(eventAttributes.get(attributes.get(attributeIndex)));
-                selectQuery.append("')");
-            }
 
-            selectQuery.append(") GROUP BY range_num");
+            selectQuery.append(") AS alias GROUP BY range_num");
             ResultSet resultSet = connection.createStatement().executeQuery(selectQuery.toString());
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 ranges.add(resultSet.getInt(EVENT_ATTRIBUTES_RANGE_NUM));
             }
         } catch (SQLException ex) {
@@ -547,5 +539,34 @@ public class DBWriter {
             }
         }
         return ranges;
+    }
+
+    private String wrapKeyValuesInRangeSubQueries(int attrSetIndex, XAttributeMap eventAttributes, List<String> attributes, int attributeIndex) {
+
+        StringBuilder selectQuery = new StringBuilder();
+        selectQuery.append("SELECT " + EVENT_ATTRIBUTES_RANGE_NUM + " FROM " + TABLE_EVENT_ATTRIBUTES);
+        selectQuery.append(" WHERE " + EVENT_ATTRIBUTES_ATTR_SET_INDEX);
+        selectQuery.append("=");
+        selectQuery.append(attrSetIndex);
+        selectQuery.append(" AND ");
+
+        // Travers only through attributes in the attribute set
+        selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_KEY);
+        selectQuery.append("='");
+        selectQuery.append(attributes.get(attributeIndex));
+        selectQuery.append("'");
+        selectQuery.append(" AND ");
+        selectQuery.append(EVENT_ATTRIBUTES_ATTRIBUTE_VAL);
+        selectQuery.append("='");
+        selectQuery.append(eventAttributes.get(attributes.get(attributeIndex)));
+        selectQuery.append("'");
+        if (attributeIndex < attributes.size() - 1) {
+            selectQuery.append(" AND ");
+            selectQuery.append(EVENT_ATTRIBUTES_RANGE_NUM);
+            selectQuery.append(" IN (");
+            selectQuery.append(wrapKeyValuesInRangeSubQueries(attrSetIndex, eventAttributes, attributes, ++attributeIndex));
+            selectQuery.append(")");
+        }
+        return selectQuery.toString();
     }
 }

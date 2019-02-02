@@ -99,7 +99,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         dbWriter.storeAttributeSets(attributeSets);
 
         try {
-            for (int attrSetIndex = 13; attrSetIndex < attributeSets.size(); attrSetIndex++) {
+            for (int attrSetIndex = 11; attrSetIndex < attributeSets.size(); attrSetIndex++) {
                 List<String> attributes = getAttrForIndex(attrSetIndex);
                 int rangeSize = originLog.get(0).size();
                 List<XEvent> valueSetsPerAttr = getValuesForAttrIndex(attrSetIndex, attributes, 0, rangeSize);
