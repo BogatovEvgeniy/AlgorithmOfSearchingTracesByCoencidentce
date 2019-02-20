@@ -73,7 +73,7 @@ public class DBWriter {
 
     public static DBWriter init() {
         //STEP 2: Register JDBC driver
-//        truncateTables();
+        truncateTables();
         return new DBWriter();
     }
 

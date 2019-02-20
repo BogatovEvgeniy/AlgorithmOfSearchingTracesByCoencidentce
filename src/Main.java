@@ -1,5 +1,6 @@
 import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
 import algorithms.search.trace.*;
+import algorithms.search.trace.locator.coefficient.LastEventCoefficientsTraceLocator;
 import algorithms.search.trace.locator.invariant.Node;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
@@ -85,8 +86,12 @@ public class Main {
             // Remove traces which produces the same product, than put all events into a one trace
 //            XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
 //            File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
+
+            //---------------------------- MERGE ALL EVENTS IN ONE TRACE -------------------------------- //
             XLog xLog = new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm().proceed(originLog);
             logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
+
+            //----------------------------------- WEIGHTS SEARCH -----------------------------------------//
             // Search for attributes weights
             PredefibedAttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
             List<AttributeSetWeightPerRanges> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
@@ -94,12 +99,21 @@ public class Main {
                 System.out.println(attributeSetWeightPerRanges);
             }
 
-            /*// Build an map which will reflect an majority of each attribute for future analyse
-            ITraceSearchingAlgorithm searchingAlgorithm = initTraceSearchingAlgorithm(destFileName, logWriter, xLog);
-
-            xLog = searchingAlgorithm.proceed(xLog);
+            //------------------------------- SEARCH ALGORITHMS ------------------------------------------//
+            //--------------------------- WEIGHTS BASED SEARCH ALGORITHM ---------------------------------//
+            Map<String, Float> correctionMap = calculateCoefficientsMap(xLog);
+            ITraceSearchingAlgorithm.TraceLocator traceLocator = new LastEventCoefficientsTraceLocator(0.7f, correctionMap);
+            ITraceSearchingAlgorithm iTraceSearchingAlgorithm = initInvariantTraceSearchingAlgorithm(destFileName, logWriter, xLog, traceLocator);
+            xLog = iTraceSearchingAlgorithm.proceed(xLog);
             logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
-*/
+
+//            //-------------------------- INVARIANT BASED SEARCH ALGORITHM --------------------------------//
+//            // Build an map which will reflect an majority of each attribute for future analyse
+//            ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = initInvariantTraceLocator(xLog);
+//            ITraceSearchingAlgorithm iTraceSearchingAlgorithm1 = initInvariantTraceSearchingAlgorithm(destFileName, logWriter, xLog, invariantTraceLocator);
+//            xLog = iTraceSearchingAlgorithm1.proceed(xLog);
+//            logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
+
             // Track execution time
             final long endTime = System.currentTimeMillis();
             System.out.println("Total execution time: " + (endTime - startTime));
@@ -110,7 +124,7 @@ public class Main {
 
     private static PredefibedAttributeWeightsSearchAlgorithm initAttributeWeightsSearchAlgorithm() {
         List<List<String>> attributeSets = new LinkedList<>();
-        Set<Pair<Integer, Integer>> rangeSet = initRangesFor400TracesLog();
+        initRangesFor400TracesLog();
         initAttributeSetsFor400TraceLog(attributeSets);
         return new PredefibedAttributeWeightsSearchAlgorithm(3,
                 PredefibedAttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
@@ -132,7 +146,6 @@ public class Main {
         attributeSets.add(Arrays.asList("org:group", "org:resource","org:role","product"));
         attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role"));
         attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
-        attributeSets.add(Arrays.asList( ));
     }
 
     private static Set<Pair<Integer, Integer>> initRangesFor400TracesLog() {
@@ -145,15 +158,15 @@ public class Main {
         return rangeSet;
     }
 
-    private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(String destFileName, ILogWriter logWriter, XLog xLog) throws IOException {
+    private static ITraceSearchingAlgorithm initInvariantTraceSearchingAlgorithm(String destFileName,
+                                                                                 ILogWriter logWriter,
+                                                                                 XLog xLog,
+                                                                                 ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator) throws IOException {
         // Launch the algorithm of searching traces by coincidences of event's attributes values
         // also tacking in a count coefficientMap
         TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
 
         // Define locators
-        Map<String, Float> correctionMap = calculateCoefficientsMap(xLog);
-//        searchingAlgorithm.setTraceLocator(new LastEventCoefficientsTraceLocator(0.7f, correctionMap));
-        ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = initInvariantTraceLocator(xLog);
         searchingAlgorithm.setTraceLocator(invariantTraceLocator);
         return searchingAlgorithm;
     }
