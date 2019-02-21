@@ -244,25 +244,33 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         float coincidenceInStep = 0f;
         int stepCounter = 0;
         boolean isEqualsFound = false;
+        float attributeSetCoincidence = 0;
         for (int firstComparisonValIndex = 0; firstComparisonValIndex < inStepEvents.size() - 1; firstComparisonValIndex++) {
             int secondComparisionValIndex = firstComparisonValIndex + 1;
             XEvent currEvent = inStepEvents.get(firstComparisonValIndex);
             XAttributeMap currentInStepEventAttr = currEvent.getAttributes();
             XEvent nextEvent = inStepEvents.get(secondComparisionValIndex);
             XAttributeMap nextInStepEventAttr = nextEvent.getAttributes();
-            float attributeSetCoincidence = calculateCoincidenceEventPair(attributeSet, currentInStepEventAttr, nextInStepEventAttr);
+            attributeSetCoincidence = calculateCoincidenceEventPair(attributeSet, currentInStepEventAttr, nextInStepEventAttr);
+            stepCounter++;
             if (attributeSetCoincidence > 0) {
                 isEqualsFound = true;
-                /**
-                 * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
-                 */
-                dbWriter.insertPairOfEvents(attributeSet,
-                        windowIndex, attributeSetIndex,
-                        windowIndex + firstComparisonValIndex, windowIndex + secondComparisionValIndex,
-                        currEvent, nextEvent);
-                coincidenceInStep++;
             }
-            stepCounter++;
+        }
+
+
+        for (int firstComparisonValIndex = 0; firstComparisonValIndex < inStepEvents.size() - 1; firstComparisonValIndex++) {
+            int secondComparisionValIndex = firstComparisonValIndex + 1;
+            XEvent currEvent = inStepEvents.get(firstComparisonValIndex);
+            XEvent nextEvent = inStepEvents.get(secondComparisionValIndex);
+            /**
+             * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
+             */
+            dbWriter.insertPairOfEvents(attributeSet,
+                    windowIndex, attributeSetIndex,
+                    windowIndex + firstComparisonValIndex, windowIndex + secondComparisionValIndex,
+                    currEvent, nextEvent);
+            coincidenceInStep++;
         }
 
         if (isEqualsFound) {
