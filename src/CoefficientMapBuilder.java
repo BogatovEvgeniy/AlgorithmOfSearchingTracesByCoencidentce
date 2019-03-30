@@ -11,10 +11,12 @@ public class CoefficientMapBuilder {
     private final TraceValidator traceValidator;
     private XLog xLog;
     private Map<String, Float> correctionMap;
+    private boolean calculateBaseMap;
 
-    public CoefficientMapBuilder(XLog xLog, Map<String, Float> correctionMap) {
+    public CoefficientMapBuilder(XLog xLog, Map<String, Float> correctionMap, boolean useCorrectionMapAsCoefficientMap) {
         this.xLog = xLog;
         this.correctionMap = correctionMap;
+        this.calculateBaseMap = useCorrectionMapAsCoefficientMap;
         this.traceValidator = new TraceValidator();
     }
 
@@ -33,8 +35,13 @@ public class CoefficientMapBuilder {
     }
 
     private Map<String, Float> prepareCoefficientMap(XLog parsedLog) {
-        Map<String, Float> attributeCoefficientMap = buildCoefficientMapForAttributes(parsedLog);
-        attributeCoefficientMap = coefficientsCorrectionBaseOnIncomeData(correctionMap, attributeCoefficientMap);
+        Map<String, Float> attributeCoefficientMap = new HashMap<>();
+        if (calculateBaseMap) {
+            attributeCoefficientMap = buildCoefficientMapForAttributes(parsedLog);
+            attributeCoefficientMap = coefficientsCorrectionBaseOnIncomeData(correctionMap, attributeCoefficientMap);
+        } else {
+            attributeCoefficientMap = correctionMap;
+        }
         attributeCoefficientMap = balanceCoefficientsToValue(1, attributeCoefficientMap);
         System.out.println("Coefficient map: " + attributeCoefficientMap.toString());
         return attributeCoefficientMap;
@@ -77,14 +84,14 @@ public class CoefficientMapBuilder {
         return correctedMap;
     }
 
-    private Map<String, Float> coefficientsCorrectionBaseOnIncomeData(Map<String, Float> correctionAtributesMap, Map<String, Float> attributeCoefficientMap) {
+    private Map<String, Float> coefficientsCorrectionBaseOnIncomeData(Map<String, Float> correctionAttributesMap, Map<String, Float> attributeCoefficientMap) {
         Map<String, Float> resultMap = new HashMap<>();
         Iterator<String> iterator = attributeCoefficientMap.keySet().iterator();
         while (iterator.hasNext()) {
             String key = iterator.next();
             float value = attributeCoefficientMap.get(key);
-            if (correctionAtributesMap.containsKey(key)) {
-                value = correctionAtributesMap.get(key) * attributeCoefficientMap.get(key);
+            if (correctionAttributesMap.containsKey(key)) {
+                value = correctionAttributesMap.get(key) * attributeCoefficientMap.get(key);
             }
             resultMap.put(key, value);
         }

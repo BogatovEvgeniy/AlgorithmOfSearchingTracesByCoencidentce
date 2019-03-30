@@ -5,9 +5,9 @@ import org.deckfour.xes.model.XLog;
 
 import java.util.List;
 
-public class PredefibedAttributeWeightsSearchAlgorithm extends BaseWeightSearchAlgorithm {
+public class PredefinedAttributeWeightsSearchAlgorithm extends BaseWeightSearchAlgorithm {
 
-    public PredefibedAttributeWeightsSearchAlgorithm(int stepSizeInRange,
+    public PredefinedAttributeWeightsSearchAlgorithm(int stepSizeInRange,
                                                      int maxAllowedFails,
                                                      float minimalCoincidence,
                                                      List<List<String>> attributeSets) {

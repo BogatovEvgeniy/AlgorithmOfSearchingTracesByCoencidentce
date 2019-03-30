@@ -2,7 +2,6 @@ package algorithms.search.trace;
 
 import base.LogTestBaseClass;
 import com.google.common.collect.Lists;
-import javafx.util.Pair;
 import org.deckfour.xes.model.XLog;
 import org.junit.*;
 
@@ -10,10 +9,10 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
-public class PredefibedAttributeWeightsSearchAlgorithmTest extends LogTestBaseClass {
+public class PredefinedAttributeWeightsSearchAlgorithmTest extends LogTestBaseClass {
 
     private XLog log;
-    private PredefibedAttributeWeightsSearchAlgorithm algorithm;
+    private PredefinedAttributeWeightsSearchAlgorithm algorithm;
 
     private static String ATTR_KEY_1 = "attr1";
     private static String ATTR_KEY_2 = "attr2";
@@ -40,7 +39,7 @@ public class PredefibedAttributeWeightsSearchAlgorithmTest extends LogTestBaseCl
         attributeSets.add(Lists.newArrayList(ATTR_KEY_2, ATTR_KEY_3, ATTR_KEY_4));
         attributeSets.add(Lists.newArrayList(ATTR_KEY_1, ATTR_KEY_3, ATTR_KEY_4));
 
-        algorithm = new PredefibedAttributeWeightsSearchAlgorithm(3, 3, 0.3f, attributeSets);
+        algorithm = new PredefinedAttributeWeightsSearchAlgorithm(3, 3, 0.3f, attributeSets);
     }
 
     @Test

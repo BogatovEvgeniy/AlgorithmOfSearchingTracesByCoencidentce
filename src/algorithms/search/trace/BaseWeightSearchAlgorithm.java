@@ -92,6 +92,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         /**
          * Return results for print
          */
+        dbWriter.closeConnection();
         return coincidenceForEachAttributeInSet;
     }
 
@@ -99,8 +100,8 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         dbWriter.storeAttributeSets(attributeSets);
 
         try {
-            for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
-                List<String> attributes = getAttrForIndex(attrSetIndex);
+             for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
+                  List<String> attributes = getAttrForIndex(attrSetIndex);
                 int rangeSize = originLog.get(0).size();
                 List<XEvent> valueSetsPerAttr = getValuesForAttrIndex(attrSetIndex, attributes, 0, rangeSize);
                 dbWriter.storeValueSets(attrSetIndex, valueSetsPerAttr);

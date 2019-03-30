@@ -27,6 +27,7 @@ public class Main {
     private static final int LOG_PATH_INDEX = 2;
     public static final String KEY_PRODUCT = "product";
     public static final String KEY_ORG_RESOURCE = "org:resource";
+    public static final String KEY_ORG_ROLE = "org:role";
     public static final String KEY_ORG_GROUP = "org:group";
     private static LogWriter logWriter = new LogWriter();
 
@@ -82,18 +83,20 @@ public class Main {
             ILogReader logReader = new XesLogReader();
             ILogWriter logWriter = new XesLogWriter();
             XLog originLog = logReader.parse(new File(srcFilePath)).get(0);
+            XLog xLog = null;
+            File savedLog = null;
 
-            // Remove traces which produces the same product, than put all events into a one trace
-//            XLog xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
-//            File savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
+//             Remove traces which produces the same product, than put all events into a one trace
+//            xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
+//            savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
             //---------------------------- MERGE ALL EVENTS IN ONE TRACE -------------------------------- //
-            XLog xLog = new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm().proceed(originLog);
+            xLog = new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm().proceed(originLog);
             logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
             //----------------------------------- WEIGHTS SEARCH -----------------------------------------//
-            // Search for attributes weights
-            PredefibedAttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
+//             Search for attributes weights
+            PredefinedAttributeWeightsSearchAlgorithm attrWeightSearchAlgorithm = initAttributeWeightsSearchAlgorithm();
             List<AttributeSetWeightPerRanges> weightsValues = attrWeightSearchAlgorithm.proceed(xLog);
             for (AttributeSetWeightPerRanges attributeSetWeightPerRanges : weightsValues) {
                 System.out.println(attributeSetWeightPerRanges);
@@ -101,11 +104,11 @@ public class Main {
 
             //------------------------------- SEARCH ALGORITHMS ------------------------------------------//
             //--------------------------- WEIGHTS BASED SEARCH ALGORITHM ---------------------------------//
-            Map<String, Float> correctionMap = calculateCoefficientsMap(xLog);
-            ITraceSearchingAlgorithm.TraceLocator traceLocator = new LastEventCoefficientsTraceLocator(0.7f, correctionMap);
-            ITraceSearchingAlgorithm iTraceSearchingAlgorithm = initInvariantTraceSearchingAlgorithm(destFileName, logWriter, xLog, traceLocator);
-            xLog = iTraceSearchingAlgorithm.proceed(xLog);
-            logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
+//            Map<String, Float> correctionMap = calculateCoefficientsMap(xLog);
+//            ITraceSearchingAlgorithm.TraceLocator traceLocator = new LastEventCoefficientsTraceLocator(0.6f, correctionMap);
+//            ITraceSearchingAlgorithm iTraceSearchingAlgorithm = initInvariantTraceSearchingAlgorithm(destFileName, logWriter, xLog, traceLocator);
+//            xLog = iTraceSearchingAlgorithm.proceed(xLog);
+//            savedLog = logWriter.write(xLog, DESTINATION_DIR + "TracesRestored_", destFileName);
 
 //            //-------------------------- INVARIANT BASED SEARCH ALGORITHM --------------------------------//
 //            // Build an map which will reflect an majority of each attribute for future analyse
@@ -122,30 +125,32 @@ public class Main {
         }
     }
 
-    private static PredefibedAttributeWeightsSearchAlgorithm initAttributeWeightsSearchAlgorithm() {
+    private static PredefinedAttributeWeightsSearchAlgorithm initAttributeWeightsSearchAlgorithm() {
         List<List<String>> attributeSets = new LinkedList<>();
         initRangesFor400TracesLog();
         initAttributeSetsFor400TraceLog(attributeSets);
-        return new PredefibedAttributeWeightsSearchAlgorithm(3,
-                PredefibedAttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
+        return new PredefinedAttributeWeightsSearchAlgorithm(3,
+                PredefinedAttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
                 0.0f,
                 attributeSets);
     }
 
     private static void initAttributeSetsFor400TraceLog(List<List<String>> attributeSets) {
-        attributeSets.add(Arrays.asList("product"));
-        attributeSets.add(Arrays.asList("org:group"));
-        attributeSets.add(Arrays.asList("org:resource"));
-        attributeSets.add(Arrays.asList("organization involved"));
-        attributeSets.add(Arrays.asList("org:role"));
-        attributeSets.add(Arrays.asList("org:resource","product"));
-        attributeSets.add(Arrays.asList("org:group", "org:resource"));
-        attributeSets.add(Arrays.asList("org:group","org:role","product"));
-        attributeSets.add(Arrays.asList("org:group","org:resource","product"));
-        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved"));
-        attributeSets.add(Arrays.asList("org:group", "org:resource","org:role","product"));
-        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role"));
-        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved","org:role","product"));
+//        attributeSets.add(Arrays.asList("product"));
+//        attributeSets.add(Arrays.asList("org:group"));
+//        attributeSets.add(Arrays.asList("org:resource"));
+//        attributeSets.add(Arrays.asList("organization involved"));
+//        attributeSets.add(Arrays.asList("org:role"));
+//        attributeSets.add(Arrays.asList("org:resource", "product"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource"));
+//        attributeSets.add(Arrays.asList("org:group", "org:role", "product"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "product"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "org:role", "product"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved", "org:role"));
+//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved", "org:role", "product"));
+        attributeSets.add(Arrays.asList("org:role", "org:resource"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "org:role"));
     }
 
     private static Set<Pair<Integer, Integer>> initRangesFor400TracesLog() {
@@ -193,11 +198,11 @@ public class Main {
 
     private static Map<String, Float> calculateCoefficientsMap(XLog xLog) {
         Map<String, Float> correctionMap = new HashMap<>();
-        correctionMap.put(KEY_PRODUCT, 4f);
-        correctionMap.put(KEY_ORG_RESOURCE, 0.5f);
-        correctionMap.put(KEY_ORG_GROUP, 0.5f);
+        correctionMap.put(KEY_PRODUCT, 0.520899941f);
+        correctionMap.put(KEY_ORG_RESOURCE, 0.159700019f);
+        correctionMap.put(KEY_ORG_GROUP, 0.319400038f);
 
-        Map<String, Float> stringFloatMap = new CoefficientMapBuilder(xLog, correctionMap).build();
+        Map<String, Float> stringFloatMap = new CoefficientMapBuilder(xLog, correctionMap, false).build();
         return stringFloatMap;
     }
 }
