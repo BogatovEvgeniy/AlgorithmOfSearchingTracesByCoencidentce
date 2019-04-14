@@ -3,6 +3,7 @@ package algorithms.search.trace;
 
 import org.deckfour.xes.model.XLog;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class PredefinedAttributeWeightsSearchAlgorithm extends BaseWeightSearchAlgorithm {
@@ -16,6 +17,13 @@ public class PredefinedAttributeWeightsSearchAlgorithm extends BaseWeightSearchA
         this.attributeSets = attributeSets;
 
         System.out.println("Config:" + this.toString());
+    }
+
+    public static PredefinedAttributeWeightsSearchAlgorithm init(List<List<String>> attributeSets){
+        return new PredefinedAttributeWeightsSearchAlgorithm(3,
+                PredefinedAttributeWeightsSearchAlgorithm.FAIL_COUNT_UNLIMITED,
+                0.0f,
+                attributeSets);
     }
 
     @Override

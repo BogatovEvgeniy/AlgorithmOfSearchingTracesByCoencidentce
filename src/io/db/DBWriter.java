@@ -92,6 +92,7 @@ public class DBWriter {
                 connection.createStatement().execute(resultSet.getString(1));
             }
             connection.createStatement().execute("SET FOREIGN_KEY_CHECKS=1;");
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -139,7 +140,6 @@ public class DBWriter {
     private Consumer<String> getAttributeInsertionConsumerFunc(Connection connection) {
         return key -> {
             try {
-
                 Statement stmt = connection.createStatement();
                 String selectAttributeQuery = "SELECT * FROM " + DISS_DB_ATTRIBUTES + " WHERE name = '" + key + "';";
                 ResultSet resultSet = stmt.executeQuery(selectAttributeQuery);
@@ -147,6 +147,8 @@ public class DBWriter {
                     String insertAttributeQuery = "INSERT INTO " + DISS_DB_ATTRIBUTES + " VALUES ('" + key + "');";
                     stmt.executeUpdate(insertAttributeQuery);
                 }
+                resultSet.close();
+                stmt.close();
             } catch (SQLException e) {
                 try {
                     connection.rollback();
@@ -173,8 +175,9 @@ public class DBWriter {
             List<Integer> eventIds = getEventsForPerRangeAndAttrSet(connection, event, rangeNum, attrSetIndex);
             if (!eventIds.contains(eventIndex)) {
                 for (String key : attributeSet) {
-                    connection.createStatement().executeUpdate("INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (range_num, attr_set_index, eventId, attribute_key, attribute_val) " +
-                            "VALUES (" + rangeNum + "," + attrSetIndex + "," + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');");
+                    String query = "INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (range_num, attr_set_index, eventId, attribute_key, attribute_val)" + " " +
+                            "VALUES (" + rangeNum + "," + attrSetIndex + "," + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');";
+                    connection.createStatement().executeUpdate(query);
                 }
             }
         } catch (SQLException e) {
@@ -194,6 +197,7 @@ public class DBWriter {
             eventIds.add(resultSet.getInt(1));
         }
 
+        resultSet.close();
         return eventIds;
     }
 
@@ -204,6 +208,7 @@ public class DBWriter {
         if (lastInsertedEvent == ROW_SET_EMPTY_INDEX || eventIndex != lastInsertedEvent) {
             connection.createStatement().executeUpdate(getInsertOrSkipIfExits(eventIndex));
         }
+        resultSet.close();
     }
 
     private String getInsertOrSkipIfExits(int eventIndex) {
@@ -218,11 +223,15 @@ public class DBWriter {
         Statement statement = conn.createStatement();
         String selectEventByAttributeQuery = getSelectionQueryEventIdWithAttributes(event, rangeNum, attrSetIndex);
         ResultSet resultSet = statement.executeQuery(selectEventByAttributeQuery);
+        int result;
         if (resultSet.next()) {
-            return resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
+            result = resultSet.getInt(EVENT_ATTRIBUTES_EVENT_ID);
         } else {
-            return NON_DEFINED_ID;
+            result = NON_DEFINED_ID;
         }
+        resultSet.close();
+        statement.close();
+        return result;
     }
 
     private String getSelectionQueryEventIdWithAttributes(XEvent event, int rangeNum, int attrSetIndex) {
@@ -309,6 +318,7 @@ public class DBWriter {
                 XAttribute attrVal = new XAttributeLiteralImpl(key, resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_VAL));
                 attributes.put(key, attrVal);
             }
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -323,6 +333,7 @@ public class DBWriter {
             while (resultSet.next()) {
                 keys.add(resultSet.getString(EVENT_ATTRIBUTES_ATTRIBUTE_KEY));
             }
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -364,6 +375,7 @@ public class DBWriter {
                     currEventAttr.put(key, attrVal);
                 }
             }
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -402,6 +414,7 @@ public class DBWriter {
                 if (resultSet.next()) {
                     lastEventSetNum = resultSet.getInt(1);
                 }
+                resultSet.close();
             }
 
             for (int eventIndex = 0; eventIndex < valueSetsPerAttr.size(); eventIndex++) {
@@ -485,6 +498,7 @@ public class DBWriter {
             while (resultSet.next()) {
                 ranges.add(resultSet.getInt(EVENT_ATTRIBUTES_RANGE_NUM));
             }
+            resultSet.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

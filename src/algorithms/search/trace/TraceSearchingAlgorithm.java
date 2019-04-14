@@ -1,7 +1,11 @@
 package algorithms.search.trace;
 
 import algorithms.ValidationFactory;
+import algorithms.search.trace.locator.coefficient.LastEventCoefficientsTraceLocator;
+import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
+import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import com.sun.istack.internal.NotNull;
+import io.log.ILogWriter;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.impl.XAttributeMapImpl;
@@ -9,6 +13,7 @@ import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.model.impl.XTraceImpl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -51,6 +56,27 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         for (TraceLocator traceLocator : traceLocators) {
             setTraceLocator(traceLocator);
         }
+    }
+
+    public static ITraceSearchingAlgorithm initAlgorithmBasedOnAttributeComparision(Map<String, Float> correctionMap){
+        //--------------------------- WEIGHTS BASED SEARCH ALGORITHM ---------------------------------//
+        ITraceSearchingAlgorithm.TraceLocator traceLocator = new LastEventCoefficientsTraceLocator(0.6f, correctionMap);
+       return initTraceSearchingAlgorithm(traceLocator);
+    }
+
+    public static ITraceSearchingAlgorithm initAlgorithmBasedOnInvariantComparision(TraceInvariantList tree){
+        ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = new ByFirstTraceCoincidenceInvariantsTraceLocator(0.0f, tree);
+        return initTraceSearchingAlgorithm(invariantTraceLocator);
+    }
+
+    private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator) {
+        // Launch the algorithm of searching traces by coincidences of event's attributes values
+        // also tacking in a count coefficientMap
+        TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
+
+        // Define locators
+        searchingAlgorithm.setTraceLocator(invariantTraceLocator);
+        return searchingAlgorithm;
     }
 
 

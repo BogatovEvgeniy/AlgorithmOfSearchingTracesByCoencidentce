@@ -39,18 +39,31 @@ public class TraceDuplicatesRemovingAlgorithmTest {
     }
 
     private ILogWriter getLogWriterInstance() {
-        return (log, destDirectory, fileName) -> {
-            File file = new File(destDirectory + fileName + ".xes");
-            try {
-                if (file.exists()) {
-                    file.delete();
-                }
-                file.createNewFile();
-                new XesXmlSerializer().serialize(log, new FileOutputStream(file));
-            } catch (IOException e) {
-                e.printStackTrace();
+        return new ILogWriter() {
+            @Override
+            public File write(XLog log) {
+                return write(log, "test");
             }
-            return file;
+
+            @Override
+            public File write(XLog log, String fileName) {
+                return write(log, ILogWriter.DESTINATION_DIR, fileName);
+            }
+
+            @Override
+            public File write(XLog log, String destDirectory, String fileName) {
+                File file = new File(destDirectory + fileName + ".xes");
+                try {
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    file.createNewFile();
+                    new XesXmlSerializer().serialize(log, new FileOutputStream(file));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return file;
+            }
         };
     }
 }
