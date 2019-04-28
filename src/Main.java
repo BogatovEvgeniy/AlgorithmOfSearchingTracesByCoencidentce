@@ -32,12 +32,12 @@ public class Main {
 
         try {
             XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
-            new AnalyzeProcessFactory()
-                    .get(AnalyzeProcessFactory.AnalyzeProcessVariant.DEFAULT)
+            AnalyzeProcessFactory.get(AnalyzeProcessFactory.AnalyzeProcessVariant.GET_ONE_PROCESS_TRACES)
+                    .append(AnalyzeProcessFactory.get(AnalyzeProcessFactory.AnalyzeProcessVariant.DEFAULT))
                     .launch(new XesLogWriter(), originLog);
 
 //            Remove traces which produces the same product, than put all events into a one trace
-//            xLog = new RemoveTraceDuplicates(logWriter, "product").proceed(originLog);
+//            xLog = new RemoveTraceDuplicatesByAttribute(logWriter, "product").proceed(originLog);
 //            savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
 

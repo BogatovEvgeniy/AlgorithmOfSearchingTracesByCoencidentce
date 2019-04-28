@@ -2,6 +2,7 @@ import algorithms.ILogAlgorithm;
 import io.log.ILogWriter;
 import org.deckfour.xes.model.XLog;
 
+import java.util.Collection;
 import java.util.List;
 
 public class AlgorithmSequence {
@@ -22,5 +23,24 @@ public class AlgorithmSequence {
 
             logWriter.write(currentLog, algorithm.getClass().getSimpleName() + "_Results");
         }
+    }
+
+    public AlgorithmSequence append(ILogAlgorithm algorithm) {
+        algorithms.add(algorithm);
+        return this;
+    }
+
+    public AlgorithmSequence append(List<ILogAlgorithm> algorithms) {
+        algorithms.addAll(algorithms);
+        return this;
+    }
+
+    public AlgorithmSequence append(AlgorithmSequence sequence) {
+        algorithms.addAll(sequence.getAlgorithms());
+        return this;
+    }
+
+    private List<? extends ILogAlgorithm<?>> getAlgorithms() {
+        return algorithms;
     }
 }

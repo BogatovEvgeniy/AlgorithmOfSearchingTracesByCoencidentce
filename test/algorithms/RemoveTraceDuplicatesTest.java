@@ -1,6 +1,6 @@
 package algorithms;
 
-import algorithms.filter.duplicates.RemoveTraceDuplicates;
+import algorithms.filter.duplicates.RemoveTraceDuplicatesByAttribute;
 import io.FileUtils;
 import io.log.ILogWriter;
 import org.deckfour.xes.in.XesXmlParser;
@@ -30,7 +30,7 @@ public class RemoveTraceDuplicatesTest {
             Assert.assertTrue(logList.size() == 1);
 
             ILogWriter logWriter = getLogWriterInstance();
-            XLog cleanedLog = new RemoveTraceDuplicates( "attr1").proceed(logList.get(0));
+            XLog cleanedLog = new RemoveTraceDuplicatesByAttribute( "attr1").proceed(logList.get(0));
             Assert.assertThat(cleanedLog, notNullValue());
             Assert.assertThat(cleanedLog.size(), is(3));
         } catch (Exception e) {

@@ -3,9 +3,9 @@ package algorithms.filter.duplicates;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
-public class GetTraceDuplicates extends DuplicatesBaseFilter {
+public class GetTraceDuplicatesByAttribute extends DuplicatesBaseFilterByAttribute {
 
-    GetTraceDuplicates(String... attributesForComparision) {
+    public GetTraceDuplicatesByAttribute(String... attributesForComparision) {
         super(attributesForComparision);
     }
 

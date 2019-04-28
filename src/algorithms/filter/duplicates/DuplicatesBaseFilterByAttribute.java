@@ -5,14 +5,14 @@ import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
-class DuplicatesBaseFilter extends BaseFilter {
+class DuplicatesBaseFilterByAttribute extends BaseFilter {
 
     private final String[] attributesForComparision;
 
     /**
      * @param attributesForComparision - the set of attributes which should be taken into a count
      */
-    DuplicatesBaseFilter(String... attributesForComparision) {
+    DuplicatesBaseFilterByAttribute(String... attributesForComparision) {
         this.attributesForComparision = attributesForComparision;
     }
 

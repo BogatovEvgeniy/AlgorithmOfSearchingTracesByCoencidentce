@@ -1,5 +1,6 @@
 import algorithms.ILogAlgorithm;
 import algorithms.filter.BaseFilter;
+import algorithms.filter.duplicates.GetTraceDuplicatesByAttribute;
 import algorithms.search.trace.PredefinedAttributeWeightsSearchAlgorithm;
 import algorithms.search.trace.TraceSearchingAlgorithm;
 import algorithms.search.trace.locator.invariant.Node;
@@ -15,12 +16,15 @@ public class AnalyzeProcessFactory {
     public static final String KEY_ORG_ROLE = "org:role";
     public static final String KEY_ORG_GROUP = "org:group";
 
-    private List<ILogAlgorithm<?>> algorithms = new ArrayList<>();
+    private static List<ILogAlgorithm<?>> algorithms = new ArrayList<>();
 
-    public AlgorithmSequence get(AnalyzeProcessVariant variant) {
+    public static AlgorithmSequence get(AnalyzeProcessVariant variant) {
         switch (variant) {
             case MERGE_ALL_EVENTS_IN_ONE_TRACE:
                 algorithms.add(new BaseFilter());
+                break;
+            case GET_ONE_PROCESS_TRACES:
+                algorithms.add(new GetTraceDuplicatesByAttribute(KEY_PRODUCT));
                 break;
             case PREDEFINED_ATTRIBUTE_WEIGHT_SEARCH_ALGORITHM:
                 algorithms.add(PredefinedAttributeWeightsSearchAlgorithm.init(initAttributeSetsFor400TraceLog()));
@@ -32,12 +36,12 @@ public class AnalyzeProcessFactory {
                 algorithms.add(TraceSearchingAlgorithm.initAlgorithmBasedOnInvariantComparision(getInvariants()));
                 break;
             default:
-                return new AlgorithmSequence(
+                algorithms =
                         Lists.newArrayList(
                                 new BaseFilter(),
                                 PredefinedAttributeWeightsSearchAlgorithm.init(initAttributeSetsFor400TraceLog()),
                                 TraceSearchingAlgorithm.initAlgorithmBasedOnAttributeComparision(calculateCoefficientsMap())
-                        ));
+                        );
         }
         return new AlgorithmSequence(algorithms);
     }
@@ -45,13 +49,14 @@ public class AnalyzeProcessFactory {
     public enum AnalyzeProcessVariant {
         DEFAULT,
         MERGE_ALL_EVENTS_IN_ONE_TRACE,
+        GET_ONE_PROCESS_TRACES,
         PREDEFINED_ATTRIBUTE_WEIGHT_SEARCH_ALGORITHM,
         TRACE_SEARCH_ATTRIBUTE_COMPARISION_BASED,
         TRACE_SEARCH_INVARIANT_BASED
     }
 
 
-    private List<List<String>> initAttributeSetsFor400TraceLog() {
+    private static List<List<String>> initAttributeSetsFor400TraceLog() {
 //        attributeSets.add(Arrays.asList("product"));
 //        attributeSets.add(Arrays.asList("org:group"));
 //        attributeSets.add(Arrays.asList("org:resource"));
