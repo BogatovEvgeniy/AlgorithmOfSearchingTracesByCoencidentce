@@ -1,24 +1,9 @@
-import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
-import algorithms.search.trace.*;
-import algorithms.search.trace.locator.coefficient.LastEventCoefficientsTraceLocator;
-import algorithms.search.trace.locator.invariant.Node;
-import algorithms.search.trace.locator.invariant.TraceInvariantList;
-import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
 import io.*;
-import io.log.ILogReader;
-import io.log.ILogWriter;
 import io.log.XesLogReader;
 import io.log.XesLogWriter;
-import javafx.util.Pair;
 import org.deckfour.xes.model.XLog;
-import parser.WriterFactory;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.*;
 
 public class Main {
 
@@ -52,7 +37,7 @@ public class Main {
                     .launch(new XesLogWriter(), originLog);
 
 //            Remove traces which produces the same product, than put all events into a one trace
-//            xLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "product").proceed(originLog);
+//            xLog = new RemoveTraceDuplicates(logWriter, "product").proceed(originLog);
 //            savedLog = logWriter.write(xLog, DESTINATION_DIR + "ParallelProcessesRemoved_", destFileName);
 
 

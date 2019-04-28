@@ -1,5 +1,5 @@
 import algorithms.ILogAlgorithm;
-import algorithms.removal.MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm;
+import algorithms.filter.BaseFilter;
 import algorithms.search.trace.PredefinedAttributeWeightsSearchAlgorithm;
 import algorithms.search.trace.TraceSearchingAlgorithm;
 import algorithms.search.trace.locator.invariant.Node;
@@ -20,7 +20,7 @@ public class AnalyzeProcessFactory {
     public AlgorithmSequence get(AnalyzeProcessVariant variant) {
         switch (variant) {
             case MERGE_ALL_EVENTS_IN_ONE_TRACE:
-                algorithms.add(new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm());
+                algorithms.add(new BaseFilter());
                 break;
             case PREDEFINED_ATTRIBUTE_WEIGHT_SEARCH_ALGORITHM:
                 algorithms.add(PredefinedAttributeWeightsSearchAlgorithm.init(initAttributeSetsFor400TraceLog()));
@@ -34,7 +34,7 @@ public class AnalyzeProcessFactory {
             default:
                 return new AlgorithmSequence(
                         Lists.newArrayList(
-                                new MergeEventsInOneTraceAndTraceTagsRemovingAlgorithm(),
+                                new BaseFilter(),
                                 PredefinedAttributeWeightsSearchAlgorithm.init(initAttributeSetsFor400TraceLog()),
                                 TraceSearchingAlgorithm.initAlgorithmBasedOnAttributeComparision(calculateCoefficientsMap())
                         ));

@@ -1,6 +1,6 @@
 package algorithms;
 
-import algorithms.removal.TraceDuplicatesRemovingAlgorithm;
+import algorithms.filter.duplicates.RemoveTraceDuplicates;
 import io.FileUtils;
 import io.log.ILogWriter;
 import org.deckfour.xes.in.XesXmlParser;
@@ -17,7 +17,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
-public class TraceDuplicatesRemovingAlgorithmTest {
+public class RemoveTraceDuplicatesTest {
 
     @Test
     public void proceed() {
@@ -30,7 +30,7 @@ public class TraceDuplicatesRemovingAlgorithmTest {
             Assert.assertTrue(logList.size() == 1);
 
             ILogWriter logWriter = getLogWriterInstance();
-            XLog cleanedLog = new TraceDuplicatesRemovingAlgorithm(logWriter, "attr1").proceed(logList.get(0));
+            XLog cleanedLog = new RemoveTraceDuplicates( "attr1").proceed(logList.get(0));
             Assert.assertThat(cleanedLog, notNullValue());
             Assert.assertThat(cleanedLog.size(), is(3));
         } catch (Exception e) {
