@@ -1,5 +1,6 @@
 package algorithms.filter.duplicates;
 
+import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
@@ -11,10 +12,10 @@ public class GetTraceDuplicatesByAttribute extends DuplicatesBaseFilterByAttribu
 
     @Override
     protected void addEvents(XLog originLog, XLog resLog) {
-        for (XTrace trace : originLog) {
-            if (isDuplicatesForAttrValsExists(trace, resLog)) {
+        for (int traceIndex = 1; traceIndex < originLog.size(); traceIndex++) {
+            if (isDuplicatesForAttrValsExists(originLog.get(traceIndex), resLog)) {
                 traceCounter++;
-                resLog.add(trace);
+                resLog.add(originLog.get(traceIndex));
             }
         }
     }

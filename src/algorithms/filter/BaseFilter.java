@@ -17,7 +17,7 @@ import java.util.Date;
  * 2. Adds events. Behaviour of this step can be overwritten in a child class
  * 3. Sorts all events in a trace by time, will be executed for all events in each trace
  */
-public class BaseFilter implements ILogAlgorithm<XLog> {
+public abstract class BaseFilter implements ILogAlgorithm<XLog> {
 
     protected XLog originLog;
     protected int traceCounter;
@@ -51,13 +51,7 @@ public class BaseFilter implements ILogAlgorithm<XLog> {
         return clearTrace;
     }
 
-    protected void addEvents(XLog originLog, XLog resLog) {
-        for (int traceIndex = 1; traceIndex < originLog.size(); traceIndex++) {
-            for (XEvent event : originLog.get(traceIndex)) {
-                resLog.get(0).add(event);
-            }
-        }
-    }
+    protected abstract void addEvents(XLog originLog, XLog resLog);
 
     protected static XLog sortEventsByTimestamp(XLog xLog) {
         for (XTrace trace : xLog) {

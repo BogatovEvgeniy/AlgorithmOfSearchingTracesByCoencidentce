@@ -27,7 +27,7 @@ public class Main {
     private static void launchParsingAlgorithms() {
         long startTime = System.currentTimeMillis();
 
-        String srcFileName = "400_traces_of_BPI_Challenge_2013_incidents";
+        String srcFileName = "BPI_Challenge_2013_incidents";
         String srcFilePath = SOURCE_DIR + srcFileName + FILE_EXTENSION;
 
         try {

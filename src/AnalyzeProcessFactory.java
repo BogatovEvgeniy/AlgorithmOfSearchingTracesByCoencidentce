@@ -1,5 +1,6 @@
 import algorithms.ILogAlgorithm;
 import algorithms.filter.BaseFilter;
+import algorithms.filter.MergeEventsInOneTrace;
 import algorithms.filter.duplicates.GetTraceDuplicatesByAttribute;
 import algorithms.search.trace.PredefinedAttributeWeightsSearchAlgorithm;
 import algorithms.search.trace.TraceSearchingAlgorithm;
@@ -21,7 +22,7 @@ public class AnalyzeProcessFactory {
     public static AlgorithmSequence get(AnalyzeProcessVariant variant) {
         switch (variant) {
             case MERGE_ALL_EVENTS_IN_ONE_TRACE:
-                algorithms.add(new BaseFilter());
+                algorithms.add(new MergeEventsInOneTrace());
                 break;
             case GET_ONE_PROCESS_TRACES:
                 algorithms.add(new GetTraceDuplicatesByAttribute(KEY_PRODUCT));
@@ -38,7 +39,7 @@ public class AnalyzeProcessFactory {
             default:
                 algorithms =
                         Lists.newArrayList(
-                                new BaseFilter(),
+                                new MergeEventsInOneTrace(),
                                 PredefinedAttributeWeightsSearchAlgorithm.init(initAttributeSetsFor400TraceLog()),
                                 TraceSearchingAlgorithm.initAlgorithmBasedOnAttributeComparision(calculateCoefficientsMap())
                         );
@@ -57,42 +58,43 @@ public class AnalyzeProcessFactory {
 
 
     private static List<List<String>> initAttributeSetsFor400TraceLog() {
-//        attributeSets.add(Arrays.asList("product"));
-//        attributeSets.add(Arrays.asList("org:group"));
-//        attributeSets.add(Arrays.asList("org:resource"));
-//        attributeSets.add(Arrays.asList("organization involved"));
-//        attributeSets.add(Arrays.asList("org:role"));
-//        attributeSets.add(Arrays.asList("org:resource", "product"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource"));
-//        attributeSets.add(Arrays.asList("org:group", "org:role", "product"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "product"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "org:role", "product"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved", "org:role"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved", "org:role", "product"));
-//        attributeSets.add(Arrays.asList("org:role", "org:resource"));
-//        attributeSets.add(Arrays.asList("org:group", "org:resource", "org:role"));
-
         List<List<String>> attributeSets = new LinkedList<>();
         attributeSets.add(Arrays.asList("concept:name"));
-        attributeSets.add(Arrays.asList("Doc_type"));
-        attributeSets.add(Arrays.asList("koddoc"));
-        attributeSets.add(Arrays.asList("User_Id"));
-        attributeSets.add(Arrays.asList("File"));
-        attributeSets.add(Arrays.asList("concept:name", "Doc_type"));
-        attributeSets.add(Arrays.asList("concept:name", "koddoc"));
-        attributeSets.add(Arrays.asList("concept:name", "User_Id"));
-        attributeSets.add(Arrays.asList("concept:name", "Doc_type"));
-        attributeSets.add(Arrays.asList("concept:name", "File"));
-        attributeSets.add(Arrays.asList("Doc_type", "File"));
-        attributeSets.add(Arrays.asList("koddoc", "File"));
-        attributeSets.add(Arrays.asList("User_Id", "File"));
-        attributeSets.add(Arrays.asList("User_Id", "koddoc"));
-        attributeSets.add(Arrays.asList("User_Id", "File"));
-        attributeSets.add(Arrays.asList("Doc_type", "koddoc", "User_Id"));
-        attributeSets.add(Arrays.asList("File", "koddoc", "User_Id"));
-        attributeSets.add(Arrays.asList("File", "Doc_type", "User_Id"));
-        attributeSets.add(Arrays.asList("File", "Doc_type", "koddoc"));
+        attributeSets.add(Arrays.asList("product"));
+        attributeSets.add(Arrays.asList("org:group"));
+        attributeSets.add(Arrays.asList("org:resource"));
+        attributeSets.add(Arrays.asList("organization involved"));
+        attributeSets.add(Arrays.asList("org:role"));
+        attributeSets.add(Arrays.asList("org:resource", "product"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource"));
+        attributeSets.add(Arrays.asList("org:group", "org:role", "product"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "product"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "org:role", "product"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved", "org:role"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "organization involved", "org:role", "product"));
+        attributeSets.add(Arrays.asList("org:role", "org:resource"));
+        attributeSets.add(Arrays.asList("org:group", "org:resource", "org:role"));
+
+//        attributeSets.add(Arrays.asList("concept:name"));
+//        attributeSets.add(Arrays.asList("Doc_type"));
+//        attributeSets.add(Arrays.asList("koddoc"));
+//        attributeSets.add(Arrays.asList("User_Id"));
+//        attributeSets.add(Arrays.asList("File"));
+//        attributeSets.add(Arrays.asList("concept:name", "Doc_type"));
+//        attributeSets.add(Arrays.asList("concept:name", "koddoc"));
+//        attributeSets.add(Arrays.asList("concept:name", "User_Id"));
+//        attributeSets.add(Arrays.asList("concept:name", "Doc_type"));
+//        attributeSets.add(Arrays.asList("concept:name", "File"));
+//        attributeSets.add(Arrays.asList("Doc_type", "File"));
+//        attributeSets.add(Arrays.asList("koddoc", "File"));
+//        attributeSets.add(Arrays.asList("User_Id", "File"));
+//        attributeSets.add(Arrays.asList("User_Id", "koddoc"));
+//        attributeSets.add(Arrays.asList("User_Id", "File"));
+//        attributeSets.add(Arrays.asList("Doc_type", "koddoc", "User_Id"));
+//        attributeSets.add(Arrays.asList("File", "koddoc", "User_Id"));
+//        attributeSets.add(Arrays.asList("File", "Doc_type", "User_Id"));
+//        attributeSets.add(Arrays.asList("File", "Doc_type", "koddoc"));
 
         return attributeSets;
     }

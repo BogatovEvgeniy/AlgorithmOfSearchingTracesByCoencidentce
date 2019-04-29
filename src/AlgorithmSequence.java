@@ -2,7 +2,6 @@ import algorithms.ILogAlgorithm;
 import io.log.ILogWriter;
 import org.deckfour.xes.model.XLog;
 
-import java.util.Collection;
 import java.util.List;
 
 public class AlgorithmSequence {
@@ -16,7 +15,7 @@ public class AlgorithmSequence {
     public void launch(ILogWriter logWriter, XLog xLog){
         XLog currentLog = xLog;
         for (ILogAlgorithm<?> algorithm : algorithms) {
-            Object result = algorithm.proceed(xLog);
+            Object result = algorithm.proceed(currentLog);
             if (result instanceof XLog) {
                 currentLog = (XLog) result;
             }
