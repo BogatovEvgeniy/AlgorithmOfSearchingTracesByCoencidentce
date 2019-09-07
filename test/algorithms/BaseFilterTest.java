@@ -1,6 +1,7 @@
 package algorithms;
 
 import algorithms.filter.BaseFilter;
+import algorithms.filter.MergeEventsInOneTrace;
 import io.FileUtils;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
@@ -27,7 +28,7 @@ public class BaseFilterTest {
             Assert.assertFalse(logList.isEmpty());
             Assert.assertTrue(logList.size() == 1);
 
-            XLog cleanedLog = new BaseFilter().proceed(logList.get(0));
+            XLog cleanedLog = new MergeEventsInOneTrace().proceed(logList.get(0));
             Assert.assertThat(cleanedLog, notNullValue());
             Assert.assertFalse(cleanedLog.isEmpty());
             Assert.assertTrue(cleanedLog.get(0).size() == 12 * 3);

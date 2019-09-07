@@ -1,6 +1,7 @@
 package io.db;
 
 import algorithms.search.trace.AttributeSetWeightPerRanges;
+import org.deckfour.spex.SXDocument;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;

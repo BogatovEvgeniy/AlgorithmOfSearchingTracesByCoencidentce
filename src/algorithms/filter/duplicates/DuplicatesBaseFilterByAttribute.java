@@ -5,7 +5,7 @@ import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
-class DuplicatesBaseFilterByAttribute extends BaseFilter {
+abstract class DuplicatesBaseFilterByAttribute extends BaseFilter {
 
     private final String[] attributesForComparision;
 

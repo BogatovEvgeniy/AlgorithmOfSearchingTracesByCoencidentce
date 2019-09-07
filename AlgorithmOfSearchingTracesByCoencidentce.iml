@@ -9,11 +9,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
-    <orderEntry type="library" name="OpenXES-20180810" level="project" />
-    <orderEntry type="library" name="OpenXES-XStream-20180810" level="project" />
     <orderEntry type="library" name="com.google.guava:guava:26.0-jre" level="project" />
     <orderEntry type="module" module-name="spex-master" />
     <orderEntry type="library" name="mysql:mysql-connector-java:8.0.13" level="project" />
-    <orderEntry type="library" name="spex-0.6.0" level="project" />
+    <orderEntry type="library" name="OpenXES-20181205" level="project" />
+    <orderEntry type="library" name="Spex-1.1" level="project" />
   </component>
 </module>
