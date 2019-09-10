@@ -1,5 +1,4 @@
 import algorithms.ILogAlgorithm;
-import algorithms.filter.BaseFilter;
 import algorithms.filter.MergeEventsInOneTrace;
 import algorithms.filter.duplicates.GetTraceDuplicatesByAttribute;
 import algorithms.search.trace.PredefinedAttributeWeightsSearchAlgorithm;
@@ -10,16 +9,20 @@ import com.google.common.collect.Lists;
 
 import java.util.*;
 
-public class AnalyzeProcessFactory {
+public class AnalyzeProcessAlgorithmsFactory {
 
     public static final String KEY_PRODUCT = "product";
     public static final String KEY_ORG_RESOURCE = "org:resource";
     public static final String KEY_ORG_ROLE = "org:role";
     public static final String KEY_ORG_GROUP = "org:group";
 
+    public static final String KEY_ACTIVITY = "activity";
+    public static final String KEY_ACTIVITY_TYPE = "activity_type";
+    public static final String KEY_OPERATION_ID = "operation_id";
+
     private static List<ILogAlgorithm<?>> algorithms = new ArrayList<>();
 
-    public static AlgorithmSequence get(AnalyzeProcessVariant variant) {
+    public static AlgorithmSequence get(AlgorithmVariant variant) {
         switch (variant) {
             case MERGE_ALL_EVENTS_IN_ONE_TRACE:
                 algorithms.add(new MergeEventsInOneTrace());
@@ -40,14 +43,14 @@ public class AnalyzeProcessFactory {
                 algorithms =
                         Lists.newArrayList(
                                 new MergeEventsInOneTrace(),
-                                PredefinedAttributeWeightsSearchAlgorithm.init(initAttributeSetsFor400TraceLog()),
+                                PredefinedAttributeWeightsSearchAlgorithm.init(khladopromLog()),
                                 TraceSearchingAlgorithm.initAlgorithmBasedOnAttributeComparision(calculateCoefficientsMap())
                         );
         }
         return new AlgorithmSequence(algorithms);
     }
 
-    public enum AnalyzeProcessVariant {
+    public enum AlgorithmVariant {
         DEFAULT,
         MERGE_ALL_EVENTS_IN_ONE_TRACE,
         GET_ONE_PROCESS_TRACES,
@@ -99,6 +102,25 @@ public class AnalyzeProcessFactory {
         return attributeSets;
     }
 
+    private static List<List<String>> khladopromLog() {
+        List<List<String>> attributeSets = new LinkedList<>();
+        attributeSets.add(Arrays.asList("concept:name"));
+
+        return attributeSets;
+    }
+
+    private static TraceInvariantList khladopromInvariant() {
+        TraceInvariantList list = new TraceInvariantList();
+
+        Node product = new Node(KEY_PRODUCT);
+        product.addInvariant(Arrays.asList(new String[]{"PROD542"}));
+
+        Node resource = new Node(KEY_ORG_RESOURCE);
+        Node orgGroup = new Node(KEY_ORG_GROUP);
+        return list;
+    }
+
+
     private static Map<String, Float> calculateCoefficientsMap() {
         Map<String, Float> correctionMap = new HashMap<>();
         correctionMap.put(KEY_PRODUCT, 0.520899941f);
@@ -117,6 +139,5 @@ public class AnalyzeProcessFactory {
         Node resource = new Node(KEY_ORG_RESOURCE);
         Node orgGroup = new Node(KEY_ORG_GROUP);
         return list;
-
     }
 }

@@ -3,10 +3,10 @@ package algorithms.search.trace.locator.invariant;
 import java.util.*;
 
 /**
- * The tree structure where:
+ * This a tree structure where:
  * root is a collection of nodes which represent a set of attributes of a log.
- * So there is cant be a case where two nodes are representing the same attribute
- * Each attribute represents a set of invariants
+ * So there can't be a case when two nodes are representing the same attribute
+ * Each attribute/node represents a set of invariants
  * Invariant is representing a list of values in order of their appearance in a real process
  */
 public class TraceInvariantList {
