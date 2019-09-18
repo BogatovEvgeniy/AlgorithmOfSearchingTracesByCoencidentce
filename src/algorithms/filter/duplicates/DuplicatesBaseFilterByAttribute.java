@@ -21,7 +21,6 @@ abstract class DuplicatesBaseFilterByAttribute extends BaseFilter {
 
         for (XTrace resultTrace : algorithmResultLog) {
 
-            // If some difference duplicate
             if (hasEqualEvent) {
                 break;
             }

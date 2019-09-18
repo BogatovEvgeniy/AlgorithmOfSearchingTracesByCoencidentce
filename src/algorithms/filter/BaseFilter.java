@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 /**
- * 1. Algorithm inits a log with an empty first trace of a log
+ * 1. Algorithm initiates a log with an empty first trace of a log
  * 2. Adds events. Behaviour of this step can be overwritten in a child class
  * 3. Sorts all events in a trace by time, will be executed for all events in each trace
  */

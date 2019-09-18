@@ -1,8 +1,6 @@
 package algorithms.filter.duplicates;
 
-import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
-import org.deckfour.xes.model.XTrace;
 
 public class GetTraceDuplicatesByAttribute extends DuplicatesBaseFilterByAttribute {
 

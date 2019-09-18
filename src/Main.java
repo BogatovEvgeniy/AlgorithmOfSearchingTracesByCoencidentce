@@ -2,6 +2,9 @@ import io.*;
 import io.log.XesLogReader;
 import io.log.XesLogWriter;
 import org.deckfour.xes.model.XLog;
+import usecases.ForHundredLog;
+import usecases.IUseCase;
+import usecases.KhladopromLogUseCase;
 
 import java.io.File;
 
@@ -15,11 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
+        ForHundredLog forHoundredsLog = new ForHundredLog();
+        KhladopromLogUseCase khladopromLog = new KhladopromLogUseCase();
         try {
             if (args != null && args.length > 0) {
                 CommandParser.parse(args, logWriter);
             } else {
-                launchParsingAlgorithms();
+                launchParsingAlgorithms(khladopromLog);
             }
 
             // Track execution time
@@ -30,14 +35,17 @@ public class Main {
         }
     }
 
-    private static void launchParsingAlgorithms() throws Exception {
+    private static void launchParsingAlgorithms(IUseCase useCase) throws Exception {
         // Config input data
-        String srcFileName = "BPI_Challenge_2013_incidents";
-        String srcFilePath = SOURCE_DIR + srcFileName + FILE_EXTENSION;
+
+        String srcFilePath = SOURCE_DIR + useCase.getLogName() + FILE_EXTENSION;
 
         XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
+        AnalyzeProcessAlgorithmsFactory.AlgorithmVariant aDefault = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.DEFAULT;
+        aDefault.setIAttributeSetHolder(useCase);
+        aDefault.setIInvariantSetHolder(useCase);
         AnalyzeProcessAlgorithmsFactory
-                .get(AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.DEFAULT)
+                .get(aDefault)
                 .launch(new XesLogWriter(), originLog);
 
     }
