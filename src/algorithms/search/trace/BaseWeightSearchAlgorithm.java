@@ -64,6 +64,9 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
     public List<AttributeSetWeightPerRanges> proceed(XLog originLog) {
         this.originLog = originLog;
         checkLog(originLog);
+
+        // !!!!!!!! BEFORE COMMENT STAGES 2-8  COMMENT TRUNCATING OF THE DB
+
         while (moreEventsAvailable(originLog, windowIndex)) {
 
             /**
@@ -97,8 +100,6 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
     }
 
     private void calculateWeightsTable(XLog originLog) {
-        dbWriter.storeAttributeSets(attributeSets);
-
         try {
              for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
                   List<String> attributes = getAttrForIndex(attrSetIndex);

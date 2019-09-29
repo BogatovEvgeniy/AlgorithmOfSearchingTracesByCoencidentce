@@ -1,7 +1,6 @@
 package io.db;
 
 import algorithms.search.trace.AttributeSetWeightPerRanges;
-import org.deckfour.spex.SXDocument;
 import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
@@ -17,6 +16,7 @@ import java.util.function.Consumer;
 //TODO In a first implementation will be god object, then can be divided according SOLID principle
 public class DBWriter {
 
+    public static final int MAX_VALUE_SET_LENGTH = 500;
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/Diss_DB?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -75,7 +75,7 @@ public class DBWriter {
 
     public static DBWriter init() {
         connection = getConnection();
-        //STEP 2: Register JDBC driver
+//        STEP 2: Register JDBC driver
         truncateTables();
         return new DBWriter();
     }
@@ -172,7 +172,6 @@ public class DBWriter {
     private void insertEventValueInAttributeEventsTable(Connection connection, int rangeNum, int attrSetIndex, List<String> attributeSet, XEvent event, int eventIndex) {
         try {
             insertEventIfNotExist(connection, eventIndex);
-
             List<Integer> eventIds = getEventsForPerRangeAndAttrSet(connection, event, rangeNum, attrSetIndex);
             if (!eventIds.contains(eventIndex)) {
                 for (String key : attributeSet) {
@@ -437,6 +436,8 @@ public class DBWriter {
     }
 
     public void storeWeightCalculations(int attrSetIndex, AttributeSetWeightPerRanges weightPerRanges) {
+        // TODO REMOVE AS UNNECESSARY
+        String tooLongVal = null;
         try {
             Map<Integer, Float> rangeIndexes = weightPerRanges.getRangeIndexes();
             for (Integer rangeNum : rangeIndexes.keySet()) {
@@ -447,8 +448,11 @@ public class DBWriter {
                 insertQuery.append(",'");
                 insertQuery.append(attrSetIndex);
                 insertQuery.append("','");
-                insertQuery.append(weightPerRanges.getValues().values().toString());
+                String valueSet = weightPerRanges.getValues().values().toString();
+                insertQuery.append(valueSet.subSequence(0, valueSet.length() < MAX_VALUE_SET_LENGTH ? valueSet.length() : MAX_VALUE_SET_LENGTH));
                 insertQuery.append("')");
+
+                tooLongVal = valueSet;
                 connection.createStatement().execute(insertQuery.toString());
             }
 
@@ -461,6 +465,8 @@ public class DBWriter {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
+            System.out.println(tooLongVal);
+
         }
     }
 

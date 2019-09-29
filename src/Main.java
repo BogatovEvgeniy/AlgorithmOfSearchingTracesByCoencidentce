@@ -44,6 +44,7 @@ public class Main {
         AnalyzeProcessAlgorithmsFactory.AlgorithmVariant aDefault = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.DEFAULT;
         aDefault.setIAttributeSetHolder(useCase);
         aDefault.setIInvariantSetHolder(useCase);
+        aDefault.setICoefficientMapCalculator(useCase);
         AnalyzeProcessAlgorithmsFactory
                 .get(aDefault)
                 .launch(new XesLogWriter(), originLog);

@@ -69,13 +69,13 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         return initTraceSearchingAlgorithm(invariantTraceLocator);
     }
 
-    private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator) {
+    private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(ITraceSearchingAlgorithm.TraceLocator traceLocator) {
         // Launch the algorithm of searching traces by coincidences of event's attributes values
         // also tacking in a count coefficientMap
         TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
 
         // Define locators
-        searchingAlgorithm.setTraceLocator(invariantTraceLocator);
+        searchingAlgorithm.setTraceLocator(traceLocator);
         return searchingAlgorithm;
     }
 
