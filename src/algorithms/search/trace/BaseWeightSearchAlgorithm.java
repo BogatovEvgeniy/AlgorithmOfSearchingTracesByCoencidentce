@@ -100,6 +100,8 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
     }
 
     private void calculateWeightsTable(XLog originLog) {
+        dbWriter.storeAttributeSets(attributeSets);
+
         try {
              for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
                   List<String> attributes = getAttrForIndex(attrSetIndex);
