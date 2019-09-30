@@ -113,19 +113,6 @@ public class DBWriter {
         insertEventValueInAttributeEventsTable(connection, rangeNum, attrSetIndex, attributeSet, secondEvent, secondEventIndex);
     }
 
-    private Consumer<String> putEventInEventAttributesTableConsumer(Connection connection, XEvent event) {
-        return key -> {
-            Map<String, Integer> attributeIds = new HashMap<>();
-            try {
-                attributeIds.put(key, getAttributeIdByName(connection, key));
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        };
-    }
-
-
     // -------------------- ATTRIBUTE METHODS ---------------------------------------------- //
 
     private int getAttributeIdByName(Connection conn, String attrKey) throws SQLException {
@@ -397,10 +384,7 @@ public class DBWriter {
                     connection.createStatement().execute(insertIntoPrefix + " VALUES (" + attrSet + ", '" + attributeSets.get(attrSet).get(attrIndex) + "')");
                 }
             }
-        } catch (
-                SQLException ex)
-
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }

@@ -41,12 +41,12 @@ public class Main {
         String srcFilePath = SOURCE_DIR + useCase.getLogName() + FILE_EXTENSION;
 
         XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
-        AnalyzeProcessAlgorithmsFactory.AlgorithmVariant aDefault = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.DEFAULT;
-        aDefault.setIAttributeSetHolder(useCase);
-        aDefault.setIInvariantSetHolder(useCase);
-        aDefault.setICoefficientMapCalculator(useCase);
+        AnalyzeProcessAlgorithmsFactory.AlgorithmVariant algorithmsSet = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.DEFAULT;
+        algorithmsSet.setIAttributeSetHolder(useCase);
+        algorithmsSet.setIInvariantSetHolder(useCase);
+        algorithmsSet.setICoefficientMapCalculator(useCase);
         AnalyzeProcessAlgorithmsFactory
-                .get(aDefault)
+                .get(algorithmsSet)
                 .launch(new XesLogWriter(), originLog);
 
     }
