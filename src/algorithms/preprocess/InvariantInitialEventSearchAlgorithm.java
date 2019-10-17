@@ -54,6 +54,11 @@ public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm<XLog>
         return result;
     }
 
+    @Override
+    public String getResultsName() {
+        return this.getClass().getSimpleName();
+    }
+
     private boolean isInvariantValueIsEqualsToEventVal(XLog result,
                                                        XTrace trace,
                                                        XEvent xEvent,

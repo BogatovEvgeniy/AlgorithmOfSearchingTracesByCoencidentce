@@ -2,6 +2,8 @@ import algorithms.ILogAlgorithm;
 import io.log.ILogWriter;
 import org.deckfour.xes.model.XLog;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AlgorithmSequence {
@@ -12,6 +14,11 @@ public class AlgorithmSequence {
         this.algorithms = algorithms;
     }
 
+    AlgorithmSequence (ILogAlgorithm<?> ... algorithmVararg){
+        this.algorithms = new ArrayList<>();
+        algorithms.addAll(Arrays.asList(algorithmVararg));
+    }
+
     public void launch(ILogWriter logWriter, XLog xLog){
         XLog currentLog = xLog;
         for (ILogAlgorithm<?> algorithm : algorithms) {
@@ -20,7 +27,7 @@ public class AlgorithmSequence {
                 currentLog = (XLog) result;
             }
 
-            logWriter.write(currentLog, algorithm.getClass().getSimpleName() + "_Results");
+            logWriter.write(currentLog, algorithm.getResultsName() + "_Results");
         }
     }
 

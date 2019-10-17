@@ -24,6 +24,7 @@ public class Main {
             if (args != null && args.length > 0) {
                 CommandParser.parse(args, logWriter);
             } else {
+//                launchParsingAlgorithms(forHoundredsLog);
                 launchParsingAlgorithms(khladopromLog);
             }
 
@@ -36,18 +37,39 @@ public class Main {
     }
 
     private static void launchParsingAlgorithms(IUseCase useCase) throws Exception {
-        // Config input data
+        launchDefaultAlgorithmSetAnalyze(useCase);
+        launchTraceSearchAlgorithmSetAnalyze(useCase);
+        launchInvariantAnalyze(useCase);
+    }
 
+    private static void launchDefaultAlgorithmSetAnalyze(IUseCase useCase) throws Exception {
         String srcFilePath = SOURCE_DIR + useCase.getLogName() + FILE_EXTENSION;
-
         XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
         AnalyzeProcessAlgorithmsFactory.AlgorithmVariant algorithmsSet = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.DEFAULT;
         algorithmsSet.setIAttributeSetHolder(useCase);
-        algorithmsSet.setIInvariantSetHolder(useCase);
-        algorithmsSet.setICoefficientMapCalculator(useCase);
         AnalyzeProcessAlgorithmsFactory
                 .get(algorithmsSet)
                 .launch(new XesLogWriter(), originLog);
 
+    }
+
+    private static void launchTraceSearchAlgorithmSetAnalyze(IUseCase useCase) throws Exception {
+        String srcFilePath = SOURCE_DIR + useCase.getLogName() + FILE_EXTENSION;
+        XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
+        AnalyzeProcessAlgorithmsFactory.AlgorithmVariant algorithmsSet = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.TRACE_SEARCH_ATTRIBUTE_COMPARISION_BASED;
+        algorithmsSet.setICoefficientMapCalculator(useCase);
+        AnalyzeProcessAlgorithmsFactory
+                .get(algorithmsSet)
+                .launch(new XesLogWriter(), originLog);
+    }
+
+    private static void launchInvariantAnalyze(IUseCase useCase) throws Exception {
+        String srcFilePath = SOURCE_DIR + useCase.getLogName() + FILE_EXTENSION;
+        XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
+        AlgorithmSequence mergeAlgorithm = AnalyzeProcessAlgorithmsFactory.get(AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.MERGE_ALL_EVENTS_IN_ONE_TRACE);
+        AnalyzeProcessAlgorithmsFactory.AlgorithmVariant traceSearchInvariantBased = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.TRACE_SEARCH_INVARIANT_BASED;
+        traceSearchInvariantBased.setIInvariantSetHolder(useCase);
+        AlgorithmSequence invariantAlgorithm = AnalyzeProcessAlgorithmsFactory.get(traceSearchInvariantBased);
+        mergeAlgorithm.append(invariantAlgorithm).launch(new XesLogWriter(), originLog);
     }
 }

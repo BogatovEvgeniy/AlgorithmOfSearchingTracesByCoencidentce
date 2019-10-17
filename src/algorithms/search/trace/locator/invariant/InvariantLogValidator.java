@@ -35,7 +35,7 @@ public class InvariantLogValidator implements ITraceSearchingAlgorithm.TraceLoca
             }
         }
 
-        if (skippedKeys.size() > 0) {
+        if (skippedKeys.size() == attributesKeySet.size()) {
             throw new IllegalArgumentException("The log doesn't contain all Attributes mentioned in InvariantTree. Skipped keys:"
                     + Arrays.toString(skippedKeys.toArray()));
         } else {

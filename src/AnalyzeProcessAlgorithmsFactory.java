@@ -13,9 +13,8 @@ import java.util.List;
 
 public class AnalyzeProcessAlgorithmsFactory {
 
-    private static List<ILogAlgorithm<?>> algorithms = new ArrayList<>();
-
     public static AlgorithmSequence get(AlgorithmVariant variant) {
+        List<ILogAlgorithm<?>> algorithms = new ArrayList<>();
         switch (variant) {
             case MERGE_ALL_EVENTS_IN_ONE_TRACE:
                 algorithms.add(new MergeEventsInOneTrace());
@@ -36,8 +35,7 @@ public class AnalyzeProcessAlgorithmsFactory {
                 algorithms =
                         Lists.newArrayList(
                                 new MergeEventsInOneTrace(),
-                                PredefinedAttributeWeightsSearchAlgorithm.init(variant.algorithmModel.getAttributeSets()),
-                                TraceSearchingAlgorithm.initAlgorithmBasedOnAttributeComparision(variant.coeficientMapCalculator.calculateCoefficientsMap())
+                                PredefinedAttributeWeightsSearchAlgorithm.init(variant.algorithmModel.getAttributeSets())
                         );
         }
         return new AlgorithmSequence(algorithms);

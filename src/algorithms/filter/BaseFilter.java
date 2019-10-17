@@ -40,6 +40,11 @@ public abstract class BaseFilter implements ILogAlgorithm<XLog> {
         return xLog;
     }
 
+    @Override
+    public String getResultsName() {
+        return this.getClass().getSimpleName();
+    }
+
     protected void addClearTraceInLog(XLog clearLog) {
         XTrace trace = new XTraceImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class));
         clearLog.add(removeTraceAttributes(trace));

@@ -95,6 +95,16 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     }
 
     @Override
+    public String getResultsName() {
+        StringBuilder result = new StringBuilder(this.getClass().getSimpleName());
+        for (String key : traceLocators.keySet()) {
+            result.append("_");
+            result.append(traceLocators.get(key).getClass().getSimpleName());
+        }
+        return result.toString();
+    }
+
+    @Override
     public void setTraceLocator(TraceLocator traceLocator) {
         if (traceLocators == null) traceLocators = new HashMap<>();
         traceLocators.clear();
@@ -125,7 +135,9 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
             resultLog.add(trace);
             trace.add(xEvent);
         } else {
-            resultLog.get(traceLocatorResults[0]).add(xEvent);
+            int[] traceLocatorResults1 = traceLocatorResults;
+            int traceLocatorResult = traceLocatorResults1[0];
+            resultLog.get(traceLocatorResult).add(xEvent);
         }
     }
 

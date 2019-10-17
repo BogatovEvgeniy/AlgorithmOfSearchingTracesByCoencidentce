@@ -99,6 +99,11 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         return coincidenceForEachAttributeInSet;
     }
 
+    @Override
+    public String getResultsName() {
+        return this.getClass().getSimpleName();
+    }
+
     private void calculateWeightsTable(XLog originLog) {
         dbWriter.storeAttributeSets(attributeSets);
 
