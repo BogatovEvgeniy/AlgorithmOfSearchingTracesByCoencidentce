@@ -6,6 +6,7 @@ import org.deckfour.xes.model.XLog;
 import usecases.BPIChallenge2013IncidentsUseCase;
 import usecases.IUseCase;
 import usecases.KhladopromLogUseCase;
+import usecases.Product_production;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,13 +24,13 @@ public class Main {
         long startTime = System.currentTimeMillis();
         BPIChallenge2013IncidentsUseCase incidentsUseCase = new BPIChallenge2013IncidentsUseCase();
         KhladopromLogUseCase khladopromLog = new KhladopromLogUseCase();
+        Product_production product_production = new Product_production();
         try {
             if (args != null && args.length > 0) {
                 CommandParser.parse(args, logWriter);
             } else {
-//                launchRemoveDuplicates(incidentsUseCase);
-                launchParsingAlgorithms(incidentsUseCase);
-//                launchParsingAlgorithms(khladopromLog);
+//                launchRemoveDuplicates(product_production);
+                launchParsingAlgorithms(product_production);
             }
 
             // Track execution time
