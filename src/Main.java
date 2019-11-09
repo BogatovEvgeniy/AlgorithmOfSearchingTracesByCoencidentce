@@ -1,12 +1,15 @@
-import io.*;
+import io.FileUtils;
 import io.log.XesLogReader;
 import io.log.XesLogWriter;
+import javafx.util.Pair;
 import org.deckfour.xes.model.XLog;
-import usecases.ForHundredLog;
+import usecases.BPIChallenge2013IncidentsUseCase;
 import usecases.IUseCase;
 import usecases.KhladopromLogUseCase;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -18,14 +21,15 @@ public class Main {
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        ForHundredLog forHoundredsLog = new ForHundredLog();
+        BPIChallenge2013IncidentsUseCase incidentsUseCase = new BPIChallenge2013IncidentsUseCase();
         KhladopromLogUseCase khladopromLog = new KhladopromLogUseCase();
         try {
             if (args != null && args.length > 0) {
                 CommandParser.parse(args, logWriter);
             } else {
-//                launchParsingAlgorithms(forHoundredsLog);
-                launchParsingAlgorithms(khladopromLog);
+//                launchRemoveDuplicates(incidentsUseCase);
+                launchParsingAlgorithms(incidentsUseCase);
+//                launchParsingAlgorithms(khladopromLog);
             }
 
             // Track execution time
@@ -34,6 +38,20 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void launchRemoveDuplicates(BPIChallenge2013IncidentsUseCase incidentsUseCase) throws Exception {
+        String srcFilePath = SOURCE_DIR + incidentsUseCase.getLogName() + FILE_EXTENSION;
+        XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
+        AnalyzeProcessAlgorithmsFactory.AlgorithmVariant algorithmsSet = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.GET_ONE_PROCESS_TRACES;
+        List<Pair<String, String>> duplicateSearchValues = new ArrayList<>();
+        duplicateSearchValues.add(new Pair<>(BPIChallenge2013IncidentsUseCase.KEY_PRODUCT, "PROD542"));
+        duplicateSearchValues.add(new Pair<>(BPIChallenge2013IncidentsUseCase.KEY_PRODUCT, "PROD660"));
+        duplicateSearchValues.add(new Pair<>(BPIChallenge2013IncidentsUseCase.KEY_PRODUCT, "PROD455"));
+        algorithmsSet.setDuplicateSearchValues(duplicateSearchValues);
+        AnalyzeProcessAlgorithmsFactory
+                .get(algorithmsSet)
+                .launch(new XesLogWriter(), originLog);
     }
 
     private static void launchParsingAlgorithms(IUseCase useCase) throws Exception {

@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * 1. Algorithm initiates a log with an empty first trace of a log
  * 2. Adds events. Behaviour of this step can be overwritten in a child class
- * 3. Sorts all events in a trace by time, will be executed for all events in each trace
+ * 3. Sorts all events  ina trace by time, will be executed for all events in each trace
  */
 public abstract class BaseFilter implements ILogAlgorithm<XLog> {
 
@@ -26,17 +26,19 @@ public abstract class BaseFilter implements ILogAlgorithm<XLog> {
     @Override
     public XLog proceed(XLog originLog) {
         this.originLog = originLog;
-        XLog xLog = new XLogImpl(EMPTY_ATTRIBUTES);
-        addClearTraceInLog(xLog);
-
-        // add events of the first trace
-        xLog.get(0).addAll(originLog.get(0));
+        XLog xLog = addEmptyTrace();
 
         //Start from second ite due first were added above
         addEvents(originLog, xLog);
 
         System.out.println("Traces added: " + traceCounter);
         xLog = sortEventsByTimestamp(xLog);
+        return xLog;
+    }
+
+    private XLog addEmptyTrace() {
+        XLog xLog = new XLogImpl(EMPTY_ATTRIBUTES);
+        addClearTraceInLog(xLog);
         return xLog;
     }
 

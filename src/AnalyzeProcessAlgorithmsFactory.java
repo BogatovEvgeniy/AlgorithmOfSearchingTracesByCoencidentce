@@ -1,9 +1,10 @@
 import algorithms.ILogAlgorithm;
 import algorithms.filter.MergeEventsInOneTrace;
-import algorithms.filter.duplicates.GetTraceDuplicatesByAttribute;
+import algorithms.filter.duplicates.GetTraceDuplicates;
 import algorithms.search.trace.PredefinedAttributeWeightsSearchAlgorithm;
 import algorithms.search.trace.TraceSearchingAlgorithm;
 import com.google.common.collect.Lists;
+import javafx.util.Pair;
 import usecases.IAttributeSetHolder;
 import usecases.ICoefficientMapCalculator;
 import usecases.IInvariantSetHolder;
@@ -20,7 +21,7 @@ public class AnalyzeProcessAlgorithmsFactory {
                 algorithms.add(new MergeEventsInOneTrace());
                 break;
             case GET_ONE_PROCESS_TRACES:
-                algorithms.add(new GetTraceDuplicatesByAttribute(variant.searchDuplicatesValues));
+                algorithms.add(new GetTraceDuplicates(variant.searchDuplicatesValues));
                 break;
             case PREDEFINED_ATTRIBUTE_WEIGHT_SEARCH_ALGORITHM:
                 algorithms.add(PredefinedAttributeWeightsSearchAlgorithm.init(variant.algorithmModel.getAttributeSets()));
@@ -52,7 +53,7 @@ public class AnalyzeProcessAlgorithmsFactory {
         private IAttributeSetHolder algorithmModel;
         private IInvariantSetHolder invariantSetHolder;
         private ICoefficientMapCalculator coeficientMapCalculator;
-        private String[] searchDuplicatesValues;
+        private List<Pair<String, String>> searchDuplicatesValues;
 
         void setIAttributeSetHolder(IAttributeSetHolder iAlgorithmModel) {
             this.algorithmModel = iAlgorithmModel;
@@ -66,7 +67,7 @@ public class AnalyzeProcessAlgorithmsFactory {
             this.coeficientMapCalculator = coeficientMapCalculator;
         }
 
-        void setDuplicateSearchValues(String ... keys) {
+        void setDuplicateSearchValues(List<Pair<String, String>> keys) {
             searchDuplicatesValues = keys;
         }
     }

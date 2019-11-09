@@ -1,8 +1,9 @@
 package algorithms;
 
-import algorithms.filter.duplicates.RemoveTraceDuplicatesByAttribute;
+import algorithms.filter.duplicates.RemoveTraceDuplicates;
 import io.FileUtils;
 import io.log.ILogWriter;
+import javafx.util.Pair;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.out.XesXmlSerializer;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -30,7 +32,9 @@ public class RemoveTraceDuplicatesTest {
             Assert.assertTrue(logList.size() == 1);
 
             ILogWriter logWriter = getLogWriterInstance();
-            XLog cleanedLog = new RemoveTraceDuplicatesByAttribute( "attr1").proceed(logList.get(0));
+            List<Pair<String, String>> pairs = new ArrayList<>();
+            pairs.add(new Pair<>("attr1", "val1"));
+            XLog cleanedLog = new RemoveTraceDuplicates(pairs).proceed(logList.get(0));
             Assert.assertThat(cleanedLog, notNullValue());
             Assert.assertThat(cleanedLog.size(), is(3));
         } catch (Exception e) {
