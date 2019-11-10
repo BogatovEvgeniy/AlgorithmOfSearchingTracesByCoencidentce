@@ -7,12 +7,11 @@ import java.util.*;
 
 public class Product_production implements IUseCase, ICoefficientMapCalculator {
     public static final String KEY_CASE_ID = "Case ID";
-    public static final String KEY_ACTIVITY = "Activity";
+    public static final String KEY_ACTIVITY = "concept:name";
     public static final String KEY_RESOURCE = "Resource";
-    public static final String KEY_COMPLETE_TIMESTAMP = "Complete Timestamp";
     public static final String KEY_SPAN = "Span";
-    public static final String KEY_WORK_ORDER_QTY = "Work Order Qty";
-    public static final String KEY_PART_DESC = "Part Desc";
+    public static final String KEY_WORK_ORDER_QTY = "Work Order  Qty";
+    public static final String KEY_PART_DESC = "Part Desc.";
     public static final String KEY_WORKER_ID = "Worker ID";
     public static final String KEY_REPORT_TYPE = "Report Type";
 
@@ -27,19 +26,21 @@ public class Product_production implements IUseCase, ICoefficientMapCalculator {
         attributeSets.add(Arrays.asList(KEY_CASE_ID));
         attributeSets.add(Arrays.asList(KEY_ACTIVITY));
         attributeSets.add(Arrays.asList(KEY_RESOURCE));
-        attributeSets.add(Arrays.asList(KEY_COMPLETE_TIMESTAMP));
         attributeSets.add(Arrays.asList(KEY_SPAN));
         attributeSets.add(Arrays.asList(KEY_WORK_ORDER_QTY));
         attributeSets.add(Arrays.asList(KEY_PART_DESC));
         attributeSets.add(Arrays.asList(KEY_WORKER_ID));
         attributeSets.add(Arrays.asList(KEY_CASE_ID, KEY_ACTIVITY));
         attributeSets.add(Arrays.asList(KEY_CASE_ID, KEY_RESOURCE));
-        attributeSets.add(Arrays.asList(KEY_CASE_ID, KEY_COMPLETE_TIMESTAMP));
         attributeSets.add(Arrays.asList(KEY_CASE_ID, KEY_SPAN));
         attributeSets.add(Arrays.asList(KEY_CASE_ID, KEY_WORK_ORDER_QTY));
         attributeSets.add(Arrays.asList(KEY_CASE_ID, KEY_PART_DESC));
         attributeSets.add(Arrays.asList(KEY_CASE_ID, KEY_WORKER_ID));
-        attributeSets.add(Arrays.asList(KEY_RESOURCE, KEY_COMPLETE_TIMESTAMP));
+        attributeSets.add(Arrays.asList(KEY_ACTIVITY, KEY_RESOURCE));
+        attributeSets.add(Arrays.asList(KEY_ACTIVITY, KEY_SPAN));
+        attributeSets.add(Arrays.asList(KEY_ACTIVITY, KEY_WORK_ORDER_QTY));
+        attributeSets.add(Arrays.asList(KEY_ACTIVITY, KEY_PART_DESC));
+        attributeSets.add(Arrays.asList(KEY_ACTIVITY, KEY_WORKER_ID));
         attributeSets.add(Arrays.asList(KEY_RESOURCE, KEY_SPAN));
         attributeSets.add(Arrays.asList(KEY_RESOURCE, KEY_WORK_ORDER_QTY));
         attributeSets.add(Arrays.asList(KEY_RESOURCE, KEY_PART_DESC));

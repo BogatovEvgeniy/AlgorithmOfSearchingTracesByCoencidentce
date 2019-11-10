@@ -9,7 +9,10 @@ import org.deckfour.xes.model.XLog;
 import utils.AttributeUtils;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Tha algorithm assumes that his input is an set of event in an one trace.
@@ -69,20 +72,14 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
 
         while (moreEventsAvailable(originLog, windowIndex)) {
 
-            /**
-             *  2. Define events in a window
-             */
+//          2. Define events in a window
             int lastWindowEvent = windowIndex + windowSize;
             List<XEvent> eventRange = originLog.get(0).subList(windowIndex, lastWindowEvent);
 
-            /**
-             * 3. Define attributeSets per Window
-             */
+//          3. Define attributeSets per Window
             attributeCoincidence(originLog, eventRange);
 
-            /**
-             *  8. Move window one event down
-             */
+//          8. Move window one event down
             windowIndex++;
             System.out.println("Index:" + windowIndex);
         }
@@ -108,8 +105,8 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         dbWriter.storeAttributeSets(attributeSets);
 
         try {
-             for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
-                  List<String> attributes = getAttrForIndex(attrSetIndex);
+            for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
+                List<String> attributes = getAttrForIndex(attrSetIndex);
                 int rangeSize = originLog.get(0).size();
                 List<XEvent> valueSetsPerAttr = getValuesForAttrIndex(attrSetIndex, attributes, 0, rangeSize);
                 dbWriter.storeValueSets(attrSetIndex, valueSetsPerAttr);
@@ -125,7 +122,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
                     dbWriter.storeWeightCalculations(attrSetIndex, weightPerRanges);
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -153,10 +150,9 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
         return dbWriter.getEventsPerAttrSet(attrSetIndex, rangeId);
     }
 
-    private AttributeSetWeightPerRanges calculateWeights(List<String> attributes, int attrSetIndex, List<Integer>  ranges, XAttributeMap valueSetPerAttr) throws SQLException {
+    private AttributeSetWeightPerRanges calculateWeights(List<String> attributes, int attrSetIndex, List<Integer> ranges, XAttributeMap valueSetPerAttr) throws SQLException {
 
         float sumOfWeights = 0;
-        int comparedVals = 0;
         Map<Integer, Float> rangesUsedInCalculation = new TreeMap<>();
 
         for (int range : ranges) {
@@ -166,7 +162,6 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
             if (isWindowContainsValuesSet) {
                 float rangeWeight = calculateWeightPerStep(eventList, attributes);
                 sumOfWeights += rangeWeight;
-                comparedVals++;
                 rangesUsedInCalculation.put(range, rangeWeight);
             }
         }
@@ -181,20 +176,17 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
     }
 
     private float calculateWeightPerStep(List<XEvent> events, List<String> attributes) {
-        float coincidenceInWindow = 0f;
+        float coincidenceInWindow = 1f; // Start from 1 due to the first event in the range has equal values in comparision with self values
         int countOfComparision = 0;
         for (int firstComparisonValIndex = 0; firstComparisonValIndex < events.size() - 1; firstComparisonValIndex++) {
             // Here were added one more cycle to be able compare each event with the other in the step
-            for (int secondComparisionValIndex = firstComparisonValIndex + 1; secondComparisionValIndex < events.size(); secondComparisionValIndex++) {
-                XAttributeMap firstEventAttributes = events.get(firstComparisonValIndex).getAttributes();
-                XAttributeMap secondEventAttributes = events.get(secondComparisionValIndex).getAttributes();
-                coincidenceInWindow += calculateCoincidenceEventPair(attributes, firstEventAttributes, secondEventAttributes);
-                countOfComparision ++;
-            }
+            XAttributeMap firstEventAttributes = events.get(firstComparisonValIndex).getAttributes();
+            XAttributeMap secondEventAttributes = events.get(firstComparisonValIndex + 1).getAttributes();
+            coincidenceInWindow += calculateCoincidenceEventPair(attributes, firstEventAttributes, secondEventAttributes);
         }
 
         if (coincidenceInWindow > minimalCoincidence) {
-            return coincidenceInWindow/countOfComparision;
+            return coincidenceInWindow / events.size();
         } else {
             return 0f;
         }

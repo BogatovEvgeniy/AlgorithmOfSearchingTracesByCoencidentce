@@ -56,7 +56,7 @@ public class Main {
     }
 
     private static void launchParsingAlgorithms(IUseCase useCase) throws Exception {
-        launchDefaultAlgorithmSetAnalyze(useCase);
+//        launchDefaultAlgorithmSetAnalyze(useCase);
         launchTraceSearchAlgorithmSetAnalyze(useCase);
         launchInvariantAnalyze(useCase);
     }

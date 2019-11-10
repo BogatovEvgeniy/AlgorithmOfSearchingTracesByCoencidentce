@@ -157,17 +157,19 @@ public class DBWriter {
 
     // ----------------------------------------- EventsAttributes Table ------------------------------------------ //
     private void insertEventValueInAttributeEventsTable(Connection connection, int rangeNum, int attrSetIndex, List<String> attributeSet, XEvent event, int eventIndex) {
+        String query = "";
         try {
             insertEventIfNotExist(connection, eventIndex);
             List<Integer> eventIds = getEventsForPerRangeAndAttrSet(connection, event, rangeNum, attrSetIndex);
             if (!eventIds.contains(eventIndex)) {
                 for (String key : attributeSet) {
-                    String query = "INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (range_num, attr_set_index, eventId, attribute_key, attribute_val)" + " " +
+                    query = "INSERT INTO " + TABLE_EVENT_ATTRIBUTES + " (range_num, attr_set_index, eventId, attribute_key, attribute_val)" + " " +
                             "VALUES (" + rangeNum + "," + attrSetIndex + "," + eventIndex + ",'" + key + "', '" + event.getAttributes().get(key) + "');";
                     connection.createStatement().executeUpdate(query);
                 }
             }
         } catch (SQLException e) {
+            System.out.println(query);
             e.printStackTrace();
         }
     }
