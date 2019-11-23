@@ -47,7 +47,7 @@ public class TraceInvariantListTest extends LogTestBaseClass {
         node.addTrace(valuesList);
         invariantTree.addInvariantNode(node);
 
-        Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        Node invariantNodeForKey = invariantTree.getRuleSetPerKey(ATTR_KEY_1);
         assertNotNull(invariantNodeForKey);
         assertTrue(invariantNodeForKey.getAllAvailableValues().size() > 0);
         assertEquals(eventVal, invariantNodeForKey.getAllAvailableValues().get(0).get(0));
@@ -60,7 +60,7 @@ public class TraceInvariantListTest extends LogTestBaseClass {
         invariantList.addAll(Arrays.asList(invariantListTestData));
         invariantTree.insertOrReplaceInvariant(ATTR_KEY_1, invariantList);
 
-        Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        Node invariantNodeForKey = invariantTree.getRuleSetPerKey(ATTR_KEY_1);
         List<String> attributeInvariant = invariantNodeForKey.getAttributeInvariant();
 
         assertNotNull(invariantNodeForKey);
@@ -76,7 +76,7 @@ public class TraceInvariantListTest extends LogTestBaseClass {
         invariantList.addAll(Arrays.asList(invariantTestData));
         invariantTree.insertOrReplaceInvariant(ATTR_KEY_1, invariantList);
 
-        Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        Node invariantNodeForKey = invariantTree.getRuleSetPerKey(ATTR_KEY_1);
         List<String> attributeInvariant = invariantNodeForKey.getAttributeInvariant();
         assertNotNull(invariantNodeForKey);
         assertTrue(attributeInvariant.size() == invariantTestData.length);
@@ -84,7 +84,7 @@ public class TraceInvariantListTest extends LogTestBaseClass {
         List<String> invariantListForReplace = new LinkedList<>();
         invariantListForReplace.addAll(Arrays.asList(invariantTestDataForReplace));
         invariantTree.insertOrReplaceInvariant(ATTR_KEY_1, invariantListForReplace);
-        invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        invariantNodeForKey = invariantTree.getRuleSetPerKey(ATTR_KEY_1);
         attributeInvariant = invariantNodeForKey.getAttributeInvariant();
 
         assertNotNull(invariantNodeForKey);
@@ -104,7 +104,7 @@ public class TraceInvariantListTest extends LogTestBaseClass {
         node.addTrace(valuesList);
         invariantTree.addInvariantNode(node);
 
-        Node invariantNodeForKey = invariantTree.getInvariantNodeForKey(ATTR_KEY_1);
+        Node invariantNodeForKey = invariantTree.getRuleSetPerKey(ATTR_KEY_1);
         assertNotNull(invariantNodeForKey);
         assertTrue(invariantNodeForKey.equals(node));
     }

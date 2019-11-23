@@ -1,7 +1,6 @@
 package algorithms.search.trace;
 
 import algorithms.ILogAlgorithm;
-import algorithms.search.trace.ILocatorResultMerger;
 import com.sun.istack.internal.Nullable;
 import exceptions.LogParsingError;
 import org.deckfour.xes.model.XEvent;
@@ -28,7 +27,7 @@ public interface ITraceSearchingAlgorithm extends ILogAlgorithm<XLog> {
         ILogValidator ANY_LOG_VALIDATOR = xLog -> true;
 
         /**
-         * An is of current locator. Used to manage registered in algorithm locators
+         * An ID of current locator. Used to manage registered in algorithm locators
          *
          * @return
          */
@@ -58,7 +57,7 @@ public interface ITraceSearchingAlgorithm extends ILogAlgorithm<XLog> {
         interface ILogValidator {
 
             /**
-             * Validate was log preprocessed before it'll be passed to  trace validator if this is required by it.
+             * Validate if log preprocessed before it'll be passed to  trace validator if this is required by it.
              * @param xLog - the original log which was passed as input data for an algorithm
              * @return - true in case of validation was passed
              * @throws IllegalArgumentException - should be thrown in case of one necessary preprocessor steps was skipped

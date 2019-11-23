@@ -6,6 +6,7 @@ import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InvariantLogValidator implements ITraceSearchingAlgorithm.TraceLocator.ILogValidator {
 
@@ -18,18 +19,21 @@ public class InvariantLogValidator implements ITraceSearchingAlgorithm.TraceLoca
     @Override
     public boolean isValid(XLog xLog) throws IllegalArgumentException {
         List<String> skippedKeys = new LinkedList();
-        Set<String> attributesKeySet = new HashSet<>();
+        Set<String> attributesKeySet = xLog.get(0).get(0).getAttributes().keySet();
         for (XTrace trace : xLog) {
             for (XEvent xEvent : trace) {
-                attributesKeySet = xEvent.getAttributes().keySet();
-
+                attributesKeySet = xEvent.getAttributes().keySet()
+                        .stream()
+                        .distinct()
+                        .filter(attributesKeySet::contains)
+                        .collect(Collectors.toSet());
             }
         }
 
         for (String key : attributesKeySet) {
-            Node node = invariantTree.getInvariantNodeForKey(key);
+            Node node = invariantTree.getRuleSetPerKey(key);
             if (node != null && node.getKey().equals(key)) {
-                    continue;
+                continue;
             } else {
                 skippedKeys.add(key);
             }

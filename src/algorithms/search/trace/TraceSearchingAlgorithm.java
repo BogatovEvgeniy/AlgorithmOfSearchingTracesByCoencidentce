@@ -5,7 +5,6 @@ import algorithms.search.trace.locator.coefficient.LastEventCoefficientsTraceLoc
 import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import com.sun.istack.internal.NotNull;
-import io.log.ILogWriter;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.impl.XAttributeMapImpl;
@@ -13,7 +12,6 @@ import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.model.impl.XTraceImpl;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -123,39 +121,48 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     }
 
 
-    private void insertEventInLogByLocators(XLog xLog, XEvent xEvent) {
+    private void insertEventInLogByLocators(XLog resultLog, XEvent xEvent) {
         // Insert first event if result log is empty
-        if (proceedEventForEmptyResultLog(xLog, xEvent)) return;
+        if (proceedEventForEmptyResultLog(resultLog, xEvent)) return;
+        int[] traceLocatorResults = calculateLocatorResults(resultLog, xEvent);
+        addEvent(xEvent, traceLocatorResults);
+    }
 
-        int[] traceLocatorResults = new int[]{};
-        traceLocatorResults = getLocatorsMergedResults(xLog, xEvent, traceLocatorResults);
-
+    private void addEvent(XEvent xEvent, int[] traceLocatorResults) {
         if (traceLocatorResults == null || traceLocatorResults.length == 0) {
-            XTraceImpl trace = new XTraceImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class));
-            resultLog.add(trace);
-            trace.add(xEvent);
+            addInNewTrace(xEvent);
         } else {
-            int[] traceLocatorResults1 = traceLocatorResults;
-            int traceLocatorResult = traceLocatorResults1[0];
-            resultLog.get(traceLocatorResult).add(xEvent);
+            addByTheIndex(xEvent, traceLocatorResults[0]);
         }
     }
 
-    private int[] getLocatorsMergedResults(XLog xLog, XEvent xEvent, int[] traceLocatorResults) {
+    private void addByTheIndex(XEvent xEvent, int traceLocatorResult1) {
+        int traceLocatorResult = traceLocatorResult1;
+        resultLog.get(traceLocatorResult).add(xEvent);
+    }
+
+    private void addInNewTrace(XEvent xEvent) {
+        XTraceImpl trace = new XTraceImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class));
+        resultLog.add(trace);
+        trace.add(xEvent);
+    }
+
+    private int[] calculateLocatorResults(XLog resultLog, XEvent xEvent) {
         Iterator<String> iterator = traceLocators.keySet().iterator();
+        int[] mergedResults = new int[]{};
         while (iterator.hasNext()) {
             String next = iterator.next();
             TraceLocator traceLocator = traceLocators.get(next);
             if (traceLocator.getLogValidator().isValid(originLog)) {
-                int[] suitableTraces = traceLocator.defineSuitableTracesList(xLog, xEvent);
+                int[] suitableTraces = traceLocator.defineSuitableTracesList(resultLog, xEvent);
                 if (traceLocators.size() > 1) {
-                    traceLocatorResults = locatorResultMerger.merge(suitableTraces);
+                    mergedResults = locatorResultMerger.merge(suitableTraces);
                 } else {
-                    traceLocatorResults = suitableTraces;
+                    mergedResults = suitableTraces;
                 }
             }
         }
-        return traceLocatorResults;
+        return mergedResults;
     }
 
     private boolean proceedEventForEmptyResultLog(XLog xLog, XEvent xEvent) {

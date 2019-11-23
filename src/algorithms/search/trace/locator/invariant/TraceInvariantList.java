@@ -4,39 +4,44 @@ import java.util.*;
 
 /**
  * This a tree structure where:
- * root is a collection of nodes which represent a set of attributes of a log.
- * So there can't be a case when two nodes are representing the same attribute
- * Each attribute/node represents a set of invariants
- * Invariant is representing a list of values in order of their appearance in a real process
+ * root is a collection of Rules
  */
 public class TraceInvariantList {
-    private Map<String, Node> root;
+    private List<IRule> rules;
 
     public TraceInvariantList() {
-        root = new HashMap<>();
+        rules = new ArrayList<IRule>();
     }
 
-    public void addInvariantNode(Node node) {
-        root.put(node.getKey(), node);
+    public void addInvariantNode(IRule rule) {
+        rules.add(rule);
     }
 
-    public void insertOrReplaceInvariant(String key, List values) {
-        root.remove(key);
-        Node node = new Node(key);
-        node.addInvariant(values);
-        root.put(key, node);
+    public void insertOrReplaceInvariant(IRule rule) {
+        rules.remove(rule);
+        rules.add(rule);
     }
 
-    public Node getInvariantNodeForKey(String key) {
-        return root.get(key);
+    public List<IRule> getRuleSetPerKey(String key) {
+        List<IRule> resultSet = new ArrayList<>();
+        for (IRule rule : rules) {
+            if (rule.isApplicableFor(key)) resultSet.add(rule);
+        }
+
+        return resultSet;
     }
 
     public void clear() {
-        root.clear();
+        rules.clear();
     }
 
     public int size() {
-        return root.size();
+        return rules.size();
     }
 
+    interface IRule {
+        boolean isApplicableFor(String key);
+
+        List<String> getPossiblePreValues(String eventVal);
+    }
 }

@@ -76,7 +76,7 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocatorTest extends LogTestBa
         XLogImpl resultLog = new XLogImpl(logInstance.getAttributes());
         for (XTrace trace : logInstance) {
             for (XEvent event : trace) {
-                int[] indexes = byFirstTraceCoincidenceInvariantsTraceLocator.defineSuitableTracesList(resultLog, event);
+                int[] indexes = byFirstTraceCoincidenceInvariantsTraceLocator.defineSuitableTracesList(resultLog, resultLog, event);
                 List<Integer> traceIndexes = new LinkedList<>();
 
                 if (indexes == null) {
@@ -96,29 +96,29 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocatorTest extends LogTestBa
         }
 
         assertNotNull(tree);
-        assertNotNull(tree.getInvariantNodeForKey(ATTR_1));
-        assertNotNull(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues());
-        assertTrue(!tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().isEmpty());
+        assertNotNull(tree.getRuleSetPerKey(ATTR_1));
+        assertNotNull(tree.getRuleSetPerKey(ATTR_1).getAllAvailableValues());
+        assertTrue(!tree.getRuleSetPerKey(ATTR_1).getAllAvailableValues().isEmpty());
 
-        assertTrue(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().get(0).containsAll(trace_attr1));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().get(1).containsAll(trace_attr2));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().get(2).containsAll(trace_attr3));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_1).getAllAvailableValues().get(3).containsAll(trace_attr4));
+        assertTrue(tree.getRuleSetPerKey(ATTR_1).getAllAvailableValues().get(0).containsAll(trace_attr1));
+        assertTrue(tree.getRuleSetPerKey(ATTR_1).getAllAvailableValues().get(1).containsAll(trace_attr2));
+        assertTrue(tree.getRuleSetPerKey(ATTR_1).getAllAvailableValues().get(2).containsAll(trace_attr3));
+        assertTrue(tree.getRuleSetPerKey(ATTR_1).getAllAvailableValues().get(3).containsAll(trace_attr4));
 
-        assertTrue(tree.getInvariantNodeForKey(ATTR_2).getAllAvailableValues().get(0).containsAll(trace_attr1));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_2).getAllAvailableValues().get(1).containsAll(trace_attr2));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_2).getAllAvailableValues().get(2).containsAll(trace_attr3));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_2).getAllAvailableValues().get(3).containsAll(trace_attr4));
+        assertTrue(tree.getRuleSetPerKey(ATTR_2).getAllAvailableValues().get(0).containsAll(trace_attr1));
+        assertTrue(tree.getRuleSetPerKey(ATTR_2).getAllAvailableValues().get(1).containsAll(trace_attr2));
+        assertTrue(tree.getRuleSetPerKey(ATTR_2).getAllAvailableValues().get(2).containsAll(trace_attr3));
+        assertTrue(tree.getRuleSetPerKey(ATTR_2).getAllAvailableValues().get(3).containsAll(trace_attr4));
 
-        assertTrue(tree.getInvariantNodeForKey(ATTR_3).getAllAvailableValues().get(0).containsAll(trace_attr1));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_3).getAllAvailableValues().get(1).containsAll(trace_attr2));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_3).getAllAvailableValues().get(2).containsAll(trace_attr3));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_3).getAllAvailableValues().get(3).containsAll(trace_attr4));
+        assertTrue(tree.getRuleSetPerKey(ATTR_3).getAllAvailableValues().get(0).containsAll(trace_attr1));
+        assertTrue(tree.getRuleSetPerKey(ATTR_3).getAllAvailableValues().get(1).containsAll(trace_attr2));
+        assertTrue(tree.getRuleSetPerKey(ATTR_3).getAllAvailableValues().get(2).containsAll(trace_attr3));
+        assertTrue(tree.getRuleSetPerKey(ATTR_3).getAllAvailableValues().get(3).containsAll(trace_attr4));
 
-        assertTrue(tree.getInvariantNodeForKey(ATTR_4).getAllAvailableValues().get(0).containsAll(trace_attr1));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_4).getAllAvailableValues().get(1).containsAll(trace_attr2));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_4).getAllAvailableValues().get(2).containsAll(trace_attr3));
-        assertTrue(tree.getInvariantNodeForKey(ATTR_4).getAllAvailableValues().get(3).containsAll(trace_attr4));
+        assertTrue(tree.getRuleSetPerKey(ATTR_4).getAllAvailableValues().get(0).containsAll(trace_attr1));
+        assertTrue(tree.getRuleSetPerKey(ATTR_4).getAllAvailableValues().get(1).containsAll(trace_attr2));
+        assertTrue(tree.getRuleSetPerKey(ATTR_4).getAllAvailableValues().get(2).containsAll(trace_attr3));
+        assertTrue(tree.getRuleSetPerKey(ATTR_4).getAllAvailableValues().get(3).containsAll(trace_attr4));
     }
 
     @Test

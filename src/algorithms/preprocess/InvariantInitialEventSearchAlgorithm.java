@@ -43,7 +43,7 @@ public class InvariantInitialEventSearchAlgorithm implements ILogAlgorithm<XLog>
                         break;
                     }
 
-                    Node invariantsForKey = invariantTree.getInvariantNodeForKey(attributes.get(key).getKey());
+                    Node invariantsForKey = invariantTree.getRuleSetPerKey(attributes.get(key).getKey());
                     Iterator<String> iterator = invariantsForKey.getAttributeInvariant().iterator();
                     while (iterator.hasNext()) {
                         if (isInvariantValueIsEqualsToEventVal(result, trace, xEvent, attributes, key, iterator.next())) break;

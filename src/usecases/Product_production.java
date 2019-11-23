@@ -17,7 +17,7 @@ public class Product_production implements IUseCase, ICoefficientMapCalculator {
 
     @Override
     public String getLogName() {
-        return "Ballnut_production";
+        return "Ballnut_production_without_machine_numbers";
     }
 
     @Override
@@ -58,12 +58,13 @@ public class Product_production implements IUseCase, ICoefficientMapCalculator {
         TraceInvariantList list = new TraceInvariantList();
         Node activity_type_node = new Node(KEY_ACTIVITY);
         ArrayList<String> invariantValues = new ArrayList<>();
-//        invariantValues.add("тип [Производство полуфаб->Рабочая рецептура на смесь]");
-//        invariantValues.add("тип [Производство полуфаб->Рабочая рецептура на стаканчики]");
-//        invariantValues.add("тип [Производство полуфаб->Рабочая рецептура на глазурь сиропы кремы]");
-//        invariantValues.add("тип [Производство полуфаб->Разборка брака ГП]");
-//        invariantValues.add("тип [Фасовка ГП ->Фасовка ГП]");
-//        invariantValues.add("тип [Приход из производст->Выход ГП из закалки]");
+        invariantValues.add("Turning & Milling");
+        invariantValues.add("Turning Q.C.");
+        invariantValues.add("Turning & Milling Q.C.");
+        invariantValues.add("Round Grinding");
+        invariantValues.add("Grinding Rework");
+        invariantValues.add("Lapping");
+        invariantValues.add("Final Inspection Q.C.");
         activity_type_node.addInvariant(invariantValues);
         list.addInvariantNode(activity_type_node);
 
@@ -72,11 +73,13 @@ public class Product_production implements IUseCase, ICoefficientMapCalculator {
 
     public Map<String, Float> calculateCoefficientsMap() {
         Map<String, Float> correctionMap = new HashMap<>();
-//        correctionMap.put(KEY_ACTIVITY_TYPE, 0.520899941f);
-////        correctionMap.put(KEY_PROCESS, 0.729700019f);
-//        correctionMap.put(KEY_ACTIVITY_DETAILS, 0.529700019f);
-//        correctionMap.put(KEY_USER_ID, 0.319400038f);
-//        correctionMap.put(KEY_ACTION, 0.00000000038f);
+        correctionMap.put(KEY_CASE_ID, 2f);
+        correctionMap.put(KEY_ACTIVITY, 2f);
+        correctionMap.put(KEY_WORKER_ID, 2f);
+        correctionMap.put(KEY_REPORT_TYPE, 0.0000000001f);
+        correctionMap.put(KEY_SPAN, 0.0000000001f);
+        correctionMap.put(KEY_RESOURCE, 0.0000000001f);
+        correctionMap.put(KEY_PART_DESC, 0.0000000001f);
         return correctionMap;
     }
 }
