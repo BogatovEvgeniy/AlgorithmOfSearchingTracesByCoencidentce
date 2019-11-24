@@ -2,8 +2,8 @@ package usecases;
 
 import algorithms.search.trace.locator.invariant.IEventRule;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
+import algorithms.search.trace.locator.invariant.rule.event.Any;
 import algorithms.search.trace.locator.invariant.rule.event.Or;
-import algorithms.search.trace.locator.invariant.rule.event.Then;
 import algorithms.search.trace.locator.invariant.rule.trace.Same;
 import com.google.common.collect.Lists;
 
@@ -60,28 +60,42 @@ public class Product_production implements IUseCase, ICoefficientMapCalculator {
     @Override
     public TraceInvariantList getInvariants() {
         TraceInvariantList list = new TraceInvariantList();
+        allmostAllEventRulesCovered(list);
         List<IEventRule> rules = new LinkedList<>();
-        rules.add(new Or(KEY_ACTIVITY, "Turn & Mill. & Screw Assem", Lists.newArrayList("Turning & Milling", "Turn & Mill. & Screw Assem", "Turning & Milling Q.C.")));
-        rules.add(new Or(KEY_ACTIVITY, "Turning & Milling", Lists.newArrayList("Turning & Milling", "Turning Q.C.", "Turning & Milling Q.C.", "Grinding Rework", "Laser Marking", "Packing", "Final Inspection Q.C.")));
-        rules.add(new Or(KEY_ACTIVITY, "Turning & Milling Q.C.", Lists.newArrayList("Turning & Milling", "Turning & Milling Q.C.", "Turn & Mill. & Screw Assem", "Lapping", "Turning Rework", "Laser Marking")));
-        rules.add(new Or(KEY_ACTIVITY, "Laser Marking", Lists.newArrayList("Flat Grinding", "Laser Marking", "Lapping")));
-        rules.add(new Or(KEY_ACTIVITY, "Lapping", Lists.newArrayList("Turning & Milling", "Turning & Milling Q.C.", "Round Grinding", "Lapping", "Laser Marking", "Grinding Rework", "Final Inspection Q.C.")));
-        rules.add(new Or(KEY_ACTIVITY, "Turning Rework", Lists.newArrayList("Turning & Milling", "Laser Marking")));
-        rules.add(new Then(KEY_ACTIVITY, "Turning Q.C.", "Laser Marking"));
-        rules.add(new Or(KEY_ACTIVITY, "Flat Grinding", Lists.newArrayList("Turn & Mill. & Screw Assem", "Laser Marking", "Turning & Milling Q.C.", "Flat Grinding", "Lapping")));
-        rules.add(new Then(KEY_ACTIVITY, "Grinding Rework", "Final Inspection Q.C."));
-        rules.add(new Then(KEY_ACTIVITY, "Final Inspection Q.C.", "Packing"));
-        rules.add(new Or(KEY_ACTIVITY, "Packing", Lists.newArrayList("Turning & Milling", "Turning & Milling Q.C.", "Packing", "Final Inspection Q.C.")));
-        rules.add(new Then(KEY_ACTIVITY, "Flat Grinding", "Final Inspection Q.C."));
-        rules.add(new Or(KEY_ACTIVITY, "Round Grinding", Lists.newArrayList("Round Grinding - Q.C.", "Packing")));
-        rules.add(new Or(KEY_ACTIVITY, "Round Grinding - Q.C.", Lists.newArrayList("Packing", "Final Inspection Q.C.")));
-        rules.add(new Then(KEY_ACTIVITY, "Grinding Rework", "Lapping"));
-        rules.add(new Then(KEY_ACTIVITY, "Final Inspection Q.C.", "Turning & Milling"));
+        rules.add(new Any(KEY_ACTIVITY, "Turning & Milling"));
+        rules.add(new Any(KEY_ACTIVITY, "Turning Q.C."));
+        rules.add(new Any(KEY_ACTIVITY, "Turning & Milling Q.C."));
+        rules.add(new Any(KEY_ACTIVITY, "Lapping"));
+        rules.add(new Any(KEY_ACTIVITY, "Laser Marking"));
+        rules.add(new Any(KEY_ACTIVITY, "Flat Grinding"));
+        rules.add(new Any(KEY_ACTIVITY, "Round Grinding"));
+        rules.add(new Any(KEY_ACTIVITY, "Round Grinding - Q.C."));
+        rules.add(new Or(KEY_ACTIVITY, "Packing", Lists.newArrayList("Packing", "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Final Inspection Q.C.", Lists.newArrayList("Packing", "Final Inspection Q.C.")));
         list.addInvariantBatchEventRule(rules);
         list.addInvariantTraceRule(new Same(KEY_CASE_ID));
         list.addInvariantTraceRule(new Same(KEY_WORK_ORDER_QTY));
 
         return list;
+    }
+
+    private void allmostAllEventRulesCovered(TraceInvariantList list) {
+        List<IEventRule> rules = new LinkedList<>();
+        rules.add(new Or(KEY_ACTIVITY, "Turn & Mill. & Screw Assem", Lists.newArrayList("Turning & Milling", "Turn & Mill. & Screw Assem", "Turning & Milling Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Turning & Milling", Lists.newArrayList("Turning & Milling", "Turning Q.C.", "Turning & Milling Q.C.", "Flat Grinding", "Grinding Rework", "Lapping", "Nitration Q.C.",  "Laser Marking", "Packing", "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Turning Q.C.", Lists.newArrayList("Turning & Milling", "Laser Marking")));
+        rules.add(new Or(KEY_ACTIVITY, "Turning & Milling Q.C.", Lists.newArrayList("Turning & Milling", "Turning & Milling Q.C.", "Turn & Mill. & Screw Assem", "Flat Grinding", "Round Grinding", "Lapping", "Turning Rework", "Laser Marking", "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Turning Rework", Lists.newArrayList("Turning & Milling", "Laser Marking")));
+        rules.add(new Or(KEY_ACTIVITY, "Lapping", Lists.newArrayList("Turning & Milling", "Turning & Milling Q.C.", "Round Grinding", "Flat Grinding", "Grinding Rework", "Lapping", "Laser Marking", "Packing",  "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Laser Marking", Lists.newArrayList("Turning & Milling", "Turning & Milling Q.C.", "Flat Grinding", "Laser Marking", "Lapping", "Round Grinding", "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Flat Grinding", Lists.newArrayList("Turn & Mill. & Screw Assem", "Flat Grinding", "Laser Marking", "Lapping", "Turning & Milling Q.C.", "Flat Grinding", "Lapping","Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Round Grinding", Lists.newArrayList("Flat Grinding", "Round Grinding - Q.C.", "Grinding Rework", "Lapping",  "Packing", "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Round Grinding - Q.C.", Lists.newArrayList("Round Grinding", "Packing", "Laser Marking", "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Grinding Rework", Lists.newArrayList("Grinding Rework", "Lapping", "Packing", "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Nitration Q.C.", Lists.newArrayList("Lapping","Laser Marking")));
+        rules.add(new Or(KEY_ACTIVITY, "Packing", Lists.newArrayList("Turning & Milling", "Turning & Milling Q.C.", "Packing", "Final Inspection Q.C.")));
+        rules.add(new Or(KEY_ACTIVITY, "Final Inspection Q.C.", Lists.newArrayList("Turning & Milling", "Flat Grinding", "Packing", "Final Inspection Q.C.")));
+        list.addInvariantBatchEventRule(rules);
     }
 
     public Map<String, Float> calculateCoefficientsMap() {
