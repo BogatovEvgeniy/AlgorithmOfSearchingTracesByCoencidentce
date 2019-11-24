@@ -22,7 +22,7 @@ public class Utils {
         return result;
     }
 
-    public static int[] toPrimitives(Set<Integer> integers) {
+    public static int[] toPrimitives(Collection<Integer> integers) {
         return integers.stream().mapToInt(Integer::intValue).toArray();
     }
 }

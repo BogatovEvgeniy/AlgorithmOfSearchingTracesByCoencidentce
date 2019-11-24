@@ -7,14 +7,13 @@ import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import com.sun.istack.internal.NotNull;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
+import org.deckfour.xes.model.XTrace;
 import org.deckfour.xes.model.impl.XAttributeMapImpl;
 import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.model.impl.XTraceImpl;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * _____________________________________
@@ -39,10 +38,13 @@ import java.util.Map;
  */
 
 public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
+    public static final int TRACE_UNDEFINED_INDEX = -1;
+    public static final int [] TRACE_UNDEFINED = new int[]{TRACE_UNDEFINED_INDEX};
     private XLog originLog;
     private XLog resultLog;
     private ILocatorResultMerger locatorResultMerger;
     private Map<String, TraceLocator> traceLocators;
+    private float minimalCoincidence;
 
 
     public TraceSearchingAlgorithm() {
@@ -63,7 +65,7 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     }
 
     public static ITraceSearchingAlgorithm initAlgorithmBasedOnInvariantComparision(TraceInvariantList tree){
-        ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = new ByFirstTraceCoincidenceInvariantsTraceLocator(0.0f, tree);
+        ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = new ByFirstTraceCoincidenceInvariantsTraceLocator(0.9f, tree);
         return initTraceSearchingAlgorithm(invariantTraceLocator);
     }
 
@@ -88,6 +90,23 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         resultLog = new XLogImpl(originLog.getAttributes());
         for (XEvent event : originLog.get(0)) {
             insertEventInLogByLocators(resultLog, event);
+        }
+
+        return removeSingleEventTraces(resultLog);
+    }
+
+    private XLog removeSingleEventTraces(XLog resultLog) {
+        Iterator<XTrace> iterator = resultLog.iterator();
+        List<XTrace> traceToRemove = new LinkedList<>();
+        while (iterator.hasNext()){
+            XTrace next = iterator.next();
+            if (next.size() <= 1){
+                traceToRemove.add(next);
+            }
+        }
+
+        for (XTrace xTrace : traceToRemove) {
+            resultLog.remove(xTrace);
         }
         return resultLog;
     }
@@ -129,7 +148,7 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     }
 
     private void addEvent(XEvent xEvent, int[] traceLocatorResults) {
-        if (traceLocatorResults == null || traceLocatorResults.length == 0) {
+        if (traceLocatorResults == null || traceLocatorResults.length == 0 || traceLocatorResults[0] == TRACE_UNDEFINED_INDEX) {
             addInNewTrace(xEvent);
         } else {
             addByTheIndex(xEvent, traceLocatorResults[0]);

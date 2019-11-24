@@ -1,7 +1,8 @@
 package usecases;
 
-import algorithms.search.trace.locator.invariant.Node;
+import algorithms.search.trace.locator.invariant.IEventRule;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
+import algorithms.search.trace.locator.invariant.rule.event.Then;
 
 import java.util.*;
 
@@ -54,16 +55,14 @@ public class KhladopromLogUseCase implements IUseCase, ICoefficientMapCalculator
     @Override
     public TraceInvariantList getInvariants() {
         TraceInvariantList list = new TraceInvariantList();
-        Node activity_type_node = new Node(KEY_ACTIVITY_TYPE);
-        ArrayList<String> invariantValues = new ArrayList<>();
-        invariantValues.add("тип [Производство полуфаб->Рабочая рецептура на смесь]");
-        invariantValues.add("тип [Производство полуфаб->Рабочая рецептура на стаканчики]");
-        invariantValues.add("тип [Производство полуфаб->Рабочая рецептура на глазурь сиропы кремы]");
-        invariantValues.add("тип [Производство полуфаб->Разборка брака ГП]");
-        invariantValues.add("тип [Фасовка ГП ->Фасовка ГП]");
-        invariantValues.add("тип [Приход из производст->Выход ГП из закалки]");
-        activity_type_node.addInvariant(invariantValues);
-        list.addInvariantNode(activity_type_node);
+        List<IEventRule> rules = new LinkedList<>();
+        rules.add(new Then(KEY_ACTIVITY_TYPE, "тип [Производство полуфаб->Рабочая рецептура на смесь]","тип [Производство полуфаб->Рабочая рецептура на стаканчики]"));
+        rules.add(new Then(KEY_ACTIVITY_TYPE, "тип [Производство полуфаб->Рабочая рецептура на стаканчики]", "тип [Производство полуфаб->Рабочая рецептура на глазурь сиропы кремы]"));
+        rules.add(new Then(KEY_ACTIVITY_TYPE, "тип [Производство полуфаб->Рабочая рецептура на глазурь сиропы кремы]", "тип [Производство полуфаб->Разборка брака ГП]"));
+        rules.add(new Then(KEY_ACTIVITY_TYPE, "тип [Производство полуфаб->Разборка брака ГП]","тип [Фасовка ГП ->Фасовка ГП]"));
+        rules.add(new Then(KEY_ACTIVITY_TYPE, "тип [Фасовка ГП ->Фасовка ГП]","тип [Приход из производст->Выход ГП из закалки]"));
+        rules.add(new Then(KEY_ACTIVITY_TYPE, "тип [Приход из производст->Выход ГП из закалки]", null));
+        list.addInvariantBatchEventRule(rules);
 
         return list;
     }

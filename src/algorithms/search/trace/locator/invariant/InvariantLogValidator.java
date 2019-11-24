@@ -31,8 +31,8 @@ public class InvariantLogValidator implements ITraceSearchingAlgorithm.TraceLoca
         }
 
         for (String key : attributesKeySet) {
-            Node node = invariantTree.getRuleSetPerKey(key);
-            if (node != null && node.getKey().equals(key)) {
+            List<IRule> ruleSetPerKey = invariantTree.getRuleSetPerKey(key);
+            if (ruleSetPerKey != null && !ruleSetPerKey.isEmpty()) {
                 continue;
             } else {
                 skippedKeys.add(key);

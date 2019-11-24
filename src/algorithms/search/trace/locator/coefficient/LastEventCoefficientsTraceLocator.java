@@ -24,7 +24,7 @@ public class LastEventCoefficientsTraceLocator implements ITraceSearchingAlgorit
     }
 
     @Override
-    public int[] defineSuitableTracesList(XLog xLog, XLog resultLog, XEvent xEvent) {
+    public int[] defineSuitableTracesList(XLog xLog, XEvent xEvent) {
         Map<Integer, Float> coincidencesMap = buildCoincidenceMapForEvent(xLog, xEvent, attributesCoefficientMap);
         return getTracesIndexSortedByCoincidence(coincidencesMap);
     }

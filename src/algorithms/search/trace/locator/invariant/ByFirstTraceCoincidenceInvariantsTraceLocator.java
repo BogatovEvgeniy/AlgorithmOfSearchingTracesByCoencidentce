@@ -1,27 +1,28 @@
 package algorithms.search.trace.locator.invariant;
 
 import algorithms.Utils;
-import algorithms.preprocess.InvariantInitialEventSearchAlgorithm;
 import algorithms.search.trace.ITraceSearchingAlgorithm;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.deckfour.xes.model.*;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+
+import static algorithms.search.trace.TraceSearchingAlgorithm.TRACE_UNDEFINED;
+import static algorithms.search.trace.TraceSearchingAlgorithm.TRACE_UNDEFINED_INDEX;
 
 
 /**
  * While you are using this locator under the hood there is an assumption that log is prepeared
  * and that atleast one even of traces in log has attribute equalt to one of invariant
  * <p>
- * To prepare log for using this locator use {@link InvariantInitialEventSearchAlgorithm}
  */
 public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSearchingAlgorithm.TraceLocator {
 
-    public static final int UNDEFINED_INDEX = -1;
     private static ILogValidator LOG_VALIDATOR_INSTANCE;
     private float minimalCoincidenceVal;
-    private Map<String, Float> traiceCoinsidences = new HashMap<>();
     private TraceInvariantList tree;
 
     public ByFirstTraceCoincidenceInvariantsTraceLocator(float minimalCoincidenceVal, TraceInvariantList tree) {
@@ -37,7 +38,6 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
     @VisibleForTesting
     @Override
     public int[] defineSuitableTracesList(XLog resultLog, XEvent event) {
-
         if (resultLog.isEmpty()) {
             return new int[]{0};
         } else {
@@ -51,42 +51,48 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
         Map<Integer, Float> traceAttributesCoincidenceValues = new HashMap<>();
         for (String key : getEventAttributes.keySet()) {
             String eventVal = event.getAttributes().get(key).toString();
-            List<TraceInvariantList.IRule> ruleList = tree.getRuleSetPerKey(key);
-            @Nonnull List<String> preValues = definePossiblePreviousValues(ruleList, eventVal);
+            List<IRule> ruleList = tree.getRuleSetPerKey(key);
 
-            int suitableTraceIndex = UNDEFINED_INDEX;
-            if (!preValues.isEmpty()) {
-                suitableTraceIndex = defineSuitableTraceIndex(resultLog, preValues, key);
+            if (ruleList == null || ruleList.isEmpty()){
+                continue;
             }
 
+            @Nonnull List<String> preValues = definePossiblePreviousValues(resultLog, ruleList, eventVal);
+
+            if (preValues == null || preValues.isEmpty()){
+                return TRACE_UNDEFINED;
+            }
+
+            List<Integer> suitableTraceIndex = defineSuitableTraceIndex(resultLog, preValues, key);
             calculateCoincidencePerTraceIndex(traceAttributesCoincidenceValues, suitableTraceIndex);
         }
         return returnSortedResults(traceAttributesCoincidenceValues);
     }
 
-    private int defineSuitableTraceIndex(XLog resultLog, List<String> preValues, String key) {
-        int result = UNDEFINED_INDEX;
+    private List<Integer> defineSuitableTraceIndex(XLog resultLog, List<String> preValues, String key) {
+        List<Integer> result = new LinkedList<>();
         for (int traceIndex = 0; traceIndex < resultLog.size(); traceIndex++) {
-            int lastEventIndex = resultLog.get(traceIndex).size();
+            int lastEventIndex = resultLog.get(traceIndex).size() - 1;
 
             String attrValue = resultLog.get(traceIndex).get(lastEventIndex).getAttributes().get(key).toString();
             if (preValues.contains(attrValue)) {
-                result = traceIndex;
-                break;
+                result.add(traceIndex);
             }
         }
         return result;
     }
 
-    private void calculateCoincidencePerTraceIndex(Map<Integer, Float> traceAttributesCoincidenceValues, int suitableTraceIndex) {
-        if (suitableTraceIndex != UNDEFINED_INDEX) {
-            Float value = traceAttributesCoincidenceValues.get(suitableTraceIndex);
-            if (value != null) {
-                value++;
-            } else {
-                value = 1F;
+    private void calculateCoincidencePerTraceIndex(Map<Integer, Float> traceAttributesCoincidenceValues, List<Integer> suitableTraceIndex) {
+        if (suitableTraceIndex != null && !suitableTraceIndex.isEmpty()) {
+            for (Integer index : suitableTraceIndex) {
+                Float value = traceAttributesCoincidenceValues.get(index);
+                if (value != null) {
+                    value++;
+                } else {
+                    value = 1F;
+                }
+                traceAttributesCoincidenceValues.put(index, value);
             }
-            traceAttributesCoincidenceValues.put(suitableTraceIndex, value);
         }
     }
 
@@ -94,29 +100,39 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
         if (traceAttributesCoincidenceValues.isEmpty()) {
             return new int[]{0};
         } else {
-            return sortIndexesByValues(traceAttributesCoincidenceValues);
+            return removeTracesBelowCoincidence(traceAttributesCoincidenceValues, minimalCoincidenceVal);
         }
     }
 
+    private int[] removeTracesBelowCoincidence( Map<Integer, Float> traceIndexes , float minimalCoincidenceVal) {
+        List<Integer> result = new LinkedList<>();
+        int attrRulesCount = tree.countOfAttributesUnderRule();
+        for (Integer key : traceIndexes.keySet()){
+            if ((traceIndexes.get(key)/attrRulesCount) > minimalCoincidenceVal) {
+                result.add(key);
+            }
+        }
+
+        return Utils.toPrimitives(result);
+    }
+
     @VisibleForTesting
-    private List<String> definePossiblePreviousValues(List<TraceInvariantList.IRule> ruleList, String eventVal) {
+    private List<String> definePossiblePreviousValues(XLog resultLog, List<IRule> ruleList, String eventVal) {
         List<String> preValues = new LinkedList<>();
         if (ruleList == null && ruleList.isEmpty()) {
             return null;
         }
 
 
-        for (TraceInvariantList.IRule iRule : ruleList) {
-            preValues.addAll(iRule.getPossiblePreValues(eventVal));
+        for (IRule iRule : ruleList) {
+            if(iRule instanceof IEventRule){
+                preValues.addAll(((IEventRule)iRule).getPossiblePreValues(eventVal));
+            } else {
+                preValues.addAll(((ITraceRule)iRule).getPossiblePreValues(resultLog, eventVal));
+            }
         }
 
         return preValues;
-    }
-
-    @VisibleForTesting
-    private int[] sortIndexesByValues(Map<Integer, Float> traceCoincidenceMap) {
-        Map<Integer, Float> sortedMap = Utils.sortMap(traceCoincidenceMap);
-        return Utils.toPrimitives(sortedMap.keySet());
     }
 
     @Override
