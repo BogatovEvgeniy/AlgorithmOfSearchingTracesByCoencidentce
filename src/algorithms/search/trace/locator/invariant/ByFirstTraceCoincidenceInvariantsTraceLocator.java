@@ -2,7 +2,8 @@ package algorithms.search.trace.locator.invariant;
 
 import algorithms.Utils;
 import algorithms.search.trace.ITraceSearchingAlgorithm;
-import algorithms.search.trace.locator.invariant.rule.event.Any;
+import algorithms.search.trace.locator.invariant.rule.ILogRule;
+import algorithms.search.trace.locator.invariant.rule.log.Final;
 import com.google.common.annotations.VisibleForTesting;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
@@ -57,32 +58,48 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
                 continue;
             }
 
-            List<Integer> suitableTraceIndex;
-            if (ruleListContainsAny(ruleList)) {
-                suitableTraceIndex = Collections.nCopies(resultLog.size() - 1, 1);
-            } else {
+            List<Integer> suitableTraceIndexes;
+            @Nonnull List<String> preValues = definePossiblePreviousValues(resultLog, ruleList, eventVal);
 
-                @Nonnull List<String> preValues = definePossiblePreviousValues(resultLog, ruleList, eventVal);
-
-                if (preValues == null || preValues.isEmpty()) {
-                    return TRACE_UNDEFINED;
-                }
-
-                suitableTraceIndex = defineSuitableTraceIndex(resultLog, preValues, key);
+            if (preValues == null || preValues.isEmpty()) {
+                return TRACE_UNDEFINED;
             }
 
-            calculateCoincidencePerTraceIndex(traceAttributesCoincidenceValues, suitableTraceIndex);
+            suitableTraceIndexes = defineSuitableTraceIndex(resultLog, preValues, key);
+
+            calculateCoincidencePerTraceIndex(traceAttributesCoincidenceValues, suitableTraceIndexes);
         }
+
+        traceAttributesCoincidenceValues = applyLogRules(resultLog, traceAttributesCoincidenceValues);
+
         return returnSortedResults(traceAttributesCoincidenceValues);
     }
 
-    private boolean ruleListContainsAny(List<IRule> ruleList) {
-        for (IRule iRule : ruleList) {
-            if (iRule instanceof Any) {
-                return true;
+    private Map<Integer, Float> applyLogRules(XLog resultLog, Map<Integer, Float> traceAttributesCoincidenceValues) {
+        Map<Integer, Float> result = new HashMap<>();
+        Set<Integer> validatedTraces = new HashSet<>();
+        List<Final> finalRules = getFinalRules(tree.getLogRules());
+        for (Final finalRule : finalRules) {
+            validatedTraces.addAll(finalRule.preProcessResults(resultLog, traceAttributesCoincidenceValues.keySet()));
+        }
+
+        for (Integer integer : traceAttributesCoincidenceValues.keySet()) {
+            if (validatedTraces.contains(integer)) {
+                result.put(integer, traceAttributesCoincidenceValues.get(integer));
             }
         }
-        return false;
+        return result;
+    }
+
+    private List<Final> getFinalRules(List<ILogRule> ruleList) {
+        List<Final> finals = new LinkedList<>();
+
+        for (IRule iRule : ruleList) {
+            if (iRule instanceof Final) {
+                finals.add((Final) iRule);
+            }
+        }
+        return finals;
     }
 
     private List<Integer> defineSuitableTraceIndex(XLog resultLog, List<String> preValues, String key) {
@@ -91,6 +108,7 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             int lastEventIndex = resultLog.get(traceIndex).size() - 1;
 
             String attrValue = resultLog.get(traceIndex).get(lastEventIndex).getAttributes().get(key).toString();
+
             if (preValues.contains(attrValue)) {
                 result.add(traceIndex);
             }
@@ -134,21 +152,30 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
 
     @VisibleForTesting
     private List<String> definePossiblePreviousValues(XLog resultLog, List<IRule> ruleList, String eventVal) {
-        List<String> preValues = new LinkedList<>();
+        List<String> nextValues = new LinkedList<>();
         if (ruleList == null && ruleList.isEmpty()) {
             return null;
         }
 
-
         for (IRule iRule : ruleList) {
             if (iRule instanceof IEventRule) {
-                preValues.addAll(((IEventRule) iRule).getPossiblePreValues(eventVal));
-            } else {
-                preValues.addAll(((ITraceRule) iRule).getPossiblePreValues(resultLog, eventVal));
+                nextValues.addAll(((IEventRule) iRule).getPossiblePreValues(eventVal));
+            } else if (iRule instanceof ITraceRule) {
+                nextValues.addAll(((ITraceRule) iRule).getPossiblePreValues(resultLog, eventVal));
             }
         }
 
-        return preValues;
+        return removeDuplicates(nextValues);
+    }
+
+    private List<String> removeDuplicates(List<String> nextValues) {
+        List<String> result = new LinkedList<>();
+        for (String nextValue : nextValues) {
+            if (!result.contains(nextValue)) {
+                result.add(nextValue);
+            }
+        }
+        return result;
     }
 
     @Override

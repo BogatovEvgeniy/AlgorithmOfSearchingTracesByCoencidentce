@@ -65,7 +65,7 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     }
 
     public static ITraceSearchingAlgorithm initAlgorithmBasedOnInvariantComparision(TraceInvariantList tree){
-        ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = new ByFirstTraceCoincidenceInvariantsTraceLocator(0.9f, tree);
+        ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = new ByFirstTraceCoincidenceInvariantsTraceLocator(0.6f, tree);
         return initTraceSearchingAlgorithm(invariantTraceLocator);
     }
 

@@ -1,8 +1,11 @@
 package usecases;
 
 import algorithms.search.trace.locator.invariant.IEventRule;
+import algorithms.search.trace.locator.invariant.ITraceRule;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
-import algorithms.search.trace.locator.invariant.rule.event.Any;
+import algorithms.search.trace.locator.invariant.rule.event.Then;
+import algorithms.search.trace.locator.invariant.rule.log.Final;
+import algorithms.search.trace.locator.invariant.rule.trace.Any;
 import algorithms.search.trace.locator.invariant.rule.event.Or;
 import algorithms.search.trace.locator.invariant.rule.trace.Same;
 import com.google.common.collect.Lists;
@@ -60,22 +63,26 @@ public class Product_production implements IUseCase, ICoefficientMapCalculator {
     @Override
     public TraceInvariantList getInvariants() {
         TraceInvariantList list = new TraceInvariantList();
-        allmostAllEventRulesCovered(list);
-        List<IEventRule> rules = new LinkedList<>();
-        rules.add(new Any(KEY_ACTIVITY, "Turning & Milling"));
-        rules.add(new Any(KEY_ACTIVITY, "Turning Q.C."));
-        rules.add(new Any(KEY_ACTIVITY, "Turning & Milling Q.C."));
-        rules.add(new Any(KEY_ACTIVITY, "Lapping"));
-        rules.add(new Any(KEY_ACTIVITY, "Laser Marking"));
-        rules.add(new Any(KEY_ACTIVITY, "Flat Grinding"));
-        rules.add(new Any(KEY_ACTIVITY, "Round Grinding"));
-        rules.add(new Any(KEY_ACTIVITY, "Round Grinding - Q.C."));
-        rules.add(new Or(KEY_ACTIVITY, "Packing", Lists.newArrayList("Packing", "Final Inspection Q.C.")));
-        rules.add(new Or(KEY_ACTIVITY, "Final Inspection Q.C.", Lists.newArrayList("Packing", "Final Inspection Q.C.")));
-        list.addInvariantBatchEventRule(rules);
-        list.addInvariantTraceRule(new Same(KEY_CASE_ID));
-        list.addInvariantTraceRule(new Same(KEY_WORK_ORDER_QTY));
 
+        List<IEventRule> eventRules = new LinkedList<>();
+        eventRules.add(new Or(KEY_ACTIVITY, "Packing", Lists.newArrayList("Packing", "Final Inspection Q.C.")));
+        eventRules.add(new Then(KEY_ACTIVITY, "Final Inspection Q.C.", null));
+        eventRules.add(new Then(KEY_ACTIVITY, "Turning & Milling", "Turning & Milling Q.C."));
+        eventRules.add(new Then(KEY_ACTIVITY, "Turning & Milling Q.C.", "Laser Marking"));
+        list.addInvariantBatchEventRule(eventRules);
+
+        List<ITraceRule> traceRules = new LinkedList<>();
+        traceRules.add(new Any(KEY_ACTIVITY, "Turning Q.C."));
+        traceRules.add(new Any(KEY_ACTIVITY, "Lapping"));
+        traceRules.add(new Any(KEY_ACTIVITY, "Laser Marking"));
+        traceRules.add(new Any(KEY_ACTIVITY, "Flat Grinding"));
+        traceRules.add(new Any(KEY_ACTIVITY, "Round Grinding"));
+        traceRules.add(new Any(KEY_ACTIVITY, "Round Grinding - Q.C."));
+        traceRules.add(new Same(KEY_CASE_ID));
+        traceRules.add(new Same(KEY_WORK_ORDER_QTY));
+        list.addInvariantBatchTraceRule(traceRules);
+
+        list.addInvariantLogRule(new Final(KEY_ACTIVITY, "Final Inspection Q.C."));
         return list;
     }
 

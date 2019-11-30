@@ -1,5 +1,7 @@
 package algorithms.search.trace.locator.invariant;
 
+import algorithms.search.trace.locator.invariant.rule.ILogRule;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 public class TraceInvariantList {
     private List<IEventRule> eventRules = new ArrayList<>();
     private List<ITraceRule> traceRules = new ArrayList<>();
+    private List<ILogRule> logRules = new ArrayList<>();
 
 
     public void addInvariantEventRule(IEventRule rule) {
@@ -71,5 +74,13 @@ public class TraceInvariantList {
         }
 
         return rulesPerAttr.size();
+    }
+
+    public void addInvariantLogRule(ILogRule logRule) {
+        logRules.add(logRule);
+    }
+
+    public List<ILogRule> getLogRules() {
+        return logRules;
     }
 }
