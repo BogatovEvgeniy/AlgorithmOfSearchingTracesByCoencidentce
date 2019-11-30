@@ -26,12 +26,15 @@ public interface ITraceSearchingAlgorithm extends ILogAlgorithm<XLog> {
         int TRACE_INDEX_UNDEFINED_VALUE = -1;
         ILogValidator ANY_LOG_VALIDATOR = xLog -> true;
 
+
         /**
          * An ID of current locator. Used to manage registered in algorithm locators
          *
          * @return
          */
-        String getId();
+        default String getId(){
+            return getClass().getSimpleName();
+        }
 
         /**
          * The method which defines most suitable traces for current event in #xLog

@@ -1,6 +1,7 @@
 package algorithms.search.trace.locator.invariant;
 
-import algorithms.search.trace.locator.invariant.rule.ILogRule;
+import algorithms.search.trace.locator.invariant.rule.log.Final;
+import algorithms.search.trace.locator.invariant.rule.log.Initial;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,9 +12,10 @@ import java.util.List;
  * root is a collection of Rules
  */
 public class TraceInvariantList {
-    private List<IEventRule> eventRules = new ArrayList<>();
-    private List<ITraceRule> traceRules = new ArrayList<>();
-    private List<ILogRule> logRules = new ArrayList<>();
+    private List<IEventRule> eventRules = new LinkedList<>();
+    private List<ITraceRule> traceRules = new LinkedList<>();
+    private List<Initial> initialEvents = new LinkedList<>();
+    private List<Final> finalEvents = new LinkedList<>();
 
 
     public void addInvariantEventRule(IEventRule rule) {
@@ -24,7 +26,7 @@ public class TraceInvariantList {
         eventRules.addAll(rule);
     }
 
-    public <ITrRule extends ITraceRule> void  addInvariantTraceRule(ITrRule rule) {
+    public <ITrRule extends ITraceRule> void addInvariantTraceRule(ITrRule rule) {
         traceRules.add(rule);
     }
 
@@ -66,7 +68,7 @@ public class TraceInvariantList {
         listOfRules.addAll(traceRules);
         for (IRule rule : listOfRules) {
             String attrKey = rule.getAttrKey();
-            if (rulesPerAttr.contains(attrKey)){
+            if (rulesPerAttr.contains(attrKey)) {
                 continue;
             } else {
                 rulesPerAttr.add(attrKey);
@@ -76,11 +78,19 @@ public class TraceInvariantList {
         return rulesPerAttr.size();
     }
 
-    public void addInvariantLogRule(ILogRule logRule) {
-        logRules.add(logRule);
+    public void addInitialEvents(Initial initialEvents) {
+        this.initialEvents.add(initialEvents);
     }
 
-    public List<ILogRule> getLogRules() {
-        return logRules;
+    public void addFinalEvents(Final finalEvents) {
+        this.finalEvents.add(finalEvents);
+    }
+
+    public List<Initial> getInitialEvents() {
+        return initialEvents;
+    }
+
+    public List<Final> getFinalEvents() {
+        return finalEvents;
     }
 }

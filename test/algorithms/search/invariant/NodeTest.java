@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
+@Deprecated
 public class NodeTest {
 
     private static String ATTR_KEY_1 = "attr1";

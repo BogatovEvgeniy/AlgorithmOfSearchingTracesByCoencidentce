@@ -3,6 +3,7 @@ package algorithms.search.trace;
 import algorithms.ValidationFactory;
 import algorithms.search.trace.locator.coefficient.LastEventCoefficientsTraceLocator;
 import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
+import algorithms.search.trace.locator.invariant.InitialEventValidator;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
 import com.sun.istack.internal.NotNull;
 import org.deckfour.xes.model.XEvent;
@@ -39,12 +40,14 @@ import java.util.*;
 
 public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     public static final int TRACE_UNDEFINED_INDEX = -1;
-    public static final int [] TRACE_UNDEFINED = new int[]{TRACE_UNDEFINED_INDEX};
+    public static final int TRACE_ADD_NEW_TRACE_INDEX = -2;
+    public static final int[] TRACE_UNDEFINED = new int[]{TRACE_UNDEFINED_INDEX};
+    public static final int[] ADD_NEW_TRACE = new int[]{TRACE_ADD_NEW_TRACE_INDEX};
     private XLog originLog;
     private XLog resultLog;
     private ILocatorResultMerger locatorResultMerger;
+    private InitialEventValidator initialEventValidator;
     private Map<String, TraceLocator> traceLocators;
-    private float minimalCoincidence;
 
 
     public TraceSearchingAlgorithm() {
@@ -58,15 +61,26 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         }
     }
 
-    public static ITraceSearchingAlgorithm initAlgorithmBasedOnAttributeComparision(Map<String, Float> correctionMap){
-        //--------------------------- WEIGHTS BASED SEARCH ALGORITHM ---------------------------------//
-        ITraceSearchingAlgorithm.TraceLocator traceLocator = new LastEventCoefficientsTraceLocator(0.6f, correctionMap);
-       return initTraceSearchingAlgorithm(traceLocator);
+    public TraceSearchingAlgorithm(ILocatorResultMerger locatorResultMerger, InitialEventValidator initialEventValidator, TraceLocator... traceLocators) {
+        this.locatorResultMerger = locatorResultMerger;
+        this.initialEventValidator = initialEventValidator;
+
+        for (TraceLocator traceLocator : traceLocators) {
+            setTraceLocator(traceLocator);
+        }
     }
 
-    public static ITraceSearchingAlgorithm initAlgorithmBasedOnInvariantComparision(TraceInvariantList tree){
-        ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = new ByFirstTraceCoincidenceInvariantsTraceLocator(0.6f, tree);
-        return initTraceSearchingAlgorithm(invariantTraceLocator);
+
+    public static ITraceSearchingAlgorithm initAlgorithmBasedOnAttributeComparision(Map<String, Float> correctionMap) {
+        //--------------------------- WEIGHTS BASED SEARCH ALGORITHM ---------------------------------//
+        ITraceSearchingAlgorithm.TraceLocator traceLocator = new LastEventCoefficientsTraceLocator(0.6f, correctionMap);
+        return initTraceSearchingAlgorithm(traceLocator);
+    }
+
+    public static ITraceSearchingAlgorithm initAlgorithmBasedOnInvariantComparision(TraceInvariantList tree) {
+        InitialEventValidator initialEventValidator = new InitialEventValidator(tree);
+        ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = new ByFirstTraceCoincidenceInvariantsTraceLocator(0.9f, tree);
+        return initTraceSearchingAlgorithm(initialEventValidator, invariantTraceLocator);
     }
 
     private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(ITraceSearchingAlgorithm.TraceLocator traceLocator) {
@@ -77,6 +91,22 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         // Define locators
         searchingAlgorithm.setTraceLocator(traceLocator);
         return searchingAlgorithm;
+    }
+
+    private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(InitialEventValidator initialEventValidator, ITraceSearchingAlgorithm.TraceLocator traceLocator) {
+        // Launch the algorithm of searching traces by coincidences of event's attributes values
+        // also tacking in a count coefficientMap
+        TraceSearchingAlgorithm searchingAlgorithm = new TraceSearchingAlgorithm();
+
+        // Define locators
+        searchingAlgorithm.setTraceLocator(traceLocator);
+
+        searchingAlgorithm.setInitialValuesValidator(initialEventValidator);
+        return searchingAlgorithm;
+    }
+
+    private void setInitialValuesValidator(InitialEventValidator initialEventValidator) {
+        this.initialEventValidator = initialEventValidator;
     }
 
 
@@ -98,9 +128,9 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     private XLog removeSingleEventTraces(XLog resultLog) {
         Iterator<XTrace> iterator = resultLog.iterator();
         List<XTrace> traceToRemove = new LinkedList<>();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             XTrace next = iterator.next();
-            if (next.size() <= 1){
+            if (next.size() <= 1) {
                 traceToRemove.add(next);
             }
         }
@@ -144,14 +174,34 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
         // Insert first event if result log is empty
         if (proceedEventForEmptyResultLog(resultLog, xEvent)) return;
         int[] traceLocatorResults = calculateLocatorResults(resultLog, xEvent);
+
         addEvent(xEvent, traceLocatorResults);
+
     }
 
     private void addEvent(XEvent xEvent, int[] traceLocatorResults) {
-        if (traceLocatorResults == null || traceLocatorResults.length == 0 || traceLocatorResults[0] == TRACE_UNDEFINED_INDEX) {
-            addInNewTrace(xEvent);
+
+        if (initialEventValidator == null) {
+            if (Arrays.equals(traceLocatorResults, TRACE_UNDEFINED)) {
+                addInNewTrace(xEvent);
+            } else {
+                addByTheIndex(xEvent, traceLocatorResults[0]);
+            }
         } else {
-            addByTheIndex(xEvent, traceLocatorResults[0]);
+            /**
+             * Can event be an initial or not
+             */
+            if (Arrays.equals(traceLocatorResults, TRACE_UNDEFINED)) {
+                traceLocatorResults = initialEventValidator.defineSuitableTracesList(resultLog, xEvent);
+            }
+
+            if (Arrays.equals(traceLocatorResults, TRACE_UNDEFINED)) {
+                return;
+            } else if (Arrays.equals(traceLocatorResults, ADD_NEW_TRACE)) {
+                addInNewTrace(xEvent);
+            } else {
+                addByTheIndex(xEvent, traceLocatorResults[0]);
+            }
         }
     }
 
@@ -186,9 +236,12 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
 
     private boolean proceedEventForEmptyResultLog(XLog xLog, XEvent xEvent) {
         if (xLog.size() == 0) {
-            xLog.add(new XTraceImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class)));
-            xLog.get(0).add(xEvent);
-            return true;
+            if (initialEventValidator == null ||
+                    Arrays.equals(initialEventValidator.defineSuitableTracesList(xLog, xEvent), ADD_NEW_TRACE)) {
+                xLog.add(new XTraceImpl(new XAttributeMapLazyImpl<>(XAttributeMapImpl.class)));
+                xLog.get(0).add(xEvent);
+                return true;
+            }
         }
         return false;
     }

@@ -2,7 +2,6 @@ package algorithms.search.trace.locator.invariant;
 
 import algorithms.Utils;
 import algorithms.search.trace.ITraceSearchingAlgorithm;
-import algorithms.search.trace.locator.invariant.rule.ILogRule;
 import algorithms.search.trace.locator.invariant.rule.log.Final;
 import com.google.common.annotations.VisibleForTesting;
 import org.deckfour.xes.model.XAttributeMap;
@@ -31,16 +30,11 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
         this.tree = tree;
     }
 
-    @Override
-    public String getId() {
-        return getClass().getSimpleName();
-    }
-
     @VisibleForTesting
     @Override
     public int[] defineSuitableTracesList(XLog resultLog, XEvent event) {
         if (resultLog.isEmpty()) {
-            return new int[]{0};
+            return TRACE_UNDEFINED;
         } else {
             return getMaxCoincidenceTraceIndexByAttr(resultLog, event);
         }
@@ -66,21 +60,24 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             }
 
             suitableTraceIndexes = defineSuitableTraceIndex(resultLog, preValues, key);
-
             calculateCoincidencePerTraceIndex(traceAttributesCoincidenceValues, suitableTraceIndexes);
         }
 
-        traceAttributesCoincidenceValues = applyLogRules(resultLog, traceAttributesCoincidenceValues);
+        traceAttributesCoincidenceValues = removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues);
 
-        return returnSortedResults(traceAttributesCoincidenceValues);
+        if (traceAttributesCoincidenceValues.isEmpty()) {
+            return TRACE_UNDEFINED;
+        } else {
+            return returnSortedResults(traceAttributesCoincidenceValues);
+        }
     }
 
-    private Map<Integer, Float> applyLogRules(XLog resultLog, Map<Integer, Float> traceAttributesCoincidenceValues) {
+    private Map<Integer, Float> removeFinalizedTraces(XLog resultLog, Map<Integer, Float> traceAttributesCoincidenceValues) {
         Map<Integer, Float> result = new HashMap<>();
         Set<Integer> validatedTraces = new HashSet<>();
-        List<Final> finalRules = getFinalRules(tree.getLogRules());
+        List<Final> finalRules = tree.getFinalEvents();
         for (Final finalRule : finalRules) {
-            validatedTraces.addAll(finalRule.preProcessResults(resultLog, traceAttributesCoincidenceValues.keySet()));
+            validatedTraces.addAll(finalRule.removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues.keySet()));
         }
 
         for (Integer integer : traceAttributesCoincidenceValues.keySet()) {
@@ -89,17 +86,6 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             }
         }
         return result;
-    }
-
-    private List<Final> getFinalRules(List<ILogRule> ruleList) {
-        List<Final> finals = new LinkedList<>();
-
-        for (IRule iRule : ruleList) {
-            if (iRule instanceof Final) {
-                finals.add((Final) iRule);
-            }
-        }
-        return finals;
     }
 
     private List<Integer> defineSuitableTraceIndex(XLog resultLog, List<String> preValues, String key) {
@@ -132,7 +118,7 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
 
     private int[] returnSortedResults(Map<Integer, Float> traceAttributesCoincidenceValues) {
         if (traceAttributesCoincidenceValues.isEmpty()) {
-            return new int[]{0};
+            return TRACE_UNDEFINED;
         } else {
             return removeTracesBelowCoincidence(traceAttributesCoincidenceValues, minimalCoincidenceVal);
         }
@@ -147,7 +133,11 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             }
         }
 
-        return Utils.toPrimitives(result);
+        if (result.size() > 0) {
+            return Utils.toPrimitives(result);
+        } else {
+            return TRACE_UNDEFINED;
+        }
     }
 
     @VisibleForTesting

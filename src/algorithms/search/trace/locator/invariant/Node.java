@@ -3,7 +3,7 @@ package algorithms.search.trace.locator.invariant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-
+@Deprecated
 public class Node {
     private String key;
     private List<String> attributeInvariant;
