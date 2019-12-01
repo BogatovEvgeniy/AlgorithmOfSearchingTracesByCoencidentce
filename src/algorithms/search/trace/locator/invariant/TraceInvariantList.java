@@ -3,9 +3,7 @@ package algorithms.search.trace.locator.invariant;
 import algorithms.search.trace.locator.invariant.rule.log.Final;
 import algorithms.search.trace.locator.invariant.rule.log.Initial;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * This a tree structure where:
@@ -14,8 +12,8 @@ import java.util.List;
 public class TraceInvariantList {
     private List<IEventRule> eventRules = new LinkedList<>();
     private List<ITraceRule> traceRules = new LinkedList<>();
-    private List<Initial> initialEvents = new LinkedList<>();
-    private List<Final> finalEvents = new LinkedList<>();
+    private Map<String, List<Initial>> initialEvents = new HashMap<>();
+    private Map<String, List<Final>> finalEvents = new HashMap<>();
 
 
     public void addInvariantEventRule(IEventRule rule) {
@@ -78,19 +76,29 @@ public class TraceInvariantList {
         return rulesPerAttr.size();
     }
 
-    public void addInitialEvents(Initial initialEvents) {
-        this.initialEvents.add(initialEvents);
+    public void addInitialEvents(Initial initialEvent) {
+        List<Initial> initialsPerKey = this.initialEvents.get(initialEvent.getAttrKey());
+        if (initialsPerKey == null){
+            initialsPerKey = new LinkedList<>();
+        }
+        initialsPerKey.add(initialEvent);
+        initialEvents.put(initialEvent.getAttrKey(), initialsPerKey);
     }
 
-    public void addFinalEvents(Final finalEvents) {
-        this.finalEvents.add(finalEvents);
+    public void addFinalEvents(Final finalEvent) {
+        List<Final> finalsPerKey = this.finalEvents.get(finalEvent.getAttrKey());
+        if (finalsPerKey == null){
+            finalsPerKey = new LinkedList<>();
+        }
+        finalsPerKey.add(finalEvent);
+        finalEvents.put(finalEvent.getAttrKey(), finalsPerKey);
     }
 
-    public List<Initial> getInitialEvents() {
-        return initialEvents;
+    public List<Initial> getInitialEvents(String attrKey) {
+        return initialEvents.get(attrKey);
     }
 
-    public List<Final> getFinalEvents() {
-        return finalEvents;
+    public List<Final> getFinalEvents(String attrKey) {
+        return finalEvents.get(attrKey);
     }
 }

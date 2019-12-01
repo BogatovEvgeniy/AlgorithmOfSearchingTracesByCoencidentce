@@ -4,6 +4,7 @@ import algorithms.search.trace.locator.invariant.rule.BaseRule;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class Final extends BaseRule {
 
     public Set<Integer> removeFinalizedTraces(XLog resultLog, Set<Integer> traceResults) {
         List<Integer> excludeList = new LinkedList<>();
+        Set<Integer> perKeyResults = new HashSet<>(traceResults);
         for (int traceIndex = 0; traceIndex < resultLog.size(); traceIndex++) {
             int lastEventIndexInTrace = resultLog.get(traceIndex).size() - 1;
             XEvent lastEvent = resultLog.get(traceIndex).get(lastEventIndexInTrace);
@@ -35,8 +37,8 @@ public class Final extends BaseRule {
             }
         }
 
-        traceResults.removeAll(excludeList);
+        perKeyResults.removeAll(excludeList);
 
-        return traceResults;
+        return perKeyResults;
     }
 }

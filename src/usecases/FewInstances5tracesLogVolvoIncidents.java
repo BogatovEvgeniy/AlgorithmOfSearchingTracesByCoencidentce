@@ -1,11 +1,15 @@
 package usecases;
 
+import algorithms.search.trace.locator.invariant.ITraceRule;
 import algorithms.search.trace.locator.invariant.Node;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
+import algorithms.search.trace.locator.invariant.rule.log.Final;
+import algorithms.search.trace.locator.invariant.rule.log.Initial;
+import algorithms.search.trace.locator.invariant.rule.trace.Same;
 
 import java.util.*;
 
-public class ForHundredLog implements IUseCase, ICoefficientMapCalculator {
+public class FewInstances5tracesLogVolvoIncidents implements IUseCase, ICoefficientMapCalculator {
 
     public static final String KEY_PRODUCT = "product";
     public static final String KEY_ORG_RESOURCE = "org:resource";
@@ -14,7 +18,7 @@ public class ForHundredLog implements IUseCase, ICoefficientMapCalculator {
 
     @Override
     public String getLogName() {
-        return "BPI_Challenge_2013_incidents";
+        return "3Instances5traces";
     }
 
     @Override
@@ -64,11 +68,16 @@ public class ForHundredLog implements IUseCase, ICoefficientMapCalculator {
     public TraceInvariantList getInvariants() {
         TraceInvariantList list = new TraceInvariantList();
 
-        Node product = new Node(KEY_PRODUCT);
-        product.addInvariant(Arrays.asList(new String[]{"PROD542"}));
+        List<ITraceRule> traceRules = new LinkedList<>();
+        traceRules.add(new Same(KEY_PRODUCT));
+        list.addInvariantBatchTraceRule(traceRules);
 
-        Node resource = new Node(KEY_ORG_RESOURCE);
-        Node orgGroup = new Node(KEY_ORG_GROUP);
+        list.addInitialEvents(new Initial("concept:name", "Accepted"));
+        list.addInitialEvents(new Initial("concept:name", "Queued"));
+        list.addInitialEvents(new Initial("lifecycle:transition", "In Progress"));
+        list.addFinalEvents(new Final("concept:name", "Completed"));
+        list.addFinalEvents(new Final("lifecycle:transition", "Closed"));
+        list.addFinalEvents(new Final("lifecycle:transition", "In Call"));
         return list;
     }
 

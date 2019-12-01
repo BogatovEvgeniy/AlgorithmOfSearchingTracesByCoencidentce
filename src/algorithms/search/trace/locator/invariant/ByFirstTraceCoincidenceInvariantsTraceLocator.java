@@ -63,7 +63,7 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             calculateCoincidencePerTraceIndex(traceAttributesCoincidenceValues, suitableTraceIndexes);
         }
 
-        traceAttributesCoincidenceValues = removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues);
+        traceAttributesCoincidenceValues = removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues, event);
 
         if (traceAttributesCoincidenceValues.isEmpty()) {
             return TRACE_UNDEFINED;
@@ -72,12 +72,33 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
         }
     }
 
-    private Map<Integer, Float> removeFinalizedTraces(XLog resultLog, Map<Integer, Float> traceAttributesCoincidenceValues) {
+    private Map<Integer, Float> removeFinalizedTraces(XLog resultLog, Map<Integer, Float> traceAttributesCoincidenceValues, XEvent event) {
         Map<Integer, Float> result = new HashMap<>();
         Set<Integer> validatedTraces = new HashSet<>();
-        List<Final> finalRules = tree.getFinalEvents();
-        for (Final finalRule : finalRules) {
-            validatedTraces.addAll(finalRule.removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues.keySet()));
+        for (String attrKey : event.getAttributes().keySet()) {
+            List<Final> finalRules = tree.getFinalEvents(attrKey);
+
+            if (finalRules == null) {
+                continue;
+            }
+
+           Set<Integer> perKeyResults = new HashSet<>();
+            for (Final finalRule : finalRules) {
+                Set<Integer> perFinalValues = finalRule.removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues.keySet());
+                if (perKeyResults.isEmpty()){
+                    perKeyResults = perFinalValues;
+                } else {
+                    perKeyResults.retainAll(perFinalValues);
+                }
+            }
+
+
+            if (validatedTraces.isEmpty()) {
+                validatedTraces = perKeyResults;
+            } else {
+                validatedTraces.retainAll(perKeyResults);
+            }
+
         }
 
         for (Integer integer : traceAttributesCoincidenceValues.keySet()) {

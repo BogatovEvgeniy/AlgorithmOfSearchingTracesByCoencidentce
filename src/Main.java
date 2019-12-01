@@ -3,10 +3,7 @@ import io.log.XesLogReader;
 import io.log.XesLogWriter;
 import javafx.util.Pair;
 import org.deckfour.xes.model.XLog;
-import usecases.BPIChallenge2013IncidentsUseCase;
-import usecases.IUseCase;
-import usecases.KhladopromLogUseCase;
-import usecases.Product_production;
+import usecases.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +19,8 @@ public class Main {
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        BPIChallenge2013IncidentsUseCase incidentsUseCase = new BPIChallenge2013IncidentsUseCase();
+        FewInstances5tracesLogVolvoIncidents fewInstances5tracesLogVolvoIncidents = new FewInstances5tracesLogVolvoIncidents();
+        BPIChallenge2013Incidents bpiChallenge2013Incidents = new BPIChallenge2013Incidents();
         KhladopromLogUseCase khladopromLog = new KhladopromLogUseCase();
         Product_production product_production = new Product_production();
         try {
@@ -30,7 +28,10 @@ public class Main {
                 CommandParser.parse(args, logWriter);
             } else {
 //                launchRemoveDuplicates(product_production);
-                launchParsingAlgorithms(product_production);
+//                launchParsingAlgorithms(product_production);
+//                launchParsingAlgorithms(bpiChallenge2013Incidents);
+//                launchParsingAlgorithms(fewInstances5tracesLogVolvoIncidents);
+                launchParsingAlgorithms(khladopromLog);
             }
 
             // Track execution time
@@ -41,14 +42,14 @@ public class Main {
         }
     }
 
-    private static void launchRemoveDuplicates(BPIChallenge2013IncidentsUseCase incidentsUseCase) throws Exception {
+    private static void launchRemoveDuplicates(FewInstances5tracesLogVolvoIncidents incidentsUseCase) throws Exception {
         String srcFilePath = SOURCE_DIR + incidentsUseCase.getLogName() + FILE_EXTENSION;
         XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
         AnalyzeProcessAlgorithmsFactory.AlgorithmVariant algorithmsSet = AnalyzeProcessAlgorithmsFactory.AlgorithmVariant.GET_ONE_PROCESS_TRACES;
         List<Pair<String, String>> duplicateSearchValues = new ArrayList<>();
-        duplicateSearchValues.add(new Pair<>(BPIChallenge2013IncidentsUseCase.KEY_PRODUCT, "PROD542"));
-        duplicateSearchValues.add(new Pair<>(BPIChallenge2013IncidentsUseCase.KEY_PRODUCT, "PROD660"));
-        duplicateSearchValues.add(new Pair<>(BPIChallenge2013IncidentsUseCase.KEY_PRODUCT, "PROD455"));
+        duplicateSearchValues.add(new Pair<>(FewInstances5tracesLogVolvoIncidents.KEY_PRODUCT, "PROD542"));
+        duplicateSearchValues.add(new Pair<>(FewInstances5tracesLogVolvoIncidents.KEY_PRODUCT, "PROD660"));
+        duplicateSearchValues.add(new Pair<>(FewInstances5tracesLogVolvoIncidents.KEY_PRODUCT, "PROD455"));
         algorithmsSet.setDuplicateSearchValues(duplicateSearchValues);
         AnalyzeProcessAlgorithmsFactory
                 .get(algorithmsSet)

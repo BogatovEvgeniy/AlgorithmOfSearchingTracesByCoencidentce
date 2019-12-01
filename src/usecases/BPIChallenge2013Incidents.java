@@ -1,11 +1,14 @@
 package usecases;
 
-import algorithms.search.trace.locator.invariant.Node;
+import algorithms.search.trace.locator.invariant.ITraceRule;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
+import algorithms.search.trace.locator.invariant.rule.log.Final;
+import algorithms.search.trace.locator.invariant.rule.log.Initial;
+import algorithms.search.trace.locator.invariant.rule.trace.Same;
 
 import java.util.*;
 
-public class BPIChallenge2013IncidentsUseCase implements IUseCase, ICoefficientMapCalculator {
+public class BPIChallenge2013Incidents implements IUseCase, ICoefficientMapCalculator {
 
     public static final String KEY_PRODUCT = "product";
     public static final String KEY_ORG_RESOURCE = "org:resource";
@@ -14,7 +17,7 @@ public class BPIChallenge2013IncidentsUseCase implements IUseCase, ICoefficientM
 
     @Override
     public String getLogName() {
-        return "3Instances5traces";
+        return "BPIChallenge2013Incidents";
     }
 
     @Override
@@ -30,8 +33,8 @@ public class BPIChallenge2013IncidentsUseCase implements IUseCase, ICoefficientM
         attributeSets.add(Arrays.asList("org:group", "org:resource"));
         attributeSets.add(Arrays.asList("org:role", "org:resource"));
         attributeSets.add(Arrays.asList("concept:name", "org:group", "org:role", "product"));
-        attributeSets.add(Arrays.asList("concept:name","org:group", "org:resource", "product"));
-        attributeSets.add(Arrays.asList("concept:name","org:group", "org:resource", "org:role"));
+        attributeSets.add(Arrays.asList("concept:name", "org:group", "org:resource", "product"));
+        attributeSets.add(Arrays.asList("concept:name", "org:group", "org:resource", "org:role"));
         attributeSets.add(Arrays.asList("concept:name", "org:group", "org:resource", "organization involved"));
         attributeSets.add(Arrays.asList("concept:name", "org:group", "org:resource", "org:role", "product"));
         attributeSets.add(Arrays.asList("concept:name", "org:group", "org:resource", "organization involved", "org:role"));
@@ -64,11 +67,16 @@ public class BPIChallenge2013IncidentsUseCase implements IUseCase, ICoefficientM
     public TraceInvariantList getInvariants() {
         TraceInvariantList list = new TraceInvariantList();
 
-        Node product = new Node(KEY_PRODUCT);
-        product.addInvariant(Arrays.asList(new String[]{"PROD542"}));
+        List<ITraceRule> traceRules = new LinkedList<>();
+        traceRules.add(new Same(KEY_PRODUCT));
+        list.addInvariantBatchTraceRule(traceRules);
 
-        Node resource = new Node(KEY_ORG_RESOURCE);
-        Node orgGroup = new Node(KEY_ORG_GROUP);
+        list.addInitialEvents(new Initial("concept:name", "Accepted"));
+        list.addInitialEvents(new Initial("concept:name", "Queued"));
+        list.addInitialEvents(new Initial("lifecycle:transition", "In Progress"));
+        list.addFinalEvents(new Final("concept:name", "Completed"));
+        list.addFinalEvents(new Final("lifecycle:transition", "Closed"));
+        list.addFinalEvents(new Final("lifecycle:transition", "In Call"));
         return list;
     }
 

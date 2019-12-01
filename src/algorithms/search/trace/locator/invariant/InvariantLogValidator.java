@@ -30,20 +30,21 @@ public class InvariantLogValidator implements ITraceSearchingAlgorithm.TraceLoca
             }
         }
 
-        for (String key : attributesKeySet) {
-            List<IRule> ruleSetPerKey = invariantTree.getRuleSetPerKey(key);
-            if (ruleSetPerKey != null && !ruleSetPerKey.isEmpty()) {
-                continue;
-            } else {
-                skippedKeys.add(key);
-            }
-        }
-
-        if (skippedKeys.size() == attributesKeySet.size()) {
-            throw new IllegalArgumentException("The log doesn't contain all Attributes mentioned in InvariantTree. Skipped keys:"
-                    + Arrays.toString(skippedKeys.toArray()));
-        } else {
+        // TODO Think over this part. Validation of the case that we have at least one rule per at least one attribute
+//        for (String key : attributesKeySet) {
+//            List<IRule> ruleSetPerKey = invariantTree.getRuleSetPerKey(key);
+//            if (ruleSetPerKey != null && !ruleSetPerKey.isEmpty()) {
+//                continue;
+//            } else {
+//                skippedKeys.add(key);
+//            }
+//        }
+//
+//        if (skippedKeys.size() == attributesKeySet.size()) {
+//            throw new IllegalArgumentException("The log doesn't contain all Attributes mentioned in InvariantTree. Skipped keys:"
+//                    + Arrays.toString(skippedKeys.toArray()));
+//        } else {
             return true;
-        }
+//        }
     }
 }

@@ -13,6 +13,7 @@ import org.deckfour.xes.model.impl.XAttributeMapImpl;
 import org.deckfour.xes.model.impl.XAttributeMapLazyImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.deckfour.xes.model.impl.XTraceImpl;
+import usecases.Product_production;
 
 import java.util.*;
 
@@ -122,7 +123,29 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
             insertEventInLogByLocators(resultLog, event);
         }
 
-        return removeSingleEventTraces(resultLog);
+        XLog xTraces = removeSingleEventTraces(resultLog);
+
+        // TODO Production log hardcoded values. Should be moved in Algorithm logic
+//        XLog removeWrongInitialFinalValueTraces = removeWrongInitialFinalValueTraces(xTraces);
+        return xTraces;
+    }
+
+    private XLog removeWrongInitialFinalValueTraces(XLog xTraces) {
+        List<XTrace> tracesToExclude = new LinkedList<>();
+        for (XTrace xTrace : xTraces) {
+            XEvent initialEvent = xTrace.get(0);
+            XEvent finalEvent = xTrace.get(xTrace.size() - 1);
+
+            boolean initialEqual = initialEvent.getAttributes().get(Product_production.KEY_ACTIVITY).toString().equals("Turning & Milling");
+            boolean finalIsEqual = finalEvent.getAttributes().get(Product_production.KEY_ACTIVITY).toString().equals("Packing");
+            boolean comparisionResult = initialEqual && finalIsEqual;
+            if(!comparisionResult){
+                tracesToExclude.add(xTrace);
+            }
+
+        }
+        boolean res = xTraces.removeAll(tracesToExclude);
+        return xTraces;
     }
 
     private XLog removeSingleEventTraces(XLog resultLog) {
