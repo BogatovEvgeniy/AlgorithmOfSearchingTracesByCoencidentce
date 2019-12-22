@@ -58,7 +58,7 @@ public class LastEventCoefficientsTraceLocator implements ITraceSearchingAlgorit
         }
 
         if (locatorResults.size() == 0) {
-            return null;
+            return TraceSearchingAlgorithm.TRACE_UNDEFINED;
         } else {
             return convertInPrimitives(locatorResults);
         }

@@ -29,9 +29,9 @@ public class Main {
             } else {
 //                launchRemoveDuplicates(product_production);
 //                launchParsingAlgorithms(product_production);
-//                launchParsingAlgorithms(bpiChallenge2013Incidents);
+                launchParsingAlgorithms(bpiChallenge2013Incidents);
 //                launchParsingAlgorithms(fewInstances5tracesLogVolvoIncidents);
-                launchParsingAlgorithms(khladopromLog);
+//                launchParsingAlgorithms(khladopromLog);
             }
 
             // Track execution time
@@ -58,8 +58,8 @@ public class Main {
 
     private static void launchParsingAlgorithms(IUseCase useCase) throws Exception {
 //        launchDefaultAlgorithmSetAnalyze(useCase);
-//        launchTraceSearchAlgorithmSetAnalyze(useCase);
-        launchInvariantAnalyze(useCase);
+        launchAttributeComparisionAnalyze(useCase);
+//        launchInvariantAnalyze(useCase);
     }
 
     private static void launchDefaultAlgorithmSetAnalyze(IUseCase useCase) throws Exception {
@@ -69,7 +69,7 @@ public class Main {
 
     }
 
-    private static void launchTraceSearchAlgorithmSetAnalyze(IUseCase useCase) throws Exception {
+    private static void launchAttributeComparisionAnalyze(IUseCase useCase) throws Exception {
         String srcFilePath = SOURCE_DIR + useCase.getLogName() + FILE_EXTENSION;
         XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
 
