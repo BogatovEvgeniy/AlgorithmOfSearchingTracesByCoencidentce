@@ -12,7 +12,6 @@ import java.util.*;
 public class KhladopromLogUseCase implements IUseCase, ICoefficientMapCalculator {
 
     public static final String KEY_ACTION = "Action";
-    //    public static final String KEY_PROCESS = "Process";
     public static final String KEY_ACTIVITY_DETAILS = "Activity_details";
     public static final String KEY_ACTIVITY_TYPE = "concept:name";
     public static final String KEY_DB_FILE_NUM = "DB_File_Num";
@@ -28,19 +27,12 @@ public class KhladopromLogUseCase implements IUseCase, ICoefficientMapCalculator
     public List<List<String>> getAttributeSets() {
         List<List<String>> attributeSets = new LinkedList<>();
         attributeSets.add(Arrays.asList(KEY_ACTION));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS));
         attributeSets.add(Arrays.asList(KEY_ACTIVITY_TYPE));
         attributeSets.add(Arrays.asList(KEY_ACTIVITY_DETAILS));
         attributeSets.add(Arrays.asList(KEY_DB_FILE_NUM));
         attributeSets.add(Arrays.asList(KEY_DB_FILE_NUM));
         attributeSets.add(Arrays.asList(KEY_KODDOC));
         attributeSets.add(Arrays.asList(KEY_USER_ID));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS, KEY_ACTIVITY_DETAILS));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS, KEY_ACTIVITY_TYPE));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS, KEY_DB_FILE_NUM));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS, KEY_DB_FILE_NUM));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS, KEY_KODDOC));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS, KEY_USER_ID));
         attributeSets.add(Arrays.asList(KEY_ACTIVITY_DETAILS, KEY_DB_FILE_NUM));
         attributeSets.add(Arrays.asList(KEY_ACTIVITY_DETAILS, KEY_DB_FILE_NUM));
         attributeSets.add(Arrays.asList(KEY_ACTIVITY_DETAILS, KEY_KODDOC));
@@ -48,8 +40,6 @@ public class KhladopromLogUseCase implements IUseCase, ICoefficientMapCalculator
         attributeSets.add(Arrays.asList(KEY_DB_FILE_NUM, KEY_DB_FILE_NUM));
         attributeSets.add(Arrays.asList(KEY_DB_FILE_NUM, KEY_KODDOC));
         attributeSets.add(Arrays.asList(KEY_DB_FILE_NUM, KEY_USER_ID));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS, KEY_ACTIVITY_DETAILS, KEY_ACTIVITY_TYPE));
-//        attributeSets.add(Arrays.asList(KEY_PROCESS, KEY_ACTIVITY_DETAILS, KEY_ACTIVITY_TYPE, KEY_USER_ID));
         attributeSets.add(Arrays.asList(KEY_ACTIVITY_DETAILS, KEY_ACTIVITY_TYPE));
         attributeSets.add(Arrays.asList(KEY_ACTIVITY_DETAILS, KEY_ACTIVITY_TYPE, KEY_USER_ID));
         return attributeSets;

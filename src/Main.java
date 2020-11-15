@@ -19,8 +19,8 @@ public class Main {
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        FewInstances5tracesLogVolvoIncidents fewInstances5tracesLogVolvoIncidents = new FewInstances5tracesLogVolvoIncidents();
         BPIChallenge2013Incidents bpiChallenge2013Incidents = new BPIChallenge2013Incidents();
+        FewInstances5tracesLogVolvoIncidents fewInstances5tracesLogVolvoIncidents = new FewInstances5tracesLogVolvoIncidents();
         KhladopromLogUseCase khladopromLog = new KhladopromLogUseCase();
         Product_production product_production = new Product_production();
         try {
@@ -57,9 +57,16 @@ public class Main {
     }
 
     private static void launchParsingAlgorithms(IUseCase useCase) throws Exception {
-//        launchDefaultAlgorithmSetAnalyze(useCase);
+        saveAnalyzedLogInResFolder(useCase);
+        launchDefaultAlgorithmSetAnalyze(useCase);
         launchAttributeComparisionAnalyze(useCase);
-//        launchInvariantAnalyze(useCase);
+        launchInvariantAnalyze(useCase);
+    }
+
+    private static void saveAnalyzedLogInResFolder(IUseCase useCase) throws Exception {
+        String srcFilePath = SOURCE_DIR + useCase.getLogName() + FILE_EXTENSION;
+        XLog originLog = new XesLogReader().parse(new File(srcFilePath)).get(0);
+        new XesLogWriter().write(originLog, useCase.getLogName());
     }
 
     private static void launchDefaultAlgorithmSetAnalyze(IUseCase useCase) throws Exception {

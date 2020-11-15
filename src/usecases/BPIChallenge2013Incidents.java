@@ -39,27 +39,6 @@ public class BPIChallenge2013Incidents implements IUseCase, ICoefficientMapCalcu
         attributeSets.add(Arrays.asList("concept:name", "org:group", "org:resource", "org:role", "product"));
         attributeSets.add(Arrays.asList("concept:name", "org:group", "org:resource", "organization involved", "org:role"));
         attributeSets.add(Arrays.asList("concept:name", "org:group", "org:resource", "organization involved", "org:role", "product"));
-
-//        attributeSets.add(Arrays.asList("concept:name"));
-//        attributeSets.add(Arrays.asList("Doc_type"));
-//        attributeSets.add(Arrays.asList("koddoc"));
-//        attributeSets.add(Arrays.asList("User_Id"));
-//        attributeSets.add(Arrays.asList("File"));
-//        attributeSets.add(Arrays.asList("concept:name", "Doc_type"));
-//        attributeSets.add(Arrays.asList("concept:name", "koddoc"));
-//        attributeSets.add(Arrays.asList("concept:name", "User_Id"));
-//        attributeSets.add(Arrays.asList("concept:name", "Doc_type"));
-//        attributeSets.add(Arrays.asList("concept:name", "File"));
-//        attributeSets.add(Arrays.asList("Doc_type", "File"));
-//        attributeSets.add(Arrays.asList("koddoc", "File"));
-//        attributeSets.add(Arrays.asList("User_Id", "File"));
-//        attributeSets.add(Arrays.asList("User_Id", "koddoc"));
-//        attributeSets.add(Arrays.asList("User_Id", "File"));
-//        attributeSets.add(Arrays.asList("Doc_type", "koddoc", "User_Id"));
-//        attributeSets.add(Arrays.asList("File", "koddoc", "User_Id"));
-//        attributeSets.add(Arrays.asList("File", "Doc_type", "User_Id"));
-//        attributeSets.add(Arrays.asList("File", "Doc_type", "koddoc"));
-
         return attributeSets;
     }
 
