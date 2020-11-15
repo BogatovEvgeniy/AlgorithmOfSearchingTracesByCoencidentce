@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_algorithmofsearchingtracesbycoencidentce" default="compile.module.algorithmofsearchingtracesbycoencidentce">
+  <dirname property="module.algorithmofsearchingtracesbycoencidentce.basedir" file="${ant.file.module_algorithmofsearchingtracesbycoencidentce}"/>
+  
+  <property name="module.jdk.home.algorithmofsearchingtracesbycoencidentce" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.algorithmofsearchingtracesbycoencidentce" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.algorithmofsearchingtracesbycoencidentce" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.algorithmofsearchingtracesbycoencidentce" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="algorithmofsearchingtracesbycoencidentce.output.dir" value="${module.algorithmofsearchingtracesbycoencidentce.basedir}/out/production/AlgorithmOfSearchingTracesByCoencidentce"/>
+  <property name="algorithmofsearchingtracesbycoencidentce.testoutput.dir" value="${module.algorithmofsearchingtracesbycoencidentce.basedir}/out/test/AlgorithmOfSearchingTracesByCoencidentce"/>
+  
+  <path id="algorithmofsearchingtracesbycoencidentce.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="algorithmofsearchingtracesbycoencidentce.module.production.classpath">
+    <path refid="${module.jdk.classpath.algorithmofsearchingtracesbycoencidentce}"/>
+    <pathelement location="${openxes-1.1.output.dir}"/>
+    <path refid="library.junit:junit:4.12.classpath"/>
+  </path>
+  
+  <path id="algorithmofsearchingtracesbycoencidentce.runtime.production.module.classpath">
+    <pathelement location="${algorithmofsearchingtracesbycoencidentce.output.dir}"/>
+    <path refid="openxes-1.1.runtime.production.module.classpath"/>
+    <path refid="library.junit:junit:4.12.classpath"/>
+  </path>
+  
+  <path id="algorithmofsearchingtracesbycoencidentce.module.classpath">
+    <path refid="${module.jdk.classpath.algorithmofsearchingtracesbycoencidentce}"/>
+    <pathelement location="${algorithmofsearchingtracesbycoencidentce.output.dir}"/>
+    <pathelement location="${openxes-1.1.testoutput.dir}"/>
+    <pathelement location="${openxes-1.1.output.dir}"/>
+    <path refid="library.junit:junit:4.12.classpath"/>
+  </path>
+  
+  <path id="algorithmofsearchingtracesbycoencidentce.runtime.module.classpath">
+    <pathelement location="${algorithmofsearchingtracesbycoencidentce.testoutput.dir}"/>
+    <pathelement location="${algorithmofsearchingtracesbycoencidentce.output.dir}"/>
+    <path refid="openxes-1.1.runtime.module.classpath"/>
+    <path refid="library.junit:junit:4.12.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.algorithmofsearchingtracesbycoencidentce">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.algorithmofsearchingtracesbycoencidentce">
+    <patternset refid="excluded.from.module.algorithmofsearchingtracesbycoencidentce"/>
+  </patternset>
+  
+  <path id="algorithmofsearchingtracesbycoencidentce.module.sourcepath">
+    <dirset dir="${module.algorithmofsearchingtracesbycoencidentce.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.algorithmofsearchingtracesbycoencidentce" depends="compile.module.algorithmofsearchingtracesbycoencidentce.production,compile.module.algorithmofsearchingtracesbycoencidentce.tests" description="Compile module AlgorithmOfSearchingTracesByCoencidentce"/>
+  
+  <target name="compile.module.algorithmofsearchingtracesbycoencidentce.production" depends="register.custom.compilers,compile.module.openxes-1.1" description="Compile module AlgorithmOfSearchingTracesByCoencidentce; production classes">
+    <mkdir dir="${algorithmofsearchingtracesbycoencidentce.output.dir}"/>
+    <javac2 destdir="${algorithmofsearchingtracesbycoencidentce.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.algorithmofsearchingtracesbycoencidentce}/javac">
+      <compilerarg line="${compiler.args.algorithmofsearchingtracesbycoencidentce}"/>
+      <bootclasspath refid="algorithmofsearchingtracesbycoencidentce.module.bootclasspath"/>
+      <classpath refid="algorithmofsearchingtracesbycoencidentce.module.production.classpath"/>
+      <src refid="algorithmofsearchingtracesbycoencidentce.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.algorithmofsearchingtracesbycoencidentce"/>
+    </javac2>
+    
+    <copy todir="${algorithmofsearchingtracesbycoencidentce.output.dir}">
+      <fileset dir="${module.algorithmofsearchingtracesbycoencidentce.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.algorithmofsearchingtracesbycoencidentce.tests" depends="register.custom.compilers,compile.module.algorithmofsearchingtracesbycoencidentce.production" description="compile module AlgorithmOfSearchingTracesByCoencidentce; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.algorithmofsearchingtracesbycoencidentce" description="cleanup module">
+    <delete dir="${algorithmofsearchingtracesbycoencidentce.output.dir}"/>
+    <delete dir="${algorithmofsearchingtracesbycoencidentce.testoutput.dir}"/>
+  </target>
+</project>
