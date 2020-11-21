@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file has been generated with the OpenXES library. It conforms -->
+<!-- to the XML serialization of the XES standard for log storage and -->
+<!-- management. -->
+<!-- XES standard version: 1.0 -->
+<!-- OpenXES library version: 1.0RC7 -->
+<!-- OpenXES is available from http://www.openxes.org/ -->
+<log xes.version="1.0" xes.features="nested-attributes" openxes.version="1.0RC7">
+	<extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext"/>
+	<extension name="Lifecycle" prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext"/>
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext"/>
+	<classifier name="Event Name" keys="concept:name"/>
+	<classifier name="(Event Name AND Lifecycle transition)" keys="concept:name lifecycle:transition"/>
+	<string key="concept:name" value="XES Event Log"/>
+	<trace>
+		<string key="concept:name" value=""/>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (фасовочное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5937537"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="17"/>
+			<date key="time:timestamp" value="2012-07-02T00:00:01.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Рабочая рецептура на смесь]"/>
+			<string key="koddoc" value="koddoc = 5937711"/>
+			<string key="Activity_details" value="[Рабочая рецептура]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T06:33:15.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход из производст-&gt;Выход ГП из закалки]"/>
+			<string key="koddoc" value="koddoc = 5937713"/>
+			<string key="Activity_details" value="[Выход из закалки поддона]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="282"/>
+			<date key="time:timestamp" value="2012-07-02T06:35:12.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000039"/>
+		</event>
+		<event>
+			<string key="Action" value="ДДобавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Разборка брака ГП]"/>
+			<string key="koddoc" value="koddoc = 5937785"/>
+			<string key="Activity_details" value="[Раскладка брака по компонентам]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T07:25:22.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход из производст-&gt;Выход ГП из закалки]"/>
+			<string key="koddoc" value="koddoc = 5937786"/>
+			<string key="Activity_details" value="[Выход из закалки поддона]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="282"/>
+			<date key="time:timestamp" value="2012-07-02T07:25:22.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000039"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Рабочая рецептура на смесь]"/>
+			<string key="koddoc" value="koddoc = 5937802"/>
+			<string key="Activity_details" value="[Рабочая рецептура]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T07:27:41.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (вафельное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5937818"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="285"/>
+			<date key="time:timestamp" value="2012-07-02T07:55:18.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Рабочая рецептура на смесь]"/>
+			<string key="koddoc" value="koddoc = 5937928"/>
+			<string key="Activity_details" value="[Рабочая рецептура]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T08:38:58.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5938596"/>
+			<string key="Activity_details" value="[Приход сырья No 426]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T09:32:29.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="Activity_details" value="[Приход сырья No 426]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24650 [Г-ящик № 8]"/>
+			<date key="time:timestamp" value="2012-07-02T09:32:59.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (заготовительное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5938607"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T09:35:10.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5938906"/>
+			<string key="Activity_details" value="[Приход сырья No 427]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T10:04:58.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (склад сырья)]"/>
+			<string key="koddoc" value="koddoc = 5938940"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="296"/>
+			<date key="time:timestamp" value="2012-07-02T10:05:58.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="Activity_details" value="[Приход сырья No 427]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24693 [Стабилизатор АЙС-5]"/>
+			<date key="time:timestamp" value="2012-07-02T10:06:58.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (вафельное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5939102"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="285"/>
+			<date key="time:timestamp" value="2012-07-02T10:21:21.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (фасовочное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5940010"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="1191"/>
+			<date key="time:timestamp" value="2012-07-02T11:18:47.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5940190"/>
+			<string key="Activity_details" value="[Приход сырья No 428]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T11:36:13.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Рабочая рецептура на смесь]"/>
+			<string key="koddoc" value="koddoc = 5940450"/>
+			<string key="Activity_details" value="[Рабочая рецептура]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T11:59:49.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="6]"/>
+			<string key="Activity_details" value="[Приход сырья No 428]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24712 [02 Накл Пломбир шок 12% в/ст ТМ Полярна казка"/>
+			<date key="time:timestamp" value="2012-07-02T12:00:49.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Рабочая рецептура на смесь]"/>
+			<string key="koddoc" value="koddoc = 5940495"/>
+			<string key="Activity_details" value="[Рабочая рецептура]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T12:04:18.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="обавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (склад сырья)]"/>
+			<string key="koddoc" value="koddoc = 5940508"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="296"/>
+			<date key="time:timestamp" value="2012-07-02T12:05:56.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="Activity_details" value="[Приход сырья No 428]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24718 [04 Накл Виват кар рожок 70 г]"/>
+			<date key="time:timestamp" value="2012-07-02T12:08:24.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5940667"/>
+			<string key="Activity_details" value="[Приход сырья No 429]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T12:23:27.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="бавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="Activity_details" value="[Приход сырья No 429]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24730 [Г-ящик № 130]"/>
+			<date key="time:timestamp" value="2012-07-02T12:23:54.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (склад сырья)]"/>
+			<string key="koddoc" value="koddoc = 5940677"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="296"/>
+			<date key="time:timestamp" value="2012-07-02T12:26:39.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Рабочая рецептура на стаканчики]"/>
+			<string key="koddoc" value="koddoc = 5940777"/>
+			<string key="Activity_details" value="[Рабочая рецептура]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="285"/>
+			<date key="time:timestamp" value="2012-07-02T12:36:28.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (фасовочное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5940838"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="17"/>
+			<date key="time:timestamp" value="2012-07-02T12:47:32.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Рабочая рецептура на глазурь сиропы кремы]"/>
+			<string key="koddoc" value="koddoc = 5941007"/>
+			<string key="Activity_details" value="[Рабочая рецептура]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T12:59:26.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (склад сырья)]"/>
+			<string key="koddoc" value="koddoc = 5941137"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="296"/>
+			<date key="time:timestamp" value="2012-07-02T13:08:17.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="Activity_details" value="[Приход сырья No 431]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24734 [Г-ящик № 130]"/>
+			<date key="time:timestamp" value="2012-07-02T14:29:26.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (заготовительное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5942151"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T14:33:05.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Производство полуфаб-&gt;Разборка брака ГП]"/>
+			<string key="koddoc" value="koddoc = 5942216"/>
+			<string key="Activity_details" value="[Раскладка брака по компонентам]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="276"/>
+			<date key="time:timestamp" value="2012-07-02T14:40:01.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000052"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Внутренние перемещен-&gt;Расход со склада материалов №3]"/>
+			<string key="koddoc" value="koddoc = 5942227"/>
+			<string key="Activity_details" value="[Списание материалов]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="297"/>
+			<date key="time:timestamp" value="2012-07-02T14:41:18.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000003"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5942311"/>
+			<string key="Activity_details" value="[Приход сырья No 432]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T14:50:56.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (склад сырья)]"/>
+			<string key="koddoc" value="koddoc = 5942635"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="296"/>
+			<date key="time:timestamp" value="2012-07-02T15:09:54.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Фасовка ГП -&gt;Фасовка ГП]"/>
+			<string key="koddoc" value="koddoc = 5942772"/>
+			<string key="Activity_details" value="[Фасовка ГП]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="1191"/>
+			<date key="time:timestamp" value="2012-07-02T15:17:55.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000038"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="Activity_details" value="[Приход сырья No 432]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24735 [01 Уп Каштан в конд. гл.]"/>
+			<date key="time:timestamp" value="2012-07-02T15:21:56.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Фасовка ГП -&gt;Фасовка ГП]"/>
+			<string key="koddoc" value="koddoc = 5942854"/>
+			<string key="Activity_details" value="[Фасовка ГП]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="1191"/>
+			<date key="time:timestamp" value="2012-07-02T15:22:40.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000038"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5942855"/>
+			<string key="Activity_details" value="[Приход сырья No 433]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T15:22:51.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="Activity_details" value="[Приход сырья No 433]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24736 [Г-ящик №1]"/>
+			<date key="time:timestamp" value="2012-07-02T15:23:26.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5942867"/>
+			<string key="Activity_details" value="[Приход сырья No 434]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T15:23:56.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход из производст-&gt;Выход ГП из закалки]"/>
+			<string key="koddoc" value="koddoc = 5942882"/>
+			<string key="Activity_details" value="[Выход из закалки поддона]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="282"/>
+			<date key="time:timestamp" value="2012-07-02T15:24:42.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000039"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление содержимого док-та"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="Activity_details" value="[Приход сырья No 434]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<string key="uniquesod" value="uniquesod = 24737 [Г-ящик № 8]"/>
+			<date key="time:timestamp" value="2012-07-02T15:24:47.000+03:00"/>
+			<string key="DB_File_Num" value="файл sd000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход из производст-&gt;Выход ГП из закалки]"/>
+			<string key="koddoc" value="koddoc = 5942886"/>
+			<string key="Activity_details" value="[Выход из закалки поддона]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="282"/>
+			<date key="time:timestamp" value="2012-07-02T15:24:49.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000039"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5942898"/>
+			<string key="Activity_details" value="[Приход сырья No 435]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T15:25:42.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (склад сырья)]"/>
+			<string key="koddoc" value="koddoc = 5942904"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="296"/>
+			<date key="time:timestamp" value="2012-07-02T15:26:08.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (фасовочное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5943436"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="1191"/>
+			<date key="time:timestamp" value="2012-07-02T15:58:48.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход из производст-&gt;Выход ГП из закалки]"/>
+			<string key="koddoc" value="koddoc = 5943746"/>
+			<string key="Activity_details" value="[Выход из закалки поддона]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="282"/>
+			<date key="time:timestamp" value="2012-07-02T16:16:32.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000039"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (фасовочное отделение)]"/>
+			<string key="koddoc" value="koddoc = 5943775"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="1191"/>
+			<date key="time:timestamp" value="2012-07-02T16:20:04.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Приход на склад -&gt;Приход сырья (лаборатория)]"/>
+			<string key="koddoc" value="koddoc = 5943967"/>
+			<string key="Activity_details" value="[Приход сырья No 436]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="284"/>
+			<date key="time:timestamp" value="2012-07-02T16:33:18.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000002"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Внутренние перемещен-&gt;Списание ГП на переработку (склад ГП)]"/>
+			<string key="koddoc" value="koddoc = 5944336"/>
+			<string key="Activity_details" value="[Списание в переработку 19]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="295"/>
+			<date key="time:timestamp" value="2012-07-02T16:50:24.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000003"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (склад сырья)]"/>
+			<string key="koddoc" value="koddoc = 5944353"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="296"/>
+			<date key="time:timestamp" value="2012-07-02T16:51:19.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Внутренние перемещен-&gt;Перемещение брака (склад ГП-&gt;ЗО)]"/>
+			<string key="koddoc" value="koddoc = 5944397"/>
+			<string key="Activity_details" value="[Перемещение брака]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="295"/>
+			<date key="time:timestamp" value="2012-07-02T16:52:30.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000003"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Лимитки -&gt;Списание на производство (склад сырья)]"/>
+			<string key="koddoc" value="koddoc = 5944423"/>
+			<string key="Activity_details" value="[Передача в производство]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="296"/>
+			<date key="time:timestamp" value="2012-07-02T16:54:17.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000045"/>
+		</event>
+		<event>
+			<string key="Action" value="Добавление документа"/>
+			<string key="concept:name" value="тип [Фасовка ГП -&gt;Фасовка ГП]"/>
+			<string key="koddoc" value="koddoc = 5946666"/>
+			<string key="Activity_details" value="[Фасовка ГП]"/>
+			<string key="lifecycle:transition" value="start"/>
+			<int key="User_id" value="17"/>
+			<date key="time:timestamp" value="2012-07-02T17:57:01.000+03:00"/>
+			<string key="DB_File_Num" value="файл dc000038"/>
+		</event>
+	</trace>
+</log>
