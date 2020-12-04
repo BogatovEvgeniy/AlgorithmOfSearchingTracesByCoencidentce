@@ -17,7 +17,7 @@ public class BPIChallenge2013Incidents implements IUseCase, ICoefficientMapCalcu
 
     @Override
     public String getLogName() {
-        return "BPI_Challenge_2013_incidents";
+        return "BPI_Challenge_2013_incidents_111";
     }
 
     @Override

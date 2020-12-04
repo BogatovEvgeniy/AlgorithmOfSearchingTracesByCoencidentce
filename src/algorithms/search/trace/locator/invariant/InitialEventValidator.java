@@ -1,6 +1,7 @@
 package algorithms.search.trace.locator.invariant;
 
 import algorithms.search.trace.ITraceSearchingAlgorithm;
+import algorithms.search.trace.locator.invariant.rule.log.Final;
 import algorithms.search.trace.locator.invariant.rule.log.Initial;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
@@ -46,5 +47,4 @@ public class InitialEventValidator {
 
         return result;
     }
-
 }

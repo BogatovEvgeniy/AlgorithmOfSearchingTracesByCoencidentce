@@ -30,7 +30,7 @@ public class Final extends BaseRule {
             int lastEventIndexInTrace = resultLog.get(traceIndex).size() - 1;
             XEvent lastEvent = resultLog.get(traceIndex).get(lastEventIndexInTrace);
             String eventVal = lastEvent.getAttributes().get(attrKey).toString();
-            if (eventVal.equals(previous)) {
+            if (!eventVal.equals(previous)) {
                 if (!excludeList.contains(traceIndex)) {
                     excludeList.add(traceIndex);
                 }
@@ -40,5 +40,9 @@ public class Final extends BaseRule {
         perKeyResults.removeAll(excludeList);
 
         return perKeyResults;
+    }
+
+    public String getPrevious() {
+        return previous;
     }
 }

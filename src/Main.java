@@ -27,10 +27,8 @@ public class Main {
             if (args != null && args.length > 0) {
                 CommandParser.parse(args, logWriter);
             } else {
-//                launchRemoveDuplicates(product_production);
 //                launchParsingAlgorithms(product_production);
                 launchParsingAlgorithms(bpiChallenge2013Incidents);
-//                launchParsingAlgorithms(fewInstances5tracesLogVolvoIncidents);
 //                launchParsingAlgorithms(khladopromLog);
             }
 
@@ -58,8 +56,8 @@ public class Main {
 
     private static void launchParsingAlgorithms(IUseCase useCase) throws Exception {
         saveAnalyzedLogInResFolder(useCase);
-        launchDefaultAlgorithmSetAnalyze(useCase);
-        launchAttributeComparisionAnalyze(useCase);
+//        launchDefaultAlgorithmSetAnalyze(useCase);
+//        launchAttributeComparisionAnalyze(useCase);
         launchInvariantAnalyze(useCase);
     }
 

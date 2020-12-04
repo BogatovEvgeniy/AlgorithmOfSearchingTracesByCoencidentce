@@ -1,0 +1,877 @@
+Case ID;Activity;Resource;Complete Timestamp;Span;Work Order  Qty;Part Desc.;Worker ID;Report Type
+Case 100;Turning & Milling;Machine 8 - Turning & Milling;2012/02/20 17:57:00.000;000:48;18;Ballnut;ID4219;D
+Case 100;Turning & Milling;Machine 8 - Turning & Milling;2012/02/21 02:57:00.000;004:00;18;Ballnut;ID4529;D
+Case 100;Turning & Milling;Machine 8 - Turning & Milling;2012/02/21 11:03:00.000;004:18;18;Ballnut;ID4219;S
+Case 100;Turning & Milling;Machine 8 - Turning & Milling;2012/02/21 12:08:00.000;001:04;18;Ballnut;ID4219;D
+Case 100;Turning & Milling Q.C.;Quality Check 1;2012/02/22 15:10:00.000;000:22;18;Ballnut;ID4618;D
+Case 100;Laser Marking;Machine 7- Laser Marking;2012/03/11 11:06:00.000;000:01;18;Ballnut;ID0998;D
+Case 100;Flat Grinding;Machine 11 - Grinding;2012/03/11 12:45:00.000;000:22;18;Ballnut;ID0998;D
+Case 100;Lapping;Machine 1 - Lapping;2012/03/11 13:18:00.000;000:32;18;Ballnut;ID4882;D
+Case 100;Round Grinding;Machine 3 - Round Grinding;2012/03/13 10:41:00.000;000:07;18;Ballnut;ID4445;S
+Case 100;Round Grinding;Machine 3 - Round Grinding;2012/03/13 15:12:00.000;004:31;18;Ballnut;ID4445;D
+Case 100;Grinding Rework;Machine 12 - Grinding;2012/03/16 12:40:00.000;001:10;18;Ballnut;ID4872;D
+Case 100;Final Inspection Q.C.;Quality Check 1;2012/03/19 14:06:00.000;002:45;18;Ballnut;ID4618;D
+Case 100;Packing;Packing;2012/03/21 01:00:00.000;000:00;18;Ballnut;ID4820;D
+Case 100;Final Inspection Q.C.;Quality Check 1;2012/03/21 07:03:00.000;000:01;18;Ballnut;ID4618;D
+Case 106;Turning & Milling;Machine 8 - Turning & Milling;2012/03/15 15:44:00.000;005:30;39;Ballnut;ID0997;S
+Case 106;Turning & Milling;Machine 8 - Turning & Milling;2012/03/15 20:38:00.000;003:43;39;Ballnut;ID4219;D
+Case 106;Turning & Milling Q.C.;Quality Check 1;2012/03/19 07:28:00.000;000:28;39;Ballnut;ID4618;D
+Case 106;Laser Marking;Machine 7- Laser Marking;2012/03/19 10:51:00.000;001:13;39;Ballnut;ID0998;D
+Case 106;Flat Grinding;Machine 11 - Grinding;2012/03/19 15:20:00.000;000:38;39;Ballnut;ID4882;D
+Case 106;Final Inspection Q.C.;Quality Check 1;2012/03/21 17:57:00.000;002:30;39;Ballnut;ID4618;D
+Case 106;Packing;Packing;2012/03/22 01:00:00.000;000:00;39;Ballnut;ID4820;D
+Case 106;Final Inspection Q.C.;Quality Check 1;2012/03/22 13:05:00.000;000:00;39;Ballnut;ID4618;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/01 06:35:00.000;002:46;500;Ballnut;ID4794;S
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/01 11:00:00.000;001:00;500;Ballnut;ID4163;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/01 12:36:00.000;005:39;500;Ballnut;ID4529;S
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/01 15:46:00.000;003:09;500;Ballnut;ID4529;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/02 06:27:00.000;010:11;500;Ballnut;ID4794;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/02 12:47:00.000;006:02;500;Ballnut;ID4167;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/04 00:26:00.000;011:26;500;Ballnut;ID4529;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/04 06:46:00.000;007:10;500;Ballnut;ID4641;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/04 07:51:00.000;000:31;500;Ballnut;ID4618;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/06 07:29:00.000;000:07;500;Ballnut;ID4618;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/06 07:29:00.000;000:01;500;Ballnut;ID4794;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/08 04:17:00.000;003:09;500;Ballnut;ID4529;S
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/08 11:37:00.000;004:26;500;Ballnut;ID4794;S
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/08 15:52:00.000;004:15;500;Ballnut;ID4794;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/08 23:40:00.000;007:46;500;Ballnut;ID4167;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/09 06:51:00.000;005:03;500;Ballnut;ID4529;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/09 07:32:00.000;000:42;500;Ballnut;ID4618;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/09 12:27:00.000;004:28;500;Ballnut;ID4429;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/11 06:35:00.000;007:09;500;Ballnut;ID4794;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/11 07:42:00.000;000:44;500;Ballnut;ID4618;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/11 09:17:00.000;000:00;500;Ballnut;ID4618;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/11 10:54:00.000;021:54;500;Ballnut;ID4932;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/11 16:09:00.000;009:14;500;Ballnut;ID4529;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/11 20:12:00.000;004:01;500;Ballnut;ID4429;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/12 08:08:00.000;000:08;500;Ballnut;ID4618;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/12 09:28:00.000;000:00;500;Ballnut;ID4618;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/12 09:33:00.000;000:05;500;Ballnut;ID4618;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/16 06:47:00.000;007:37;500;Ballnut;ID4794;S
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/16 08:32:00.000;001:34;500;Ballnut;ID4618;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/16 12:49:00.000;005:36;500;Ballnut;ID4529;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/18 02:26:00.000;002:32;500;Ballnut;ID4641;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/18 11:30:00.000;022:06;500;Ballnut;ID4932;D
+Case 110;Laser Marking;Machine 7- Laser Marking;2012/03/19 16:06:00.000;003:37;500;Ballnut;ID0998;D
+Case 110;Flat Grinding;Machine 11 - Grinding;2012/03/19 17:43:00.000;001:19;500;Ballnut;ID4528;D
+Case 110;Laser Marking;Machine 7- Laser Marking;2012/03/19 22:32:00.000;001:03;500;Ballnut;ID0997;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/20 09:44:00.000;002:52;500;Ballnut;ID4618;D
+Case 110;Lapping;Machine 1 - Lapping;2012/03/20 11:58:00.000;002:12;500;Ballnut;ID0998;D
+Case 110;Flat Grinding;Machine 11 - Grinding;2012/03/20 12:13:00.000;004:57;500;Ballnut;ID4528;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/20 12:51:00.000;000:00;500;Ballnut;ID4618;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/20 13:41:00.000;000:56;500;Ballnut;ID4618;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/22 11:46:00.000;000:16;500;Ballnut;ID4618;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/22 11:51:00.000;004:18;500;Ballnut;ID4794;S
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/22 13:30:00.000;001:39;500;Ballnut;ID4794;D
+Case 110;Lapping;Machine 1 - Lapping;2012/03/22 14:33:00.000;002:18;500;Ballnut;ID4718;D
+Case 110;Lapping;Machine 1 - Lapping;2012/03/22 16:22:00.000;002:40;500;Ballnut;ID0998;D
+Case 110;Flat Grinding;Machine 11 - Grinding;2012/03/22 17:37:00.000;000:00;500;Ballnut;ID0998;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/22 23:30:00.000;007:00;500;Ballnut;ID4794;D
+Case 110;Lapping;Machine 1 - Lapping;2012/03/23 01:15:00.000;000:00;500;Ballnut;ID4882;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/23 07:24:00.000;000:21;500;Ballnut;ID4618;D
+Case 110;Lapping;Machine 1 - Lapping;2012/03/23 11:39:00.000;000:01;500;Ballnut;ID0998;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/23 12:42:00.000;005:30;500;Ballnut;ID4794;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/24 07:00:00.000;010:01;500;Ballnut;ID4167;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/25 03:35:00.000;004:44;500;Ballnut;ID4794;D
+Case 110;Turning & Milling;Machine 6 - Turning & Milling;2012/03/25 12:58:00.000;023:25;500;Ballnut;ID4932;D
+Case 110;Lapping;Machine 1 - Lapping;2012/03/26 01:15:00.000;000:00;500;Ballnut;ID4882;D
+Case 110;Laser Marking;Machine 7- Laser Marking;2012/03/26 07:16:00.000;000:13;500;Ballnut;ID4882;D
+Case 110;Lapping;Machine 1 - Lapping;2012/03/27 01:15:00.000;000:00;500;Ballnut;ID4882;D
+Case 110;Turning & Milling Q.C.;Quality Check 1;2012/03/28 09:48:00.000;000:01;500;Ballnut;ID4618;D
+Case 110;Round Grinding;Machine 3 - Round Grinding;2012/03/28 13:55:00.000;000:48;500;Ballnut;ID4445;S
+Case 110;Round Grinding;Machine 3 - Round Grinding;2012/03/28 15:57:00.000;001:44;500;Ballnut;ID4872;D
+Case 110;Round Grinding;Machine 3 - Round Grinding;2012/03/28 20:12:00.000;004:11;500;Ballnut;ID4528;D
+Case 110;Packing;Packing;2012/03/29 01:00:00.000;000:00;500;Ballnut;ID4820;D
+Case 110;Packing;Packing;2012/03/29 01:00:00.000;000:00;500;Ballnut;ID4820;D
+Case 110;Round Grinding;Machine 3 - Round Grinding;2012/03/29 05:26:00.000;009:17;500;Ballnut;ID0420;D
+Case 110;Round Grinding;Machine 3 - Round Grinding;2012/03/29 06:50:00.000;001:20;500;Ballnut;ID4445;D
+Case 110;Flat Grinding;Machine 11 - Grinding;2012/03/29 08:20:00.000;000:01;500;Ballnut;ID0998;D
+Case 110;Lapping;Machine 1 - Lapping;2012/03/29 09:36:00.000;000:00;500;Ballnut;ID0998;D
+Case 110;Round Grinding;Machine 3 - Round Grinding;2012/03/29 09:58:00.000;002:59;500;Ballnut;ID4872;D
+Case 110;Final Inspection Q.C.;Quality Check 1;2012/03/29 10:29:00.000;001:09;500;Ballnut;ID4618;D
+Case 110;Round Grinding;Machine 3 - Round Grinding;2012/03/29 15:43:00.000;005:04;500;Ballnut;ID4445;D
+Case 110;Round Grinding;Machine 3 - Round Grinding;2012/03/29 17:53:00.000;001:54;500;Ballnut;ID4528;D
+Case 110;Packing;Packing;2012/03/30 01:00:00.000;000:00;500;Ballnut;ID4491;D
+Case 110;Final Inspection Q.C.;Quality Check 1;2012/03/30 10:28:00.000;003:07;500;Ballnut;ID4618;D
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/08 06:51:00.000;000:38;492;Ballnut;ID4641;S
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/13 17:48:00.000;003:47;492;Ballnut;ID3846;S
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/13 23:10:00.000;001:42;492;Ballnut;ID4132;S
+Case 112;Turning & Milling Q.C.;Quality Check 1;2012/03/14 08:40:00.000;001:40;492;Ballnut;ID4287;D
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/14 09:02:00.000;000:47;492;Ballnut;ID3846;B
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/14 13:21:00.000;004:19;492;Ballnut;ID3846;S
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/14 17:51:00.000;001:41;492;Ballnut;ID4132;D
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/15 06:48:00.000;010:05;492;Ballnut;ID4794;D
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/15 09:43:00.000;001:21;492;Ballnut;ID3846;S
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/15 17:22:00.000;007:38;492;Ballnut;ID3846;D
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/16 06:47:00.000;009:43;492;Ballnut;ID4794;D
+Case 112;Turning & Milling;Machine 9 - Turning & Milling;2012/03/18 06:50:00.000;003:32;492;Ballnut;ID4641;D
+Case 112;Turning & Milling Q.C.;Quality Check 1;2012/03/18 12:33:00.000;000:33;492;Ballnut;ID4287;D
+Case 112;Turning & Milling Q.C.;Quality Check 1;2012/03/18 12:33:00.000;000:33;492;Ballnut;ID4287;D
+Case 112;Laser Marking;Machine 7- Laser Marking;2012/03/18 14:55:00.000;002:13;492;Ballnut;ID4718;D
+Case 112;Lapping;Machine 1 - Lapping;2012/03/18 18:10:00.000;002:27;492;Ballnut;ID0998;D
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/19 00:19:00.000;002:41;492;Ballnut;ID4641;S
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/19 03:10:00.000;002:51;492;Ballnut;ID4641;D
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/19 06:46:00.000;003:34;492;Ballnut;ID4529;D
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/19 16:39:00.000;009:13;492;Ballnut;ID4718;D
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/20 06:48:00.000;009:30;492;Ballnut;ID4641;D
+Case 112;Final Inspection Q.C.;Quality Check 1;2012/03/20 13:30:00.000;002:00;492;Ballnut;ID4287;D
+Case 112;Final Inspection Q.C.;Quality Check 1;2012/03/20 16:33:00.000;000:33;492;Ballnut;ID4287;D
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/20 17:52:00.000;010:32;492;Ballnut;ID3846;D
+Case 112;Packing;Packing;2012/03/21 01:00:00.000;000:00;492;Ballnut;ID4820;D
+Case 112;Packing;Packing;2012/03/21 01:00:00.000;000:00;492;Ballnut;ID4820;D
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/21 03:29:00.000;005:59;492;Ballnut;ID4641;D
+Case 112;Turning & Milling Q.C.;Quality Check 1;2012/03/21 10:00:00.000;001:29;492;Ballnut;ID4287;D
+Case 112;Laser Marking;Machine 7- Laser Marking;2012/03/21 12:32:00.000;002:31;492;Ballnut;ID4718;D
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/21 17:43:00.000;002:12;492;Ballnut;ID4132;D
+Case 112;Turning & Milling;Machine 10 - Grinding;2012/03/22 05:32:00.000;009:03;492;Ballnut;ID4641;D
+Case 112;Grinding Rework;Machine 11 - Grinding;2012/03/22 08:42:00.000;001:00;492;Ballnut;ID4882;D
+Case 112;Grinding Rework;Machine 11 - Grinding;2012/03/22 12:22:00.000;003:20;492;Ballnut;ID4882;D
+Case 112;Turn & Mill. & Screw Assem;Machine 1 - Lapping;2012/03/22 14:33:00.000;004:33;492;Ballnut;ID4718;D
+Case 112;Final Inspection Q.C.;Quality Check 1;2012/03/25 16:03:00.000;006:14;492;Ballnut;ID4287;D
+Case 112;Packing;Packing;2012/03/29 01:00:00.000;000:00;492;Ballnut;ID4820;D
+Case 112;Final Inspection Q.C.;Quality Check 1;2012/03/29 09:34:00.000;000:34;492;Ballnut;ID4287;D
+Case 114;Turning & Milling;Machine 6 - Turning & Milling;2012/02/29 06:53:00.000;004:50;20;Ballnut;ID4794;S
+Case 114;Turning & Milling;Machine 6 - Turning & Milling;2012/02/29 08:01:00.000;000:51;20;Ballnut;ID4718;S
+Case 114;Turning & Milling Q.C.;Quality Check 1;2012/02/29 08:19:00.000;001:23;20;Ballnut;ID4618;D
+Case 114;Turning & Milling;Machine 6 - Turning & Milling;2012/03/01 03:48:00.000;007:32;20;Ballnut;ID4794;D
+Case 114;Turning & Milling Q.C.;Quality Check 1;2012/03/05 01:15:00.000;000:00;20;Ballnut;ID4618;D
+Case 114;Turning & Milling Q.C.;Quality Check 1;2012/03/05 17:41:00.000;000:01;20;Ballnut;ID4618;D
+Case 114;Turning & Milling Q.C.;Quality Check 1;2012/03/07 08:04:00.000;000:08;20;Ballnut;ID4618;D
+Case 115;Turning & Milling;Machine 4 - Turning & Milling;2012/03/05 16:01:00.000;006:20;90;Ballnut;ID4932;S
+Case 115;Turning & Milling;Machine 4 - Turning & Milling;2012/03/06 06:29:00.000;006:24;90;Ballnut;ID4529;D
+Case 115;Turning & Milling;Machine 4 - Turning & Milling;2012/03/06 08:35:00.000;001:36;90;Ballnut;ID4932;D
+Case 115;Turning & Milling;Machine 4 - Turning & Milling;2012/03/06 09:48:00.000;001:13;90;Ballnut;ID4932;S
+Case 115;Turning & Milling Q.C.;Quality Check 1;2012/03/06 12:00:00.000;001:30;90;Ballnut;ID4287;D
+Case 115;Turning & Milling Q.C.;Quality Check 1;2012/03/06 12:50:00.000;000:50;90;Ballnut;ID4287;D
+Case 115;Turning & Milling;Machine 4 - Turning & Milling;2012/03/06 13:48:00.000;003:59;90;Ballnut;ID4932;D
+Case 115;Flat Grinding;Machine 11 - Grinding;2012/03/08 15:52:00.000;001:06;90;Ballnut;ID4882;D
+Case 115;Flat Grinding;Machine 11 - Grinding;2012/03/09 01:15:00.000;000:00;90;Ballnut;ID4882;D
+Case 115;Flat Grinding;Machine 11 - Grinding;2012/03/09 10:17:00.000;001:12;90;Ballnut;ID4882;D
+Case 115;Turning & Milling Q.C.;Quality Check 1;2012/03/11 08:00:00.000;001:00;90;Ballnut;ID4287;D
+Case 115;Lapping;Machine 1 - Lapping;2012/03/11 11:14:00.000;001:28;90;Ballnut;ID4882;D
+Case 115;Round Grinding;Machine 2 - Round Grinding;2012/03/11 22:49:00.000;002:08;90;Ballnut;ID4385;S
+Case 115;Round Grinding;Machine 2 - Round Grinding;2012/03/11 23:50:00.000;001:00;90;Ballnut;ID4385;D
+Case 115;Round Grinding;Machine 2 - Round Grinding;2012/03/12 07:00:00.000;007:09;90;Ballnut;ID0420;D
+Case 115;Round Grinding - Q.C.;Quality Check 1;2012/03/12 07:51:00.000;000:51;90;Ballnut;ID4287;D
+Case 115;Round Grinding;Machine 2 - Round Grinding;2012/03/12 15:45:00.000;008:45;90;Ballnut;ID4355;D
+Case 115;Round Grinding;Machine 2 - Round Grinding;2012/03/12 17:05:00.000;000:58;90;Ballnut;ID4385;D
+Case 115;Round Grinding;Machine 2 - Round Grinding;2012/03/12 18:16:00.000;001:10;90;Ballnut;ID4385;D
+Case 115;Round Grinding - Q.C.;Quality Check 1;2012/03/21 12:40:00.000;001:43;90;Ballnut;ID4287;D
+Case 115;Laser Marking;Machine 7- Laser Marking;2012/03/21 14:24:00.000;001:43;90;Ballnut;ID4718;D
+Case 115;Final Inspection Q.C.;Quality Check 1;2012/03/25 10:00:00.000;001:00;90;Ballnut;ID4287;D
+Case 115;Packing;Packing;2012/03/26 01:00:00.000;000:00;90;Ballnut;ID4820;D
+Case 118;Turning & Milling;Machine 6 - Turning & Milling;2012/03/25 01:15:00.000;000:00;10;Ballnut;ID4429;S
+Case 118;Turning & Milling;Machine 6 - Turning & Milling;2012/03/28 22:11:00.000;002:01;10;Ballnut;ID4794;S
+Case 118;Turning & Milling;Machine 6 - Turning & Milling;2012/03/29 01:29:00.000;003:17;10;Ballnut;ID4794;D
+Case 118;Turning & Milling Q.C.;Quality Check 1;2012/03/30 11:41:00.000;001:23;10;Ballnut;ID4287;D
+Case 124;Turning & Milling;Machine 4 - Turning & Milling;2012/03/20 14:34:00.000;007:35;12;Ballnut;ID4932;S
+Case 124;Turning & Milling;Machine 4 - Turning & Milling;2012/03/20 15:58:00.000;001:23;12;Ballnut;ID4932;D
+Case 124;Turning & Milling;Machine 4 - Turning & Milling;2012/03/20 17:54:00.000;001:55;12;Ballnut;ID4429;D
+Case 124;Turning & Milling;Machine 4 - Turning & Milling;2012/03/20 22:36:00.000;004:42;12;Ballnut;ID4167;D
+Case 124;Turning & Milling Q.C.;Quality Check 1;2012/03/21 14:07:00.000;001:39;12;Ballnut;ID4287;D
+Case 124;Laser Marking;Machine 7- Laser Marking;2012/03/21 16:20:00.000;000:19;12;Ballnut;ID0998;D
+Case 124;Lapping;Machine 1 - Lapping;2012/03/22 07:46:00.000;000:14;12;Ballnut;ID4718;D
+Case 124;Final Inspection Q.C.;Quality Check 1;2012/03/23 12:16:00.000;001:45;12;Ballnut;ID4287;D
+Case 124;Final Inspection Q.C.;Quality Check 1;2012/03/25 10:15:00.000;000:15;12;Ballnut;ID4287;D
+Case 124;Packing;Packing;2012/03/26 01:00:00.000;000:00;12;Ballnut;ID4820;D
+Case 125;Turning & Milling;Machine 6 - Turning & Milling;2012/03/29 06:42:00.000;005:12;48;Ballnut;ID4794;S
+Case 125;Turning & Milling;Machine 6 - Turning & Milling;2012/03/29 13:22:00.000;005:56;48;Ballnut;ID4167;S
+Case 125;Turning & Milling;Machine 6 - Turning & Milling;2012/03/29 15:58:00.000;000:15;48;Ballnut;ID4167;D
+Case 125;Turning & Milling Q.C.;Quality Check 1;2012/03/29 16:03:00.000;002:38;48;Ballnut;ID4618;D
+Case 125;Turning & Milling;Machine 6 - Turning & Milling;2012/03/29 17:29:00.000;000:44;48;Ballnut;ID4429;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/04 15:14:00.000;005:47;290;Ballnut;ID4794;S
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/04 15:59:00.000;000:45;290;Ballnut;ID4794;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/04 20:08:00.000;001:56;290;Ballnut;ID4167;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/05 06:43:00.000;010:34;290;Ballnut;ID4529;D
+Case 127;Turning & Milling Q.C.;Quality Check 1;2012/03/05 08:00:00.000;001:04;290;Ballnut;ID4618;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/05 16:01:00.000;007:57;290;Ballnut;ID4794;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/05 22:54:00.000;002:40;290;Ballnut;ID4529;S
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/06 00:12:00.000;004:00;290;Ballnut;ID4529;D
+Case 127;Lapping;Machine 1 - Lapping;2012/03/06 01:15:00.000;000:00;290;Ballnut;ID4882;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/06 06:25:00.000;005:47;290;Ballnut;ID0997;D
+Case 127;Turning & Milling Q.C.;Quality Check 1;2012/03/06 07:35:00.000;000:34;290;Ballnut;ID4618;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/06 10:29:00.000;003:22;290;Ballnut;ID4794;B
+Case 127;Turning & Milling Q.C.;Quality Check 1;2012/03/06 14:49:00.000;000:00;290;Ballnut;ID4618;D
+Case 127;Lapping;Machine 1 - Lapping;2012/03/06 15:12:00.000;001:37;290;Ballnut;ID0998;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/06 15:53:00.000;005:24;290;Ballnut;ID4794;D
+Case 127;Packing;Packing;2012/03/07 01:00:00.000;000:00;290;Ballnut;ID4820;D
+Case 127;Laser Marking;Machine 7- Laser Marking;2012/03/07 01:43:00.000;002:09;290;Ballnut;ID4445;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/07 06:50:00.000;009:18;290;Ballnut;ID0997;D
+Case 127;Turning & Milling Q.C.;Quality Check 1;2012/03/07 07:31:00.000;000:18;290;Ballnut;ID4618;D
+Case 127;Final Inspection Q.C.;Quality Check 1;2012/03/07 08:47:00.000;000:00;290;Ballnut;ID4618;D
+Case 127;Turning & Milling;Machine 6 - Turning & Milling;2012/03/07 15:42:00.000;008:43;290;Ballnut;ID4794;D
+Case 127;Turning & Milling Q.C.;Quality Check 1;2012/03/07 16:43:00.000;000:01;290;Ballnut;ID4618;D
+Case 127;Final Inspection Q.C.;Quality Check 1;2012/03/07 17:21:00.000;000:00;290;Ballnut;ID4618;D
+Case 127;Lapping;Machine 1 - Lapping;2012/03/08 15:55:00.000;001:13;290;Ballnut;ID0998;D
+Case 127;Laser Marking;Machine 7- Laser Marking;2012/03/08 22:09:00.000;001:43;290;Ballnut;ID4445;D
+Case 127;Turning & Milling Q.C.;Quality Check 1;2012/03/12 07:42:00.000;000:07;290;Ballnut;ID4618;D
+Case 127;Turning & Milling Q.C.;Quality Check 1;2012/03/12 08:11:00.000;000:02;290;Ballnut;ID4618;D
+Case 127;Final Inspection Q.C.;Quality Check 1;2012/03/12 11:00:00.000;001:27;290;Ballnut;ID4618;D
+Case 127;Lapping;Machine 1 - Lapping;2012/03/12 12:20:00.000;000:01;290;Ballnut;ID0998;D
+Case 127;Final Inspection Q.C.;Quality Check 1;2012/03/12 12:21:00.000;000:04;290;Ballnut;ID4618;D
+Case 127;Laser Marking;Machine 7- Laser Marking;2012/03/12 12:21:00.000;000:01;290;Ballnut;ID0998;D
+Case 127;Final Inspection Q.C.;Quality Check 1;2012/03/12 12:49:00.000;000:00;290;Ballnut;ID4618;D
+Case 127;Packing;Packing;2012/03/13 01:00:00.000;000:00;290;Ballnut;ID4820;D
+Case 127;Laser Marking;Machine 7- Laser Marking;2012/03/13 15:15:00.000;000:31;290;Ballnut;ID4355;D
+Case 127;Lapping;Machine 1 - Lapping;2012/03/15 01:15:00.000;000:00;290;Ballnut;ID4882;D
+Case 127;Lapping;Machine 1 - Lapping;2012/03/15 13:59:00.000;000:32;290;Ballnut;ID4882;D
+Case 127;Final Inspection Q.C.;Quality Check 1;2012/03/19 15:54:00.000;001:48;290;Ballnut;ID4618;D
+Case 127;Final Inspection Q.C.;Quality Check 1;2012/03/19 17:58:00.000;001:58;290;Ballnut;ID4618;D
+Case 127;Packing;Packing;2012/03/20 01:00:00.000;000:00;290;Ballnut;ID4820;D
+Case 127;Final Inspection Q.C.;Quality Check 1;2012/03/20 07:18:00.000;000:15;290;Ballnut;ID4618;D
+Case 130;Turning & Milling;Machine 6 - Turning & Milling;2012/03/08 01:08:00.000;001:23;126;Ballnut;ID4529;D
+Case 136;Turning & Milling;Machine 6 - Turning & Milling;2012/03/29 23:34:00.000;004:19;600;Ballnut;ID4794;S
+Case 136;Turning & Milling;Machine 6 - Turning & Milling;2012/03/30 05:55:00.000;006:21;600;Ballnut;ID4794;D
+Case 136;Turning & Milling Q.C.;Quality Check 1;2012/03/30 07:21:00.000;000:45;600;Ballnut;ID4618;D
+Case 142;Turning & Milling Q.C.;Quality Check 1;2012/03/22 16:06:00.000;002:06;18;Ballnut;ID4287;D
+Case 142;Turning & Milling Q.C.;Quality Check 1;2012/03/26 11:10:00.000;001:10;18;Ballnut;ID4287;D
+Case 146;Packing;Packing;2012/02/19 01:00:00.000;000:00;21;Ballnut;ID4820;D
+Case 146;Final Inspection Q.C.;Quality Check 1;2012/02/19 08:40:00.000;001:40;21;Ballnut;ID4287;D
+Case 150;Flat Grinding;Machine 11 - Grinding;2012/02/02 01:15:00.000;000:00;18;Ballnut;ID4618;D
+Case 150;Laser Marking;Machine 7- Laser Marking;2012/02/02 01:15:00.000;000:00;18;Ballnut;ID4618;D
+Case 150;Round Grinding;Machine 3 - Round Grinding;2012/02/02 01:15:00.000;000:00;18;Ballnut;ID4618;D
+Case 150;Final Inspection Q.C.;Quality Check 1;2012/02/02 09:47:00.000;000:01;18;Ballnut;ID4618;D
+Case 154;Round Grinding - Q.C.;Quality Check 1;2012/01/04 01:15:00.000;000:00;27;Ballnut;ID4493;D
+Case 154;Flat Grinding;Machine 26 - Flat Grinding;2012/01/06 11:30:00.000;004:30;27;Ballnut;ID3716;D
+Case 154;Final Inspection Q.C.;Quality Check 1;2012/01/08 10:11:00.000;003:11;27;Ballnut;ID4493;D
+Case 154;Packing;Packing;2012/01/11 01:00:00.000;000:00;27;Ballnut;ID4820;D
+Case 155;Turning;Machine 15 - Turning;2012/01/06 11:56:00.000;004:45;48;Ballnut;ID0997;S
+Case 155;Turning & Milling;Machine 8 - Turning & Milling;2012/01/06 12:38:00.000;000:42;48;Ballnut;ID0997;D
+Case 155;Turning & Milling;Machine 8 - Turning & Milling;2012/01/06 13:53:00.000;000:00;48;Ballnut;ID0997;D
+Case 155;Turning & Milling Q.C.;Quality Check 1;2012/01/08 11:59:00.000;000:23;48;Ballnut;ID4618;D
+Case 155;Turning & Milling;Machine 8 - Turning & Milling;2012/01/08 15:39:00.000;006:31;48;Ballnut;ID0997;D
+Case 155;Turning & Milling Q.C.;Quality Check 1;2012/01/08 17:00:00.000;000:00;48;Ballnut;ID4618;D
+Case 155;Laser Marking;Machine 7- Laser Marking;2012/01/10 08:12:00.000;000:21;48;Ballnut;ID4882;D
+Case 155;Laser Marking;Machine 7- Laser Marking;2012/01/10 09:10:00.000;000:45;48;Ballnut;ID0998;D
+Case 155;Lapping;Machine 1 - Lapping;2012/01/10 10:33:00.000;001:18;48;Ballnut;ID4882;D
+Case 155;Final Inspection Q.C.;Quality Check 1;2012/01/10 15:14:00.000;001:38;48;Ballnut;ID4618;D
+Case 155;Final Inspection Q.C.;Quality Check 1;2012/01/11 13:19:00.000;000:00;48;Ballnut;ID4618;D
+Case 155;Packing;Packing;2012/01/13 01:00:00.000;000:00;48;Ballnut;ID4820;D
+Case 174;Turning & Milling;Machine 6 - Turning & Milling;2012/03/19 02:14:00.000;004:32;55;Ballnut;ID4529;S
+Case 174;Turning & Milling;Machine 6 - Turning & Milling;2012/03/19 12:12:00.000;004:52;55;Ballnut;ID4794;S
+Case 174;Turning & Milling Q.C.;Quality Check 1;2012/03/19 12:37:00.000;001:07;55;Ballnut;ID4287;S
+Case 174;Turning & Milling;Machine 6 - Turning & Milling;2012/03/19 16:01:00.000;003:49;55;Ballnut;ID4794;D
+Case 174;Turning & Milling;Machine 6 - Turning & Milling;2012/03/19 17:49:00.000;001:09;55;Ballnut;ID4718;D
+Case 174;Turning & Milling;Machine 6 - Turning & Milling;2012/03/19 23:28:00.000;003:31;55;Ballnut;ID0997;D
+Case 174;Turning & Milling;Machine 6 - Turning & Milling;2012/03/20 06:40:00.000;003:37;55;Ballnut;ID4529;D
+Case 174;Turning & Milling;Machine 6 - Turning & Milling;2012/03/20 13:29:00.000;006:04;55;Ballnut;ID4794;D
+Case 174;Turning & Milling Q.C.;Quality Check 1;2012/03/20 16:00:00.000;001:23;55;Ballnut;ID4287;D
+Case 174;Turning & Milling Q.C.;Quality Check 1;2012/03/21 07:16:00.000;000:31;55;Ballnut;ID4287;D
+Case 174;Laser Marking;Machine 7- Laser Marking;2012/03/29 09:20:00.000;000:54;55;Ballnut;ID0998;D
+Case 174;Lapping;Machine 1 - Lapping;2012/03/29 10:48:00.000;001:28;55;Ballnut;ID0998;D
+Case 174;Lapping;Machine 1 - Lapping;2012/03/29 10:58:00.000;000:58;55;Ballnut;ID4872;S
+Case 174;Round Grinding;Machine 12 - Grinding;2012/03/29 12:13:00.000;000:00;55;Ballnut;ID4872;S
+Case 174;Lapping;Machine 1 - Lapping;2012/03/29 12:51:00.000;002:02;55;Ballnut;ID0998;D
+Case 174;Round Grinding;Machine 12 - Grinding;2012/03/29 14:35:00.000;003:36;55;Ballnut;ID4872;D
+Case 174;Round Grinding;Machine 12 - Grinding;2012/03/29 15:46:00.000;001:10;55;Ballnut;ID4872;D
+Case 174;Lapping;Machine 1 - Lapping;2012/03/29 21:36:00.000;003:43;55;Ballnut;ID4528;D
+Case 174;Packing;Packing;2012/03/30 01:00:00.000;000:00;55;Ballnut;ID4491;D
+Case 174;Final Inspection Q.C.;Quality Check 1;2012/03/30 10:17:00.000;001:37;55;Ballnut;ID4287;D
+Case 182;Turning & Milling Q.C.;Quality Check 1;2012/01/09 11:11:00.000;000:03;400;Ballnut;ID4618;D
+Case 182;Grinding Rework;Machine 12 - Grinding;2012/03/06 17:45:00.000;001:40;400;Ballnut;ID4528;D
+Case 182;Final Inspection Q.C.;Quality Check 1;2012/03/07 16:55:00.000;001:10;400;Ballnut;ID4618;D
+Case 182;Turning & Milling Q.C.;Quality Check 1;2012/03/07 18:13:00.000;000:00;400;Ballnut;ID4618;D
+Case 182;Packing;Packing;2012/03/08 01:00:00.000;000:00;400;Ballnut;ID4820;D
+Case 182;Turning & Milling Q.C.;Quality Check 1;2012/03/16 11:02:00.000;000:01;400;Ballnut;ID4618;D
+Case 182;Turning & Milling;Machine 6 - Turning & Milling;2012/03/20 01:15:00.000;000:00;400;Ballnut;ID0937;D
+Case 182;Laser Marking;Machine 7- Laser Marking;2012/03/25 17:00:00.000;000:00;400;Ballnut;ID0998;D
+Case 182;Lapping;Machine 1 - Lapping;2012/03/27 09:34:00.000;000:01;400;Ballnut;ID4882;D
+Case 182;Turning & Milling Q.C.;Quality Check 1;2012/03/27 18:01:00.000;007:57;400;Ballnut;ID4618;D
+Case 182;Packing;Packing;2012/03/28 01:00:00.000;000:00;400;Ballnut;ID4820;D
+Case 182;Round Grinding;Machine 3 - Round Grinding;2012/03/28 14:13:00.000;000:17;400;Ballnut;ID4872;D
+Case 182;Final Inspection Q.C.;Quality Check 1;2012/03/28 17:34:00.000;003:15;400;Ballnut;ID4618;D
+Case 209;Turning & Milling;Machine 6 - Turning & Milling;2012/02/14 06:40:00.000;005:53;168;Ballnut;ID4794;S
+Case 209;Turning & Milling;Machine 6 - Turning & Milling;2012/02/14 11:41:00.000;003:37;168;Ballnut;ID0997;S
+Case 209;Turning & Milling;Machine 6 - Turning & Milling;2012/02/14 17:45:00.000;006:04;168;Ballnut;ID0997;D
+Case 209;Turning & Milling;Machine 6 - Turning & Milling;2012/02/14 19:53:00.000;000:53;168;Ballnut;ID4429;B
+Case 209;Turning & Milling;Machine 6 - Turning & Milling;2012/02/15 06:46:00.000;010:40;168;Ballnut;ID4794;D
+Case 209;Turning & Milling;Machine 6 - Turning & Milling;2012/02/15 11:42:00.000;004:24;168;Ballnut;ID4529;D
+Case 209;Turning & Milling Q.C.;Quality Check 1;2012/02/17 08:07:00.000;000:09;168;Ballnut;ID4618;D
+Case 209;Laser Marking;Machine 7- Laser Marking;2012/02/20 12:37:00.000;000:00;168;Ballnut;ID0998;D
+Case 209;Lapping;Machine 1 - Lapping;2012/02/20 17:39:00.000;006:15;168;Ballnut;ID0998;D
+Case 209;Final Inspection Q.C.;Quality Check 1;2012/02/21 15:47:00.000;003:32;168;Ballnut;ID4618;D
+Case 209;Packing;Packing;2012/02/23 01:00:00.000;000:00;168;Ballnut;ID4820;D
+Case 209;Packing;Packing;2012/02/23 01:00:00.000;000:00;168;Ballnut;ID4820;D
+Case 212;Turning & Milling;Machine 6 - Turning & Milling;2012/02/21 08:13:00.000;001:01;66;Ballnut;ID4794;S
+Case 212;Turning & Milling;Machine 6 - Turning & Milling;2012/02/28 03:55:00.000;007:38;66;Ballnut;ID4794;S
+Case 212;Turning & Milling;Machine 6 - Turning & Milling;2012/02/28 06:56:00.000;003:00;66;Ballnut;ID4794;D
+Case 212;Turning & Milling Q.C.;Quality Check 1;2012/02/28 08:17:00.000;001:24;66;Ballnut;ID4618;D
+Case 212;Turning & Milling;Machine 6 - Turning & Milling;2012/02/28 17:47:00.000;006:41;66;Ballnut;ID4529;D
+Case 212;Turning & Milling;Machine 6 - Turning & Milling;2012/02/29 01:34:00.000;005:28;66;Ballnut;ID4794;D
+Case 212;Turning & Milling Q.C.;Quality Check 1;2012/02/29 09:03:00.000;000:43;66;Ballnut;ID4618;D
+Case 212;Turning & Milling Q.C.;Quality Check 1;2012/03/04 07:51:00.000;000:01;66;Ballnut;ID4618;D
+Case 212;Laser Marking;Machine 7- Laser Marking;2012/03/08 10:57:00.000;000:30;66;Ballnut;ID0998;D
+Case 212;Lapping;Machine 1 - Lapping;2012/03/08 18:08:00.000;001:40;66;Ballnut;ID0998;D
+Case 212;Lapping;Machine 1 - Lapping;2012/03/09 12:13:00.000;003:39;66;Ballnut;ID0998;D
+Case 212;Final Inspection Q.C.;Quality Check 1;2012/03/11 18:00:00.000;004:40;66;Ballnut;ID4618;D
+Case 212;Packing;Packing;2012/03/12 01:00:00.000;000:00;66;Ballnut;ID4820;D
+Case 212;Final Inspection Q.C.;Quality Check 1;2012/03/12 09:31:00.000;000:00;66;Ballnut;ID4618;D
+Case 214;Turning & Milling;Machine 6 - Turning & Milling;2012/02/20 13:50:00.000;006:39;150;Ballnut;ID4794;S
+Case 214;Turning & Milling;Machine 6 - Turning & Milling;2012/02/20 15:51:00.000;002:01;150;Ballnut;ID4794;D
+Case 214;Turning & Milling;Machine 6 - Turning & Milling;2012/02/20 20:36:00.000;004:37;150;Ballnut;ID4167;D
+Case 214;Turning & Milling;Machine 6 - Turning & Milling;2012/02/21 06:26:00.000;010:00;150;Ballnut;ID4529;D
+Case 214;Turning & Milling Q.C.;Quality Check 1;2012/02/21 07:59:00.000;001:09;150;Ballnut;ID4618;D
+Case 214;Turning & Milling;Machine 6 - Turning & Milling;2012/02/21 09:08:00.000;000:47;150;Ballnut;ID4794;S
+Case 214;Turning & Milling;Machine 6 - Turning & Milling;2012/02/21 15:52:00.000;006:44;150;Ballnut;ID4794;D
+Case 214;Turning & Milling;Machine 6 - Turning & Milling;2012/02/21 20:10:00.000;004:04;150;Ballnut;ID4167;D
+Case 214;Turning & Milling;Machine 6 - Turning & Milling;2012/02/22 06:33:00.000;010:31;150;Ballnut;ID4529;D
+Case 214;Turning & Milling Q.C.;Quality Check 1;2012/02/22 07:45:00.000;000:19;150;Ballnut;ID4618;D
+Case 214;Turning & Milling Q.C.;Quality Check 1;2012/02/22 15:20:00.000;000:04;150;Ballnut;ID4618;D
+Case 214;Flat Grinding;Machine 11 - Grinding;2012/02/23 17:44:00.000;003:45;150;Ballnut;ID0998;D
+Case 214;Flat Grinding;Machine 11 - Grinding;2012/02/24 07:49:00.000;000:04;150;Ballnut;ID4618;D
+Case 214;Laser Marking;Machine 7- Laser Marking;2012/03/05 17:51:00.000;001:46;150;Ballnut;ID4872;D
+Case 214;Laser Marking;Machine 7- Laser Marking;2012/03/06 04:22:00.000;001:21;150;Ballnut;ID4355;D
+Case 214;Lapping;Machine 1 - Lapping;2012/03/06 16:35:00.000;000:28;150;Ballnut;ID0998;D
+Case 214;Lapping;Machine 1 - Lapping;2012/03/07 15:06:00.000;004:07;150;Ballnut;ID0998;D
+Case 214;Final Inspection Q.C.;Quality Check 1;2012/03/08 12:09:00.000;005:19;150;Ballnut;ID4618;D
+Case 214;Packing;Packing;2012/03/09 01:00:00.000;000:00;150;Ballnut;ID4820;D
+Case 215;Turning & Milling;Machine 8 - Turning & Milling;2012/01/05 15:21:00.000;004:01;108;Ballnut;ID0997;S
+Case 215;Turning & Milling;Machine 8 - Turning & Milling;2012/01/05 17:47:00.000;002:25;108;Ballnut;ID0997;D
+Case 215;Turning & Milling;Machine 8 - Turning & Milling;2012/01/05 22:03:00.000;001:10;108;Ballnut;ID4445;D
+Case 215;Turning & Milling Q.C.;Quality Check 1;2012/01/06 09:46:00.000;000:01;108;Ballnut;ID4618;D
+Case 215;Turning & Milling Q.C.;Quality Check 1;2012/01/06 11:02:00.000;000:00;108;Ballnut;ID4618;D
+Case 215;Laser Marking;Machine 7- Laser Marking;2012/01/08 14:20:00.000;000:43;108;Ballnut;ID0998;D
+Case 215;Lapping;Machine 1 - Lapping;2012/01/08 16:48:00.000;002:27;108;Ballnut;ID0998;D
+Case 215;Lapping;Machine 1 - Lapping;2012/01/08 18:04:00.000;000:00;108;Ballnut;ID0998;D
+Case 215;Laser Marking;Machine 7- Laser Marking;2012/01/08 18:04:00.000;000:00;108;Ballnut;ID0998;D
+Case 215;Final Inspection Q.C.;Quality Check 1;2012/01/15 10:55:00.000;003:36;108;Ballnut;ID4618;D
+Case 215;Packing;Packing;2012/01/17 01:00:00.000;000:00;108;Ballnut;ID4820;D
+Case 215;Final Inspection Q.C.;Quality Check 1;2012/01/17 09:30:00.000;000:00;108;Ballnut;ID4618;D
+Case 22;Turning & Milling;Machine 9 - Turning & Milling;2012/01/23 07:00:00.000;002:00;5;Ballnut;ID4641;D
+Case 22;Turning & Milling;Machine 9 - Turning & Milling;2012/01/23 16:12:00.000;008:56;5;Ballnut;ID3846;S
+Case 22;Turning & Milling;Machine 9 - Turning & Milling;2012/01/23 17:17:00.000;001:04;5;Ballnut;ID3846;D
+Case 22;Turning & Milling;Machine 9 - Turning & Milling;2012/01/23 17:45:00.000;000:27;5;Ballnut;ID3846;S
+Case 22;Turning & Milling;Machine 9 - Turning & Milling;2012/01/24 05:00:00.000;006:00;5;Ballnut;ID4641;S
+Case 22;Turning & Milling Q.C.;Quality Check 1;2012/01/25 07:16:00.000;000:16;5;Ballnut;ID4493;D
+Case 22;Laser Marking;Machine 7- Laser Marking;2012/01/25 09:17:00.000;000:59;5;Ballnut;ID0998;D
+Case 22;Lapping;Machine 1 - Lapping;2012/01/25 11:11:00.000;001:53;5;Ballnut;ID0998;D
+Case 22;Round Grinding;Machine 12 - Grinding;2012/01/25 12:50:00.000;000:40;5;Ballnut;ID4528;S
+Case 22;Round Grinding;Machine 12 - Grinding;2012/01/25 15:00:00.000;001:40;5;Ballnut;ID4528;D
+Case 22;Final Inspection Q.C.;Quality Check 1;2012/01/27 12:13:00.000;001:01;5;Ballnut;ID4493;D
+Case 22;Packing;Packing;2012/01/29 01:00:00.000;000:00;5;Ballnut;ID4820;D
+Case 22;Final Inspection Q.C.;Quality Check 1;2012/01/29 09:28:00.000;001:01;5;Ballnut;ID4493;D
+Case 223;Turning & Milling;Machine 8 - Turning & Milling;2012/01/23 14:20:00.000;003:10;30;Ballnut;ID0997;S
+Case 223;Turning & Milling;Machine 8 - Turning & Milling;2012/01/23 16:09:00.000;001:48;30;Ballnut;ID0997;S
+Case 223;Turning & Milling Q.C.;Quality Check 1;2012/01/23 16:11:00.000;002:41;30;Ballnut;ID4287;S
+Case 223;Turning & Milling;Machine 8 - Turning & Milling;2012/01/23 17:48:00.000;001:39;30;Ballnut;ID0997;D
+Case 223;Turning & Milling;Machine 8 - Turning & Milling;2012/01/24 06:27:00.000;001:50;30;Ballnut;ID4529;D
+Case 223;Turning & Milling;Machine 8 - Turning & Milling;2012/01/24 16:04:00.000;008:01;30;Ballnut;ID0997;D
+Case 223;Turning & Milling Q.C.;Quality Check 1;2012/01/25 08:40:00.000;001:40;30;Ballnut;ID4287;D
+Case 223;Laser Marking;Machine 7- Laser Marking;2012/01/30 16:58:00.000;000:47;30;Ballnut;ID0998;D
+Case 223;Flat Grinding;Machine 11 - Grinding;2012/01/31 01:15:00.000;000:00;30;Ballnut;ID4882;D
+Case 223;Flat Grinding;Machine 11 - Grinding;2012/02/01 01:15:00.000;000:00;30;Ballnut;ID4882;D
+Case 223;Flat Grinding;Machine 11 - Grinding;2012/02/01 09:47:00.000;000:40;30;Ballnut;ID4882;D
+Case 223;Lapping;Machine 1 - Lapping;2012/02/01 10:07:00.000;000:20;30;Ballnut;ID4882;D
+Case 223;Final Inspection Q.C.;Quality Check 1;2012/02/01 15:00:00.000;000:20;30;Ballnut;ID4287;D
+Case 223;Flat Grinding;Machine 11 - Grinding;2012/02/02 01:15:00.000;000:00;30;Ballnut;ID4882;D
+Case 223;Flat Grinding;Machine 11 - Grinding;2012/02/02 01:15:00.000;000:00;30;Ballnut;ID4882;D
+Case 223;Flat Grinding;Machine 11 - Grinding;2012/02/02 01:15:00.000;000:00;30;Ballnut;ID4882;D
+Case 223;Final Inspection Q.C.;Quality Check 1;2012/02/02 09:30:00.000;002:00;30;Ballnut;ID4287;D
+Case 223;Packing;Packing;2012/02/05 01:00:00.000;000:00;30;Ballnut;ID4291;D
+Case 223;Flat Grinding;Machine 11 - Grinding;2012/02/05 11:16:00.000;000:45;30;Ballnut;ID4882;D
+Case 223;Lapping;Machine 1 - Lapping;2012/02/07 16:09:00.000;000:50;30;Ballnut;ID0998;D
+Case 223;Final Inspection Q.C.;Quality Check 1;2012/02/14 12:12:00.000;001:57;30;Ballnut;ID4287;D
+Case 223;Final Inspection Q.C.;Quality Check 1;2012/02/16 13:40:00.000;000:20;30;Ballnut;ID4287;D
+Case 223;Packing;Packing;2012/02/17 01:00:00.000;000:00;30;Ballnut;ID4820;D
+Case 223;Packing;Packing;2012/02/17 01:00:00.000;000:00;30;Ballnut;ID4820;D
+Case 228;Turning & Milling;Machine 8 - Turning & Milling;2012/01/04 10:51:00.000;001:16;10;Ballnut;ID0997;D
+Case 228;Turning & Milling;Machine 8 - Turning & Milling;2012/01/09 11:30:00.000;001:00;10;Ballnut;ID0997;S
+Case 228;Turning & Milling;Machine 8 - Turning & Milling;2012/01/09 12:30:00.000;001:00;10;Ballnut;ID0997;D
+Case 228;Turning & Milling Q.C.;Quality Check 1;2012/01/09 15:44:00.000;000:00;10;Ballnut;ID4618;D
+Case 228;Turning & Milling Q.C.;Quality Check 1;2012/01/10 16:04:00.000;000:49;10;Ballnut;ID4618;D
+Case 228;Turning & Milling Q.C.;Quality Check 1;2012/01/11 10:22:00.000;000:00;10;Ballnut;ID4618;D
+Case 228;Laser Marking;Machine 7- Laser Marking;2012/01/11 15:46:00.000;000:00;10;Ballnut;ID4882;D
+Case 228;Flat Grinding;Machine 11 - Grinding;2012/01/11 17:44:00.000;001:59;10;Ballnut;ID0998;D
+Case 228;Final Inspection Q.C.;Quality Check 1;2012/01/12 12:50:00.000;001:20;10;Ballnut;ID4618;D
+Case 228;Final Inspection Q.C.;Quality Check 1;2012/01/13 10:54:00.000;000:00;10;Ballnut;ID4618;D
+Case 228;Packing;Packing;2012/01/15 01:00:00.000;000:00;10;Ballnut;ID4820;D
+Case 229;Turning Q.C.;Quality Check 1;2012/01/22 12:50:00.000;001:37;24;Ballnut;ID4287;S
+Case 229;Turning & Milling;Machine 8 - Turning & Milling;2012/01/22 18:00:00.000;006:57;24;Ballnut;ID0997;S
+Case 229;Turning & Milling;Machine 8 - Turning & Milling;2012/01/23 06:27:00.000;006:51;24;Ballnut;ID4529;D
+Case 229;Turning & Milling;Machine 8 - Turning & Milling;2012/01/23 09:44:00.000;002:06;24;Ballnut;ID0997;D
+Case 229;Turning Q.C.;Quality Check 1;2012/01/23 11:37:00.000;001:39;24;Ballnut;ID4287;D
+Case 229;Laser Marking;Machine 7- Laser Marking;2012/01/25 12:38:00.000;000:25;24;Ballnut;ID0998;D
+Case 229;Flat Grinding;Machine 11 - Grinding;2012/01/25 14:50:00.000;002:11;24;Ballnut;ID0998;D
+Case 229;Laser Marking;Machine 7- Laser Marking;2012/01/25 15:22:00.000;000:38;24;Ballnut;ID4882;D
+Case 229;Final Inspection Q.C.;Quality Check 1;2012/01/27 12:46:00.000;002:46;24;Ballnut;ID4287;D
+Case 229;Final Inspection Q.C.;Quality Check 1;2012/01/29 09:30:00.000;000:30;24;Ballnut;ID4287;D
+Case 229;Packing;Packing;2012/01/30 01:00:00.000;000:00;24;Ballnut;ID4820;D
+Case 233;Turn & Mill. & Screw Assem;Machine 9 - Turning & Milling;2012/01/03 16:00:00.000;005:00;24;Ballnut;ID4641;D
+Case 233;Turn & Mill. & Screw Assem;Machine 9 - Turning & Milling;2012/01/03 20:24:00.000;004:29;24;Ballnut;ID3846;S
+Case 233;Turn & Mill. & Screw Assem;Machine 9 - Turning & Milling;2012/01/03 23:41:00.000;003:16;24;Ballnut;ID3846;D
+Case 233;Turn & Mill. & Screw Assem;Machine 9 - Turning & Milling;2012/01/04 04:34:00.000;004:30;24;Ballnut;ID4932;D
+Case 233;Turning & Milling Q.C.;Quality Check 1;2012/01/04 17:04:00.000;002:34;24;Ballnut;ID4287;D
+Case 233;Laser Marking;Machine 7- Laser Marking;2012/01/05 11:45:00.000;000:22;24;Ballnut;ID0998;D
+Case 233;Flat Grinding;Machine 11 - Grinding;2012/01/05 14:51:00.000;002:23;24;Ballnut;ID0998;D
+Case 233;Turn & Mill. & Screw Assem;Machine 9 - Turning & Milling;2012/01/08 05:58:00.000;002:45;24;Ballnut;ID4641;S
+Case 233;Turn & Mill. & Screw Assem;Machine 9 - Turning & Milling;2012/01/08 06:36:00.000;000:37;24;Ballnut;ID4641;D
+Case 233;Turning & Milling Q.C.;Quality Check 1;2012/01/08 08:00:00.000;001:00;24;Ballnut;ID4287;D
+Case 233;Turn & Mill. & Screw Assem;Machine 9 - Turning & Milling;2012/01/08 10:34:00.000;001:31;24;Ballnut;ID3846;D
+Case 233;Turning & Milling Q.C.;Quality Check 1;2012/01/08 14:01:00.000;001:41;24;Ballnut;ID4287;D
+Case 233;Turning & Milling Q.C.;Quality Check 1;2012/01/09 07:37:00.000;000:37;24;Ballnut;ID4287;D
+Case 233;Turning Rework;Machine 21 - Turning;2012/01/09 08:00:00.000;001:00;24;Ballnut;ID4442;D
+Case 233;Laser Marking;Machine 7- Laser Marking;2012/01/09 10:50:00.000;000:04;24;Ballnut;ID0998;D
+Case 233;Flat Grinding;Machine 11 - Grinding;2012/01/09 11:13:00.000;000:22;24;Ballnut;ID0998;D
+Case 233;Turning & Milling Q.C.;Quality Check 1;2012/01/10 08:40:00.000;000:31;24;Ballnut;ID4287;D
+Case 233;Lapping;Machine 1 - Lapping;2012/01/10 10:37:00.000;000:25;24;Ballnut;ID0998;D
+Case 233;Round Grinding;Machine 2 - Round Grinding;2012/01/10 17:45:00.000;001:41;24;Ballnut;ID4355;S
+Case 233;Round Grinding;Machine 2 - Round Grinding;2012/01/10 20:51:00.000;000:45;24;Ballnut;ID4355;S
+Case 233;Round Grinding;Machine 2 - Round Grinding;2012/01/10 23:39:00.000;002:47;24;Ballnut;ID4355;D
+Case 233;Round Grinding;Machine 2 - Round Grinding;2012/01/11 04:04:00.000;003:52;24;Ballnut;ID4445;D
+Case 233;Final Inspection Q.C.;Quality Check 1;2012/01/11 10:00:00.000;003:00;24;Ballnut;ID4287;D
+Case 233;Final Inspection Q.C.;Quality Check 1;2012/01/11 15:00:00.000;001:36;24;Ballnut;ID4287;D
+Case 233;Packing;Packing;2012/01/15 01:00:00.000;000:00;24;Ballnut;ID4820;D
+Case 233;Final Inspection Q.C.;Quality Check 1;2012/01/15 07:13:00.000;000:21;24;Ballnut;ID4287;D
+Case 239;Turning & Milling;Machine 6 - Turning & Milling;2012/01/15 06:38:00.000;007:42;16;Ballnut;ID4794;S
+Case 239;Turning & Milling;Machine 6 - Turning & Milling;2012/01/15 10:34:00.000;000:49;16;Ballnut;ID4429;S
+Case 239;Turning & Milling Q.C.;Quality Check 1;2012/01/15 11:29:00.000;000:26;16;Ballnut;ID4618;D
+Case 239;Turning & Milling;Machine 6 - Turning & Milling;2012/01/15 13:39:00.000;003:08;16;Ballnut;ID4529;S
+Case 239;Turning & Milling;Machine 6 - Turning & Milling;2012/01/16 02:37:00.000;005:22;16;Ballnut;ID4794;D
+Case 239;Turning & Milling Q.C.;Quality Check 1;2012/01/17 13:33:00.000;002:05;16;Ballnut;ID4618;D
+Case 239;Nitration Q.C.;Quality Check 1;2012/01/23 14:49:00.000;000:03;16;Ballnut;ID4618;D
+Case 239;Laser Marking;Machine 7- Laser Marking;2012/01/24 17:14:00.000;000:13;16;Ballnut;ID0998;D
+Case 239;Lapping;Machine 1 - Lapping;2012/01/25 12:12:00.000;001:01;16;Ballnut;ID0998;D
+Case 239;Final Inspection Q.C.;Quality Check 1;2012/01/25 18:02:00.000;003:41;16;Ballnut;ID4618;D
+Case 239;Final Inspection Q.C.;Quality Check 1;2012/01/27 13:15:00.000;000:00;16;Ballnut;ID4618;D
+Case 239;Packing;Packing;2012/01/30 01:00:00.000;000:00;16;Ballnut;ID4820;D
+Case 241;Turning & Milling;Machine 6 - Turning & Milling;2012/01/16 01:15:00.000;000:00;16;Ballnut;ID4429;S
+Case 241;Turning & Milling;Machine 6 - Turning & Milling;2012/01/17 01:15:00.000;000:00;16;Ballnut;ID4429;S
+Case 241;Turning & Milling;Machine 6 - Turning & Milling;2012/01/22 23:34:00.000;003:31;16;Ballnut;ID4167;S
+Case 241;Turning & Milling Q.C.;Quality Check 1;2012/01/23 09:57:00.000;002:57;16;Ballnut;ID4287;D
+Case 241;Turning & Milling;Machine 6 - Turning & Milling;2012/01/23 10:41:00.000;002:50;16;Ballnut;ID4794;S
+Case 241;Turning & Milling;Machine 6 - Turning & Milling;2012/01/23 16:02:00.000;005:21;16;Ballnut;ID4794;D
+Case 241;Turning & Milling Q.C.;Quality Check 1;2012/01/24 08:40:00.000;001:40;16;Ballnut;ID4287;D
+Case 241;Laser Marking;Machine 7- Laser Marking;2012/01/24 13:37:00.000;001:12;16;Ballnut;ID0998;D
+Case 241;Flat Grinding;Machine 11 - Grinding;2012/01/26 12:40:00.000;000:00;16;Ballnut;ID0998;D
+Case 241;Lapping;Machine 1 - Lapping;2012/01/26 12:40:00.000;000:00;16;Ballnut;ID0998;D
+Case 241;Final Inspection Q.C.;Quality Check 1;2012/01/26 14:53:00.000;003:23;16;Ballnut;ID4287;D
+Case 241;Packing;Packing;2012/01/27 01:00:00.000;000:00;16;Ballnut;ID4820;D
+Case 249;Turning & Milling;Machine 8 - Turning & Milling;2012/01/12 15:05:00.000;007:02;64;Ballnut;ID0997;S
+Case 249;Turning & Milling;Machine 8 - Turning & Milling;2012/01/12 16:00:00.000;000:54;64;Ballnut;ID0997;S
+Case 249;Turning & Milling Q.C.;Quality Check 1;2012/01/13 07:41:00.000;000:48;64;Ballnut;ID4287;D
+Case 249;Turning & Milling;Machine 8 - Turning & Milling;2012/01/13 12:40:00.000;004:52;64;Ballnut;ID0997;D
+Case 249;Turning & Milling;Machine 8 - Turning & Milling;2012/01/15 17:58:00.000;008:26;64;Ballnut;ID0997;D
+Case 249;Turning & Milling;Machine 8 - Turning & Milling;2012/01/15 22:15:00.000;002:09;64;Ballnut;ID4932;D
+Case 249;Turning & Milling Q.C.;Quality Check 1;2012/01/16 08:40:00.000;001:40;64;Ballnut;ID4287;D
+Case 249;Flat Grinding;Machine 11 - Grinding;2012/01/16 16:08:00.000;002:29;64;Ballnut;ID0998;D
+Case 249;Lapping;Machine 1 - Lapping;2012/01/16 17:22:00.000;001:14;64;Ballnut;ID0998;D
+Case 249;Round Grinding - Manual;Machine 27 - Grinding;2012/01/17 13:32:00.000;000:44;64;Ballnut;ID4872;S
+Case 249;Round Grinding;Machine 2 - Round Grinding;2012/01/18 00:53:00.000;003:54;64;Ballnut;ID4385;S
+Case 249;Round Grinding;Machine 2 - Round Grinding;2012/01/18 02:07:00.000;001:14;64;Ballnut;ID4385;D
+Case 249;Round Grinding;Machine 2 - Round Grinding;2012/01/18 16:03:00.000;009:00;64;Ballnut;ID4355;D
+Case 249;Round Grinding;Machine 2 - Round Grinding;2012/01/18 17:57:00.000;001:51;64;Ballnut;ID4385;D
+Case 249;Round Grinding;Machine 2 - Round Grinding;2012/01/19 02:22:00.000;006:04;64;Ballnut;ID4528;D
+Case 249;Laser Marking;Machine 7- Laser Marking;2012/01/19 07:40:00.000;000:01;64;Ballnut;ID4872;D
+Case 249;Laser Marking;Machine 7- Laser Marking;2012/01/19 08:31:00.000;000:51;64;Ballnut;ID4872;D
+Case 249;Final Inspection Q.C.;Quality Check 1;2012/01/19 11:10:00.000;004:10;64;Ballnut;ID4287;D
+Case 249;Packing;Packing;2012/01/22 01:00:00.000;000:00;64;Ballnut;ID4491;D
+Case 249;Final Inspection Q.C.;Quality Check 1;2012/01/22 07:25:00.000;000:35;64;Ballnut;ID4287;D
+Case 252;Turning & Milling;Machine 6 - Turning & Milling;2012/01/24 07:17:00.000;000:13;12;Ballnut;ID4794;S
+Case 252;Turning & Milling;Machine 6 - Turning & Milling;2012/01/24 09:35:00.000;002:17;12;Ballnut;ID4794;S
+Case 252;Turning & Milling;Machine 6 - Turning & Milling;2012/01/24 09:48:00.000;002:28;12;Ballnut;ID4618;D
+Case 252;Turning & Milling Q.C.;Quality Check 1;2012/01/25 07:17:00.000;000:27;12;Ballnut;ID4618;D
+Case 252;Turning & Milling;Machine 6 - Turning & Milling;2012/01/26 13:55:00.000;006:53;12;Ballnut;ID4794;D
+Case 252;Turning & Milling Q.C.;Quality Check 1;2012/01/26 15:20:00.000;000:02;12;Ballnut;ID4618;D
+Case 252;Laser Marking;Machine 7- Laser Marking;2012/01/27 08:20:00.000;000:20;12;Ballnut;ID0998;D
+Case 252;Lapping;Machine 1 - Lapping;2012/01/27 10:00:00.000;001:40;12;Ballnut;ID0998;D
+Case 252;Final Inspection Q.C.;Quality Check 1;2012/01/27 12:57:00.000;000:37;12;Ballnut;ID4618;D
+Case 252;Final Inspection Q.C.;Quality Check 1;2012/01/29 07:22:00.000;000:01;12;Ballnut;ID4493;D
+Case 252;Packing;Packing;2012/01/30 01:00:00.000;000:00;12;Ballnut;ID4820;D
+Case 258;Turning & Milling;Machine 6 - Turning & Milling;2012/01/17 00:00:00.000;003:44;50;Ballnut;ID4794;S
+Case 258;Turning & Milling;Machine 6 - Turning & Milling;2012/01/17 01:50:00.000;001:49;50;Ballnut;ID4794;D
+Case 258;Turning & Milling;Machine 6 - Turning & Milling;2012/01/17 13:13:00.000;001:47;50;Ballnut;ID4529;D
+Case 258;Turning & Milling;Machine 6 - Turning & Milling;2012/01/18 07:41:00.000;000:26;50;Ballnut;ID4529;S
+Case 258;Turning & Milling;Machine 6 - Turning & Milling;2012/01/18 15:11:00.000;004:30;50;Ballnut;ID4529;S
+Case 258;Turning & Milling;Machine 6 - Turning & Milling;2012/01/18 15:59:00.000;000:47;50;Ballnut;ID4529;D
+Case 258;Turning & Milling;Machine 6 - Turning & Milling;2012/01/19 06:29:00.000;010:19;50;Ballnut;ID4794;D
+Case 258;Turning & Milling Q.C.;Quality Check 1;2012/01/19 09:35:00.000;002:42;50;Ballnut;ID4618;D
+Case 258;Turning & Milling Q.C.;Quality Check 1;2012/01/20 07:31:00.000;000:34;50;Ballnut;ID4618;D
+Case 258;Laser Marking;Machine 7- Laser Marking;2012/01/30 10:29:00.000;000:41;50;Ballnut;ID0998;D
+Case 258;Turning & Milling Q.C.;Quality Check 1;2012/01/30 11:00:00.000;000:15;50;Ballnut;ID4618;D
+Case 258;Lapping;Machine 1 - Lapping;2012/01/30 15:19:00.000;004:50;50;Ballnut;ID0998;D
+Case 258;Final Inspection Q.C.;Quality Check 1;2012/02/01 16:08:00.000;005:09;50;Ballnut;ID4618;D
+Case 258;Final Inspection Q.C.;Quality Check 1;2012/02/02 10:44:00.000;000:00;50;Ballnut;ID4618;D
+Case 258;Final Inspection Q.C.;Quality Check 1;2012/02/02 10:51:00.000;000:00;50;Ballnut;ID4618;D
+Case 258;Packing;Packing;2012/02/05 01:00:00.000;000:00;50;Ballnut;ID4820;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/09 06:30:00.000;002:30;315;Ballnut;ID4529;S
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/19 15:14:00.000;008:07;315;Ballnut;ID4529;S
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/19 15:56:00.000;000:41;315;Ballnut;ID4529;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/19 21:15:00.000;001:05;315;Ballnut;ID4794;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/21 21:03:00.000;008:00;315;Ballnut;ID4529;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/22 06:31:00.000;007:03;315;Ballnut;ID4641;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/01/22 12:13:00.000;005:13;315;Ballnut;ID4618;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/22 15:48:00.000;004:42;315;Ballnut;ID4794;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/22 17:30:00.000;001:30;315;Ballnut;ID4167;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/01/23 16:03:00.000;000:57;315;Ballnut;ID4618;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/01/24 07:20:00.000;000:30;315;Ballnut;ID4618;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/26 16:03:00.000;002:08;315;Ballnut;ID4794;S
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/27 01:44:00.000;005:24;315;Ballnut;ID4529;S
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/27 06:21:00.000;004:38;315;Ballnut;ID4529;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/01/27 07:21:00.000;000:31;315;Ballnut;ID4618;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/01/27 07:37:00.000;000:15;315;Ballnut;ID4618;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/28 18:00:00.000;006:00;315;Ballnut;ID4794;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/29 06:52:00.000;008:35;315;Ballnut;ID4794;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/29 11:22:00.000;022:22;315;Ballnut;ID4932;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/29 15:45:00.000;004:01;315;Ballnut;ID4529;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/29 19:57:00.000;003:38;315;Ballnut;ID4429;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/30 06:39:00.000;010:40;315;Ballnut;ID4794;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/01/30 10:29:00.000;003:31;315;Ballnut;ID4618;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/30 15:49:00.000;008:45;315;Ballnut;ID4529;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/30 23:28:00.000;007:25;315;Ballnut;ID4429;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/31 06:44:00.000;007:10;315;Ballnut;ID4794;D
+Case 260;Turning & Milling;Machine 6 - Turning & Milling;2012/01/31 09:29:00.000;002:21;315;Ballnut;ID4529;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/01/31 11:43:00.000;003:55;315;Ballnut;ID4618;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/02/02 06:52:00.000;000:01;315;Ballnut;ID4618;D
+Case 260;Laser Marking;Machine 7- Laser Marking;2012/02/06 10:20:00.000;000:41;315;Ballnut;ID0998;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/02/13 09:55:00.000;001:46;315;Ballnut;ID4618;D
+Case 260;Laser Marking;Machine 7- Laser Marking;2012/02/13 17:43:00.000;000:13;315;Ballnut;ID4882;D
+Case 260;Flat Grinding;Machine 11 - Grinding;2012/02/15 01:15:00.000;000:00;315;Ballnut;ID4882;D
+Case 260;Lapping;Machine 1 - Lapping;2012/02/15 01:15:00.000;000:00;315;Ballnut;ID4882;D
+Case 260;Lapping;Machine 1 - Lapping;2012/02/15 01:15:00.000;000:00;315;Ballnut;ID4882;D
+Case 260;Flat Grinding;Machine 11 - Grinding;2012/02/15 09:08:00.000;000:28;315;Ballnut;ID0998;D
+Case 260;Laser Marking;Machine 7- Laser Marking;2012/02/15 09:13:00.000;001:35;315;Ballnut;ID4445;D
+Case 260;Round Grinding;Machine 3 - Round Grinding;2012/02/15 11:37:00.000;000:47;315;Ballnut;ID4445;S
+Case 260;Lapping;Machine 1 - Lapping;2012/02/15 12:56:00.000;000:00;315;Ballnut;ID4882;D
+Case 260;Flat Grinding;Machine 11 - Grinding;2012/02/15 16:01:00.000;006:52;315;Ballnut;ID0998;D
+Case 260;Lapping;Machine 1 - Lapping;2012/02/15 16:08:00.000;002:52;315;Ballnut;ID4882;D
+Case 260;Round Grinding;Machine 3 - Round Grinding;2012/02/15 17:47:00.000;006:04;315;Ballnut;ID4445;D
+Case 260;Round Grinding;Machine 3 - Round Grinding;2012/02/16 00:08:00.000;003:50;315;Ballnut;ID0420;D
+Case 260;Flat Grinding;Machine 11 - Grinding;2012/02/16 10:40:00.000;002:28;315;Ballnut;ID0998;D
+Case 260;Lapping;Machine 1 - Lapping;2012/02/16 12:14:00.000;002:59;315;Ballnut;ID4882;D
+Case 260;Round Grinding;Machine 3 - Round Grinding;2012/02/16 18:01:00.000;011:04;315;Ballnut;ID4445;D
+Case 260;Round Grinding;Machine 3 - Round Grinding;2012/02/17 06:42:00.000;010:27;315;Ballnut;ID0420;D
+Case 260;Round Grinding;Machine 3 - Round Grinding;2012/02/18 22:16:00.000;000:06;315;Ballnut;ID4445;D
+Case 260;Final Inspection Q.C.;Quality Check 1;2012/02/21 16:34:00.000;000:02;315;Ballnut;ID4618;D
+Case 260;Final Inspection Q.C.;Quality Check 1;2012/02/21 17:59:00.000;001:46;315;Ballnut;ID4618;D
+Case 260;Final Inspection Q.C.;Quality Check 1;2012/02/22 15:41:00.000;007:55;315;Ballnut;ID4618;D
+Case 260;Packing;Packing;2012/02/23 01:00:00.000;000:00;315;Ballnut;ID4820;D
+Case 260;Fix - Machine;Machine 15 - Turning;2012/03/13 17:11:00.000;001:03;315;Ballnut;ID4219;S
+Case 260;Fix - Machine;Machine 15 - Turning;2012/03/13 18:47:00.000;001:36;315;Ballnut;ID4219;D
+Case 260;Packing;Packing;2012/03/14 01:00:00.000;000:00;315;Ballnut;ID4820;D
+Case 260;Turning & Milling Q.C.;Quality Check 1;2012/03/14 11:08:00.000;000:32;315;Ballnut;ID4618;D
+Case 260;Final Inspection Q.C.;Quality Check 1;2012/03/14 13:18:00.000;000:00;315;Ballnut;ID4618;D
+Case 269;Turning & Milling;Machine 8 - Turning & Milling;2012/01/09 17:30:00.000;005:00;12;Ballnut;ID0997;S
+Case 269;Turning & Milling;Machine 8 - Turning & Milling;2012/01/10 14:47:00.000;000:00;12;Ballnut;ID0997;S
+Case 269;Turning & Milling Q.C.;Quality Check 1;2012/01/10 15:56:00.000;002:36;12;Ballnut;ID4287;D
+Case 269;Turning & Milling;Machine 8 - Turning & Milling;2012/01/10 16:04:00.000;007:45;12;Ballnut;ID0997;S
+Case 269;Turning & Milling;Machine 8 - Turning & Milling;2012/01/11 11:43:00.000;003:55;12;Ballnut;ID0997;D
+Case 269;Turning & Milling Q.C.;Quality Check 1;2012/01/11 13:53:00.000;001:13;12;Ballnut;ID4287;D
+Case 269;Turning & Milling;Machine 8 - Turning & Milling;2012/01/11 15:04:00.000;002:00;12;Ballnut;ID0997;S
+Case 269;Turning & Milling Q.C.;Quality Check 1;2012/01/11 16:20:00.000;001:10;12;Ballnut;ID4287;D
+Case 269;Turning & Milling;Machine 8 - Turning & Milling;2012/01/11 17:54:00.000;004:49;12;Ballnut;ID0997;D
+Case 269;Turning & Milling Q.C.;Quality Check 1;2012/01/12 08:40:00.000;001:40;12;Ballnut;ID4287;D
+Case 269;Lapping;Machine 1 - Lapping;2012/01/24 11:24:00.000;001:01;12;Ballnut;ID0998;D
+Case 269;Laser Marking;Machine 7- Laser Marking;2012/01/24 12:39:00.000;000:00;12;Ballnut;ID0998;D
+Case 269;Round Grinding;Machine 2 - Round Grinding;2012/01/25 18:00:00.000;002:30;12;Ballnut;ID4385;S
+Case 269;Round Grinding;Machine 2 - Round Grinding;2012/01/25 23:48:00.000;005:58;12;Ballnut;ID4355;D
+Case 269;Round Grinding;Machine 12 - Grinding;2012/01/26 09:31:00.000;000:56;12;Ballnut;ID4528;S
+Case 269;Round Grinding;Machine 12 - Grinding;2012/01/26 10:51:00.000;001:19;12;Ballnut;ID4528;D
+Case 269;Final Inspection Q.C.;Quality Check 1;2012/01/29 08:40:00.000;001:40;12;Ballnut;ID4287;D
+Case 269;Final Inspection Q.C.;Quality Check 1;2012/01/29 12:00:00.000;001:54;12;Ballnut;ID4287;D
+Case 269;Final Inspection Q.C.;Quality Check 1;2012/01/29 15:55:00.000;002:35;12;Ballnut;ID4287;D
+Case 269;Packing;Packing;2012/01/30 01:00:00.000;000:00;12;Ballnut;ID4820;D
+Case 269;Final Inspection Q.C.;Quality Check 1;2012/01/30 10:31:00.000;000:31;12;Ballnut;ID4287;D
+Case 27;Turning & Milling;Machine 8 - Turning & Milling;2012/01/18 17:51:00.000;001:54;12;Ballnut;ID0997;S
+Case 27;Turning & Milling;Machine 8 - Turning & Milling;2012/01/19 11:00:00.000;003:00;12;Ballnut;ID0997;S
+Case 27;Turning & Milling;Machine 8 - Turning & Milling;2012/01/19 12:09:00.000;001:05;12;Ballnut;ID0997;S
+Case 27;Turning & Milling;Machine 8 - Turning & Milling;2012/01/19 15:24:00.000;003:15;12;Ballnut;ID0997;D
+Case 27;Turning & Milling;Machine 8 - Turning & Milling;2012/01/20 12:39:00.000;004:30;12;Ballnut;ID0997;S
+Case 27;Turning & Milling;Machine 8 - Turning & Milling;2012/01/22 07:02:00.000;000:04;12;Ballnut;ID0997;D
+Case 27;Turning & Milling;Machine 8 - Turning & Milling;2012/01/22 11:02:00.000;001:25;12;Ballnut;ID0997;D
+Case 27;Turning & Milling Q.C.;Quality Check 1;2012/01/22 13:51:00.000;000:01;12;Ballnut;ID4618;D
+Case 27;Lapping;Machine 1 - Lapping;2012/01/22 17:26:00.000;001:07;12;Ballnut;ID4872;D
+Case 27;Round Grinding - Manual;Machine 27 - Grinding;2012/01/22 18:27:00.000;001:00;12;Ballnut;ID4872;S
+Case 27;Round Grinding - Manual;Machine 27 - Grinding;2012/01/22 22:11:00.000;003:44;12;Ballnut;ID4872;D
+Case 27;Laser Marking;Machine 7- Laser Marking;2012/01/23 17:13:00.000;000:16;12;Ballnut;ID0998;D
+Case 27;Final Inspection Q.C.;Quality Check 1;2012/01/24 13:00:00.000;003:12;12;Ballnut;ID4618;D
+Case 27;Packing;Packing;2012/01/25 01:00:00.000;000:00;12;Ballnut;ID4820;D
+Case 27;Final Inspection Q.C.;Quality Check 1;2012/01/25 10:55:00.000;002:38;12;Ballnut;ID4618;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/01 23:39:00.000;002:49;250;Ballnut;ID4794;S
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/03 06:45:00.000;010:29;250;Ballnut;ID4794;S
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/03 09:06:00.000;001:37;250;Ballnut;ID4618;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/03 12:50:00.000;005:27;250;Ballnut;ID4167;S
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/05 07:16:00.000;000:13;250;Ballnut;ID4618;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/10 00:13:00.000;006:57;250;Ballnut;ID4167;S
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/10 06:34:00.000;005:58;250;Ballnut;ID0997;D
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/10 07:47:00.000;000:57;250;Ballnut;ID4618;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/10 12:29:00.000;005:02;250;Ballnut;ID4429;B
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/11 11:31:00.000;000:44;250;Ballnut;ID4932;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/11 21:59:00.000;009:59;250;Ballnut;ID4794;B
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/12 00:11:00.000;002:02;250;Ballnut;ID4794;B
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/12 06:37:00.000;006:26;250;Ballnut;ID4794;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/12 08:00:00.000;000:51;250;Ballnut;ID4167;D
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/12 09:49:00.000;002:59;250;Ballnut;ID4618;D
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/14 07:22:00.000;000:20;250;Ballnut;ID4618;D
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/14 07:26:00.000;000:03;250;Ballnut;ID4618;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/15 15:52:00.000;004:07;250;Ballnut;ID4529;S
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/15 19:52:00.000;003:56;250;Ballnut;ID4429;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/16 05:19:00.000;009:01;250;Ballnut;ID4794;D
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/16 08:37:00.000;001:01;250;Ballnut;ID4618;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/17 06:54:00.000;010:37;250;Ballnut;ID4794;D
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/17 08:29:00.000;001:32;250;Ballnut;ID4618;D
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/17 10:52:00.000;000:02;250;Ballnut;ID4618;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/17 12:49:00.000;003:00;250;Ballnut;ID4167;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/18 14:30:00.000;001:19;250;Ballnut;ID4529;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/19 05:14:00.000;006:28;250;Ballnut;ID4641;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/19 09:00:00.000;018:00;250;Ballnut;ID4529;B
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/19 15:53:00.000;006:12;250;Ballnut;ID4794;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/19 20:15:00.000;003:50;250;Ballnut;ID4167;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/20 06:15:00.000;010:00;250;Ballnut;ID4529;D
+Case 28;Turning & Milling;Machine 6 - Turning & Milling;2012/02/20 07:49:00.000;000:01;250;Ballnut;ID4794;D
+Case 28;Turning & Milling Q.C.;Quality Check 1;2012/02/20 07:50:00.000;000:01;250;Ballnut;ID4618;D
+Case 28;Nitration Q.C.;Quality Check 1;2012/03/05 12:14:00.000;000:01;250;Ballnut;ID4618;D
+Case 28;Lapping;Machine 1 - Lapping;2012/03/06 01:15:00.000;000:00;250;Ballnut;ID4882;D
+Case 28;Lapping;Machine 1 - Lapping;2012/03/06 01:15:00.000;000:00;250;Ballnut;ID4882;D
+Case 28;Laser Marking;Machine 7- Laser Marking;2012/03/06 09:11:00.000;000:00;250;Ballnut;ID4882;D
+Case 28;Lapping;Machine 1 - Lapping;2012/03/06 09:32:00.000;000:26;250;Ballnut;ID4882;D
+Case 28;Lapping;Machine 1 - Lapping;2012/03/06 12:06:00.000;003:54;250;Ballnut;ID0998;D
+Case 28;Lapping;Machine 1 - Lapping;2012/03/06 12:54:00.000;002:31;250;Ballnut;ID4882;D
+Case 28;Lapping;Machine 1 - Lapping;2012/03/06 17:40:00.000;001:05;250;Ballnut;ID0998;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/08 04:11:00.000;001:49;250;Ballnut;ID4445;S
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/08 06:48:00.000;002:36;250;Ballnut;ID4445;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/08 16:14:00.000;009:14;250;Ballnut;ID0420;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/08 22:00:00.000;001:33;250;Ballnut;ID4355;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/08 23:41:00.000;001:18;250;Ballnut;ID4355;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/09 06:46:00.000;006:40;250;Ballnut;ID4445;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/09 11:49:00.000;004:32;250;Ballnut;ID4385;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/11 06:34:00.000;008:26;250;Ballnut;ID4528;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/11 11:36:00.000;003:40;250;Ballnut;ID4445;D
+Case 28;Final Inspection Q.C.;Quality Check 1;2012/03/11 13:34:00.000;005:16;250;Ballnut;ID4618;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/11 15:57:00.000;004:14;250;Ballnut;ID4355;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/11 18:25:00.000;002:02;250;Ballnut;ID4385;D
+Case 28;Packing;Packing;2012/03/12 01:00:00.000;000:00;250;Ballnut;ID4820;D
+Case 28;Packing;Packing;2012/03/12 01:00:00.000;000:00;250;Ballnut;ID4820;D
+Case 28;Round Grinding;Machine 3 - Round Grinding;2012/03/12 02:08:00.000;005:56;250;Ballnut;ID0420;D
+Case 28;Final Inspection Q.C.;Quality Check 1;2012/03/12 15:52:00.000;003:25;250;Ballnut;ID4618;D
+Case 28;Packing;Packing;2012/03/13 01:00:00.000;000:00;250;Ballnut;ID4820;D
+Case 28;Final Inspection Q.C.;Quality Check 1;2012/03/13 14:01:00.000;004:40;250;Ballnut;ID4618;D
+Case 28;Packing;Packing;2012/03/14 01:00:00.000;000:00;250;Ballnut;ID4820;D
+Case 28;Packing;Packing;2012/03/15 01:00:00.000;000:00;250;Ballnut;ID4820;D
+Case 33;Turning & Milling;Machine 6 - Turning & Milling;2012/02/22 12:11:00.000;004:48;30;Ballnut;ID4794;S
+Case 33;Turning & Milling Q.C.;Quality Check 1;2012/02/22 12:41:00.000;000:29;30;Ballnut;ID4618;D
+Case 33;Turning & Milling;Machine 6 - Turning & Milling;2012/02/22 14:07:00.000;001:55;30;Ballnut;ID4794;S
+Case 33;Turning & Milling;Machine 6 - Turning & Milling;2012/02/22 15:58:00.000;001:51;30;Ballnut;ID4794;D
+Case 33;Turning & Milling;Machine 6 - Turning & Milling;2012/02/22 23:44:00.000;005:31;30;Ballnut;ID4167;D
+Case 33;Turning & Milling;Machine 6 - Turning & Milling;2012/02/23 01:21:00.000;001:32;30;Ballnut;ID4529;D
+Case 33;Turning & Milling Q.C.;Quality Check 1;2012/02/23 07:38:00.000;000:01;30;Ballnut;ID4618;D
+Case 33;Turning & Milling Q.C.;Quality Check 1;2012/02/26 11:11:00.000;000:01;30;Ballnut;ID4618;D
+Case 33;Flat Grinding;Machine 11 - Grinding;2012/02/29 10:14:00.000;000:38;30;Ballnut;ID0998;D
+Case 33;Turning & Milling Q.C.;Quality Check 1;2012/03/08 10:29:00.000;001:16;30;Ballnut;ID4618;D
+Case 33;Laser Marking;Machine 7- Laser Marking;2012/03/08 11:24:00.000;000:27;30;Ballnut;ID0998;D
+Case 33;Lapping;Machine 1 - Lapping;2012/03/08 13:30:00.000;001:57;30;Ballnut;ID0998;D
+Case 33;Round Grinding;Machine 2 - Round Grinding;2012/03/12 13:32:00.000;002:34;30;Ballnut;ID4445;S
+Case 33;Round Grinding;Machine 2 - Round Grinding;2012/03/12 17:38:00.000;004:05;30;Ballnut;ID4445;D
+Case 33;Round Grinding;Machine 2 - Round Grinding;2012/03/12 19:13:00.000;000:56;30;Ballnut;ID4385;D
+Case 33;Packing;Packing;2012/03/16 01:00:00.000;000:00;30;Ballnut;ID4820;D
+Case 33;Packing;Packing;2012/03/16 01:00:00.000;000:00;30;Ballnut;ID4820;D
+Case 33;Final Inspection Q.C.;Quality Check 1;2012/03/16 09:04:00.000;000:00;30;Ballnut;ID4618;D
+Case 37;Turning;Machine 9 - Turning & Milling;2012/01/30 14:19:00.000;003:59;36;Ballnut;ID4641;D
+Case 37;Turning & Milling;Machine 8 - Turning & Milling;2012/01/30 14:46:00.000;004:59;36;Ballnut;ID0997;S
+Case 37;Turning & Milling;Machine 8 - Turning & Milling;2012/01/30 18:02:00.000;003:15;36;Ballnut;ID0997;S
+Case 37;Turning & Milling;Machine 8 - Turning & Milling;2012/01/31 06:45:00.000;010:41;36;Ballnut;ID4794;D
+Case 37;Turning & Milling;Machine 8 - Turning & Milling;2012/01/31 18:00:00.000;011:00;36;Ballnut;ID4783;D
+Case 37;Turning & Milling;Machine 8 - Turning & Milling;2012/02/01 16:39:00.000;009:39;36;Ballnut;ID0997;S
+Case 37;Turning & Milling;Machine 8 - Turning & Milling;2012/02/01 17:57:00.000;001:18;36;Ballnut;ID0997;D
+Case 37;Turning & Milling;Machine 8 - Turning & Milling;2012/02/02 03:48:00.000;006:29;36;Ballnut;ID4932;D
+Case 37;Flat Grinding;Machine 11 - Grinding;2012/02/03 10:00:00.000;002:00;36;Ballnut;ID0998;D
+Case 37;Turning & Milling Q.C.;Quality Check 1;2012/02/06 07:42:00.000;000:01;36;Ballnut;ID4618;D
+Case 37;Round Grinding;Machine 3 - Round Grinding;2012/02/12 05:00:00.000;005:00;36;Ballnut;ID0420;D
+Case 37;Lapping;Machine 1 - Lapping;2012/02/12 15:26:00.000;003:20;36;Ballnut;ID0998;D
+Case 37;Round Grinding;Machine 3 - Round Grinding;2012/02/12 22:30:00.000;002:30;36;Ballnut;ID4385;S
+Case 37;Round Grinding;Machine 3 - Round Grinding;2012/02/12 23:30:00.000;001:00;36;Ballnut;ID4385;D
+Case 37;Round Grinding;Machine 3 - Round Grinding;2012/02/13 09:08:00.000;002:08;36;Ballnut;ID4355;D
+Case 37;Laser Marking;Machine 7- Laser Marking;2012/02/21 01:15:00.000;000:00;36;Ballnut;ID4618;D
+Case 37;Round Grinding;Machine 2 - Round Grinding;2012/02/21 01:15:00.000;000:00;36;Ballnut;ID4618;D
+Case 37;Laser Marking;Machine 7- Laser Marking;2012/02/21 14:00:00.000;000:01;36;Ballnut;ID0998;D
+Case 37;Final Inspection Q.C.;Quality Check 1;2012/02/21 16:34:00.000;000:17;36;Ballnut;ID4618;D
+Case 37;Final Inspection Q.C.;Quality Check 1;2012/02/21 16:35:00.000;000:17;36;Ballnut;ID4618;D
+Case 37;Packing;Packing;2012/02/22 01:00:00.000;000:00;36;Ballnut;ID4820;D
+Case 43;Turning & Milling;Machine 8 - Turning & Milling;2012/02/16 00:29:00.000;001:09;26;Ballnut;ID4219;S
+Case 43;Turning & Milling;Machine 8 - Turning & Milling;2012/02/16 13:46:00.000;004:35;26;Ballnut;ID0997;S
+Case 43;Turning & Milling Q.C.;Quality Check 1;2012/02/16 13:55:00.000;000:35;26;Ballnut;ID4618;D
+Case 43;Turning & Milling;Machine 8 - Turning & Milling;2012/02/16 15:57:00.000;001:36;26;Ballnut;ID0997;D
+Case 43;Turning & Milling;Machine 8 - Turning & Milling;2012/02/16 21:03:00.000;004:36;26;Ballnut;ID4219;D
+Case 43;Turning & Milling Q.C.;Quality Check 1;2012/02/17 08:22:00.000;000:11;26;Ballnut;ID4618;D
+Case 43;Laser Marking;Machine 7- Laser Marking;2012/02/19 14:43:00.000;000:15;26;Ballnut;ID0998;D
+Case 43;Lapping;Machine 1 - Lapping;2012/02/20 10:24:00.000;000:36;26;Ballnut;ID0998;D
+Case 43;Final Inspection Q.C.;Quality Check 1;2012/02/20 12:11:00.000;001:00;26;Ballnut;ID4618;D
+Case 43;Packing;Packing;2012/02/21 01:00:00.000;000:00;26;Ballnut;ID4820;D
+Case 43;Packing;Packing;2012/02/21 01:00:00.000;000:00;26;Ballnut;ID4820;D
+Case 46;Turning & Milling;Machine 6 - Turning & Milling;2012/01/29 01:15:00.000;000:00;10;Ballnut;ID4429;S
+Case 46;Turning & Milling;Machine 6 - Turning & Milling;2012/01/31 15:57:00.000;006:27;10;Ballnut;ID4529;S
+Case 46;Turning & Milling;Machine 6 - Turning & Milling;2012/01/31 20:06:00.000;003:05;10;Ballnut;ID4429;S
+Case 46;Turning & Milling;Machine 6 - Turning & Milling;2012/01/31 22:40:00.000;002:36;10;Ballnut;ID4794;S
+Case 46;Turning & Milling;Machine 6 - Turning & Milling;2012/02/01 03:21:00.000;004:40;10;Ballnut;ID4794;D
+Case 46;Turning & Milling Q.C.;Quality Check 1;2012/02/01 11:11:00.000;001:55;10;Ballnut;ID4287;D
+Case 46;Lapping;Machine 1 - Lapping;2012/02/01 14:50:00.000;000:01;10;Ballnut;ID0998;D
+Case 46;Final Inspection Q.C.;Quality Check 1;2012/02/01 15:56:00.000;000:53;10;Ballnut;ID4287;D
+Case 46;Laser Marking;Machine 7- Laser Marking;2012/02/01 16:05:00.000;000:00;10;Ballnut;ID0998;D
+Case 46;Final Inspection Q.C.;Quality Check 1;2012/02/02 07:01:00.000;000:12;10;Ballnut;ID4287;D
+Case 46;Packing;Packing;2012/02/03 01:00:00.000;000:00;10;Ballnut;ID4820;D
+Case 47;Turning & Milling;Machine 8 - Turning & Milling;2012/03/05 13:29:00.000;005:35;10;Ballnut;ID4219;S
+Case 47;Turning & Milling;Machine 8 - Turning & Milling;2012/03/05 14:42:00.000;001:12;10;Ballnut;ID4219;B
+Case 47;Turning & Milling Q.C.;Quality Check 1;2012/03/05 14:50:00.000;000:20;10;Ballnut;ID4618;D
+Case 47;Turning & Milling;Machine 8 - Turning & Milling;2012/03/05 16:44:00.000;002:02;10;Ballnut;ID4219;D
+Case 47;Turning & Milling;Machine 8 - Turning & Milling;2012/03/05 23:59:00.000;000:59;10;Ballnut;ID4219;S
+Case 47;Turning & Milling;Machine 8 - Turning & Milling;2012/03/06 01:00:00.000;001:01;10;Ballnut;ID4219;D
+Case 47;Turning & Milling Q.C.;Quality Check 1;2012/03/07 07:12:00.000;000:18;10;Ballnut;ID4618;D
+Case 47;Laser Marking;Machine 7- Laser Marking;2012/03/15 14:03:00.000;000:03;10;Ballnut;ID4882;D
+Case 47;Flat Grinding;Machine 11 - Grinding;2012/03/16 12:26:00.000;000:46;10;Ballnut;ID0998;D
+Case 47;Lapping;Machine 1 - Lapping;2012/03/16 13:41:00.000;000:00;10;Ballnut;ID0998;D
+Case 47;Round Grinding;Machine 2 - Round Grinding;2012/03/21 05:00:00.000;002:00;10;Ballnut;ID4355;D
+Case 47;Final Inspection Q.C.;Quality Check 1;2012/03/21 16:26:00.000;006:10;10;Ballnut;ID4618;D
+Case 47;Packing;Packing;2012/03/22 01:00:00.000;000:00;10;Ballnut;ID4820;D
+Case 49;Turning & Milling;Machine 8 - Turning & Milling;2012/03/01 16:00:00.000;008:41;7;Ballnut;ID0997;S
+Case 49;Turning & Milling Q.C.;Quality Check 1;2012/03/01 16:10:00.000;001:05;7;Ballnut;ID4163;S
+Case 49;Turning & Milling;Machine 8 - Turning & Milling;2012/03/02 11:35:00.000;003:03;7;Ballnut;ID0997;D
+Case 49;Turning & Milling;Machine 6 - Turning & Milling;2012/03/04 01:15:00.000;000:00;7;Ballnut;ID0937;D
+Case 49;Turning & Milling Q.C.;Quality Check 1;2012/03/04 11:37:00.000;001:51;7;Ballnut;ID4618;D
+Case 49;Flat Grinding;Machine 11 - Grinding;2012/03/08 23:35:00.000;000:40;7;Ballnut;ID4872;D
+Case 49;Turning & Milling Q.C.;Quality Check 1;2012/03/09 12:57:00.000;001:57;7;Ballnut;ID4618;D
+Case 49;Laser Marking;Machine 7- Laser Marking;2012/03/15 12:23:00.000;000:25;7;Ballnut;ID0998;D
+Case 49;Lapping;Machine 1 - Lapping;2012/03/15 15:46:00.000;000:00;7;Ballnut;ID0998;D
+Case 49;Packing;Packing;2012/03/16 01:00:00.000;000:00;7;Ballnut;ID4820;D
+Case 49;Final Inspection Q.C.;Quality Check 1;2012/03/16 08:33:00.000;000:33;7;Ballnut;ID4618;D
+Case 50;Turning & Milling;Machine 6 - Turning & Milling;2012/03/02 11:36:00.000;000:01;9;Ballnut;ID0997;S
+Case 50;Turning & Milling;Machine 6 - Turning & Milling;2012/03/02 12:29:00.000;000:53;9;Ballnut;ID0997;S
+Case 50;Turning & Milling;Machine 6 - Turning & Milling;2012/03/05 02:08:00.000;005:48;9;Ballnut;ID0997;S
+Case 50;Turning & Milling;Machine 6 - Turning & Milling;2012/03/05 04:35:00.000;002:26;9;Ballnut;ID0997;D
+Case 50;Turning & Milling Q.C.;Quality Check 1;2012/03/05 11:09:00.000;002:48;9;Ballnut;ID4618;D
+Case 50;Lapping;Machine 1 - Lapping;2012/03/16 09:24:00.000;000:46;9;Ballnut;ID0998;D
+Case 50;Laser Marking;Machine 7- Laser Marking;2012/03/16 10:39:00.000;000:00;9;Ballnut;ID0998;D
+Case 50;Packing;Packing;2012/03/19 01:00:00.000;000:00;9;Ballnut;ID4820;D
+Case 50;Final Inspection Q.C.;Quality Check 1;2012/03/19 09:56:00.000;002:22;9;Ballnut;ID4618;D
+Case 52;Turning & Milling;Machine 8 - Turning & Milling;2012/02/09 06:36:00.000;001:27;75;Ballnut;ID0997;D
+Case 52;Turning & Milling;Machine 8 - Turning & Milling;2012/02/21 15:38:00.000;002:10;75;Ballnut;ID4219;S
+Case 52;Turning & Milling;Machine 8 - Turning & Milling;2012/02/21 17:11:00.000;001:32;75;Ballnut;ID4219;B
+Case 52;Turning & Milling;Machine 8 - Turning & Milling;2012/02/21 17:58:00.000;000:47;75;Ballnut;ID4219;S
+Case 52;Turning & Milling;Machine 8 - Turning & Milling;2012/02/22 09:19:00.000;002:27;75;Ballnut;ID4219;S
+Case 52;Turning & Milling;Machine 8 - Turning & Milling;2012/02/22 09:42:00.000;000:22;75;Ballnut;ID4219;B
+Case 52;Turning & Milling;Machine 8 - Turning & Milling;2012/02/22 18:02:00.000;008:20;75;Ballnut;ID4219;D
+Case 52;Turning & Milling;Machine 8 - Turning & Milling;2012/02/23 10:43:00.000;003:54;75;Ballnut;ID4219;D
+Case 52;Turning & Milling Q.C.;Quality Check 1;2012/02/24 11:46:00.000;000:00;75;Ballnut;ID4618;D
+Case 52;Flat Grinding;Machine 11 - Grinding;2012/02/24 12:08:00.000;001:35;75;Ballnut;ID4882;D
+Case 52;Laser Marking;Machine 7- Laser Marking;2012/02/26 06:52:00.000;000:01;75;Ballnut;ID4882;D
+Case 52;Laser Marking;Machine 7- Laser Marking;2012/02/26 11:21:00.000;000:40;75;Ballnut;ID4882;D
+Case 52;Final Inspection Q.C.;Quality Check 1;2012/02/26 18:01:00.000;002:08;75;Ballnut;ID4618;D
+Case 52;Final Inspection Q.C.;Quality Check 1;2012/02/27 14:15:00.000;000:01;75;Ballnut;ID4618;D
+Case 52;Packing;Packing;2012/02/28 01:00:00.000;000:00;75;Ballnut;ID4820;D
+Case 52;Packing;Packing;2012/02/29 01:00:00.000;000:00;75;Ballnut;ID4820;D
+Case 54;Turning & Milling;Machine 4 - Turning & Milling;2012/03/18 16:10:00.000;006:46;24;Ballnut;ID4429;S
+Case 54;Turning & Milling;Machine 4 - Turning & Milling;2012/03/18 23:46:00.000;003:38;24;Ballnut;ID4167;S
+Case 54;Turning & Milling;Machine 4 - Turning & Milling;2012/03/19 08:17:00.000;000:45;24;Ballnut;ID4932;S
+Case 54;Turning & Milling Q.C.;Quality Check 1;2012/03/19 13:38:00.000;000:59;24;Ballnut;ID4287;S
+Case 54;Turning & Milling;Machine 4 - Turning & Milling;2012/03/19 16:04:00.000;006:27;24;Ballnut;ID4932;D
+Case 54;Turning & Milling;Machine 4 - Turning & Milling;2012/03/19 22:59:00.000;006:54;24;Ballnut;ID4167;D
+Case 54;Turning & Milling Q.C.;Quality Check 1;2012/03/20 07:15:00.000;000:15;24;Ballnut;ID4287;D
+Case 54;Flat Grinding;Machine 11 - Grinding;2012/03/20 14:50:00.000;001:00;24;Ballnut;ID0998;D
+Case 54;Flat Grinding;Machine 11 - Grinding;2012/03/20 16:06:00.000;000:00;24;Ballnut;ID0998;D
+Case 54;Turning & Milling Q.C.;Quality Check 1;2012/03/20 17:19:00.000;000:49;24;Ballnut;ID4287;D
+Case 54;Flat Grinding;Machine 11 - Grinding;2012/03/20 17:23:00.000;000:01;24;Ballnut;ID0998;D
+Case 54;Final Inspection Q.C.;Quality Check 1;2012/03/20 18:00:00.000;000:40;24;Ballnut;ID4287;S
+Case 54;Laser Marking;Machine 7- Laser Marking;2012/03/20 18:03:00.000;000:01;24;Ballnut;ID0998;D
+Case 54;Lapping;Machine 1 - Lapping;2012/03/20 18:38:00.000;000:00;24;Ballnut;ID0998;D
+Case 54;Packing;Packing;2012/03/22 01:00:00.000;000:00;24;Ballnut;ID4820;D
+Case 54;Final Inspection Q.C.;Quality Check 1;2012/03/22 09:30:00.000;000:23;24;Ballnut;ID4287;D
+Case 59;Turning & Milling;Machine 6 - Turning & Milling;2012/03/18 15:54:00.000;006:07;10;Ballnut;ID4794;S
+Case 59;Turning & Milling;Machine 6 - Turning & Milling;2012/03/18 17:59:00.000;001:48;10;Ballnut;ID4429;D
+Case 59;Turning & Milling;Machine 6 - Turning & Milling;2012/03/18 21:18:00.000;000:57;10;Ballnut;ID4529;D
+Case 59;Turning & Milling Q.C.;Quality Check 1;2012/03/21 10:10:00.000;000:50;10;Ballnut;ID4618;D
+Case 59;Laser Marking;Machine 7- Laser Marking;2012/03/21 14:56:00.000;000:05;10;Ballnut;ID4718;D
+Case 59;Lapping;Machine 1 - Lapping;2012/03/21 17:35:00.000;000:38;10;Ballnut;ID0420;D
+Case 59;Packing;Packing;2012/03/22 01:00:00.000;000:00;10;Ballnut;ID4820;D
+Case 59;Final Inspection Q.C.;Quality Check 1;2012/03/22 11:08:00.000;001:41;10;Ballnut;ID4618;D
+Case 59;Turning & Milling Q.C.;Quality Check 1;2012/03/23 13:33:00.000;000:00;10;Ballnut;ID4618;D
+Case 62;Turning & Milling;Machine 8 - Turning & Milling;2012/02/19 16:03:00.000;002:36;9;Ballnut;ID4219;S
+Case 62;Turning & Milling;Machine 8 - Turning & Milling;2012/02/20 06:41:00.000;014:37;9;Ballnut;ID4219;B
+Case 62;Turning & Milling;Machine 8 - Turning & Milling;2012/02/20 12:59:00.000;006:17;9;Ballnut;ID4219;S
+Case 62;Turning & Milling;Machine 8 - Turning & Milling;2012/02/20 15:35:00.000;002:35;9;Ballnut;ID4219;B
+Case 62;Turning & Milling;Machine 8 - Turning & Milling;2012/02/20 17:07:00.000;001:31;9;Ballnut;ID4219;D
+Case 62;Turning & Milling;Machine 8 - Turning & Milling;2012/02/21 12:51:00.000;000:42;9;Ballnut;ID4219;D
+Case 62;Turning & Milling Q.C.;Quality Check 1;2012/02/22 15:47:00.000;000:36;9;Ballnut;ID4618;D
+Case 62;Turning & Milling Q.C.;Quality Check 1;2012/03/07 15:09:00.000;003:41;9;Ballnut;ID4618;D
+Case 62;Laser Marking;Machine 7- Laser Marking;2012/03/11 12:19:00.000;000:00;9;Ballnut;ID0998;D
+Case 62;Flat Grinding;Machine 11 - Grinding;2012/03/11 12:20:00.000;000:47;9;Ballnut;ID0998;D
+Case 62;Lapping;Machine 1 - Lapping;2012/03/11 13:36:00.000;000:00;9;Ballnut;ID4882;D
+Case 62;Round Grinding;Machine 3 - Round Grinding;2012/03/13 09:11:00.000;002:10;9;Ballnut;ID4445;S
+Case 62;Round Grinding;Machine 3 - Round Grinding;2012/03/13 10:33:00.000;001:21;9;Ballnut;ID4445;D
+Case 62;Grinding Rework;Machine 12 - Grinding;2012/03/16 11:45:00.000;002:25;9;Ballnut;ID4872;D
+Case 62;Packing;Packing;2012/03/19 01:00:00.000;000:00;9;Ballnut;ID4820;D
+Case 62;Final Inspection Q.C.;Quality Check 1;2012/03/19 11:03:00.000;001:06;9;Ballnut;ID4618;D
+Case 69;Milling;Machine 8 - Turning & Milling;2012/03/13 15:57:00.000;007:59;5;Ballnut;ID0997;S
+Case 69;Packing;Packing;2012/03/20 01:00:00.000;000:00;5;Ballnut;ID4820;D
+Case 69;Final Inspection Q.C.;Quality Check 1;2012/03/20 10:58:00.000;000:00;5;Ballnut;ID4618;D
+Case 74;Packing;Packing;2012/01/31 01:00:00.000;000:00;3;Ballnut;ID4820;D
+Case 74;Final Inspection Q.C.;Quality Check 1;2012/01/31 08:40:00.000;000:36;3;Ballnut;ID4287;D
+Case 74;Final Inspection Q.C.;Quality Check 1;2012/01/31 16:26:00.000;000:00;3;Ballnut;ID4287;D
+Case 75;Turning & Milling;Machine 8 - Turning & Milling;2012/02/02 10:20:00.000;001:04;10;Ballnut;ID0997;S
+Case 75;Turning & Milling;Machine 8 - Turning & Milling;2012/02/02 16:00:00.000;004:19;10;Ballnut;ID0997;S
+Case 75;Turning & Milling;Machine 8 - Turning & Milling;2012/02/02 19:38:00.000;003:25;10;Ballnut;ID4219;D
+Case 75;Turning & Milling;Machine 8 - Turning & Milling;2012/02/03 00:00:00.000;003:00;10;Ballnut;ID4219;S
+Case 75;Turning & Milling;Machine 8 - Turning & Milling;2012/02/03 10:30:00.000;003:30;10;Ballnut;ID0997;S
+Case 75;Turning & Milling;Machine 8 - Turning & Milling;2012/02/03 11:30:00.000;001:00;10;Ballnut;ID0997;D
+Case 75;Turning & Milling Q.C.;Quality Check 1;2012/02/05 12:50:00.000;001:20;10;Ballnut;ID4493;D
+Case 75;Laser Marking;Machine 7- Laser Marking;2012/02/16 11:52:00.000;000:01;10;Ballnut;ID0998;D
+Case 75;Lapping;Machine 1 - Lapping;2012/02/16 14:53:00.000;000:38;10;Ballnut;ID4882;D
+Case 75;Round Grinding;Machine 12 - Grinding;2012/02/17 08:30:00.000;001:30;10;Ballnut;ID4872;S
+Case 75;Round Grinding;Machine 12 - Grinding;2012/02/17 12:30:00.000;004:00;10;Ballnut;ID4872;D
+Case 75;Round Grinding;Machine 12 - Grinding;2012/02/19 12:00:00.000;002:40;10;Ballnut;ID4528;D
+Case 75;Packing;Packing;2012/02/21 01:00:00.000;000:00;10;Ballnut;ID4820;D
+Case 75;Final Inspection Q.C.;Quality Check 1;2012/02/21 10:20:00.000;000:50;10;Ballnut;ID4493;D
+Case 76;Round Grinding;Machine 12 - Grinding;2012/02/19 12:30:00.000;000:30;4;Ballnut;ID4528;D
+Case 76;Packing;Packing;2012/02/21 01:00:00.000;000:00;4;Ballnut;ID4820;D
+Case 76;Final Inspection Q.C.;Quality Check 1;2012/02/21 10:19:00.000;001:01;4;Ballnut;ID4493;D
+Case 85;Turning & Milling;Machine 6 - Turning & Milling;2012/03/21 16:57:00.000;009:36;25;Ballnut;ID4794;S
+Case 85;Turning & Milling;Machine 6 - Turning & Milling;2012/03/21 18:00:00.000;001:02;25;Ballnut;ID4794;D
+Case 85;Turning & Milling;Machine 6 - Turning & Milling;2012/03/22 00:31:00.000;004:09;25;Ballnut;ID4529;D
+Case 85;Turning & Milling;Machine 6 - Turning & Milling;2012/03/22 01:15:00.000;000:00;25;Ballnut;ID0937;D
+Case 85;Turning & Milling;Machine 6 - Turning & Milling;2012/03/22 03:08:00.000;003:04;25;Ballnut;ID0997;D
+Case 85;Turning & Milling Q.C.;Quality Check 1;2012/03/22 07:34:00.000;000:38;25;Ballnut;ID4618;D
+Case 86;Turning & Milling;Machine 6 - Turning & Milling;2012/03/25 06:44:00.000;002:41;70;Ballnut;ID4794;S
+Case 86;Turning & Milling;Machine 6 - Turning & Milling;2012/03/25 15:58:00.000;006:09;70;Ballnut;ID4718;S
+Case 86;Turning & Milling;Machine 6 - Turning & Milling;2012/03/25 17:54:00.000;001:34;70;Ballnut;ID4529;D
+Case 86;Turning & Milling;Machine 6 - Turning & Milling;2012/03/26 06:38:00.000;010:29;70;Ballnut;ID4794;D
+Case 86;Turning & Milling;Machine 6 - Turning & Milling;2012/03/26 08:01:00.000;001:10;70;Ballnut;ID4718;D
+Case 86;Turning & Milling;Machine 6 - Turning & Milling;2012/03/26 08:38:00.000;000:01;70;Ballnut;ID4718;D
+Case 86;Turning & Milling Q.C.;Quality Check 1;2012/03/26 16:40:00.000;000:40;70;Ballnut;ID4287;D
+Case 86;Turning & Milling Q.C.;Quality Check 1;2012/03/27 12:47:00.000;001:47;70;Ballnut;ID4287;D
+Case 92;Turning & Milling;Machine 6 - Turning & Milling;2012/02/13 06:43:00.000;002:11;4;Ballnut;ID4794;S
+Case 92;Turning & Milling;Machine 6 - Turning & Milling;2012/02/13 23:40:00.000;003:08;4;Ballnut;ID4794;S
+Case 92;Turning & Milling;Machine 6 - Turning & Milling;2012/02/14 00:46:00.000;001:05;4;Ballnut;ID4794;D
+Case 92;Turning & Milling Q.C.;Quality Check 1;2012/02/14 10:46:00.000;002:59;4;Ballnut;ID4618;D
+Case 92;Turning & Milling Q.C.;Quality Check 1;2012/02/14 12:04:00.000;000:00;4;Ballnut;ID4618;D
+Case 92;Turning & Milling Q.C.;Quality Check 1;2012/02/27 07:08:00.000;000:18;4;Ballnut;ID4618;D
+Case 92;Round Grinding;Machine 12 - Grinding;2012/02/29 19:00:00.000;000:39;4;Ballnut;ID4528;S
+Case 92;Laser Marking;Machine 7- Laser Marking;2012/02/29 19:02:00.000;000:02;4;Ballnut;ID4528;D
+Case 92;Round Grinding;Machine 12 - Grinding;2012/02/29 19:49:00.000;000:47;4;Ballnut;ID4528;D
+Case 92;Lapping;Machine 1 - Lapping;2012/02/29 20:17:00.000;000:00;4;Ballnut;ID4528;D
+Case 92;Round Grinding - Q.C.;Quality Check 1;2012/03/05 17:58:00.000;006:32;4;Ballnut;ID4618;D
+Case 92;Round Grinding - Q.C.;Quality Check 1;2012/03/06 10:27:00.000;002:27;4;Ballnut;ID4618;D
+Case 92;Packing;Packing;2012/03/07 01:00:00.000;000:00;4;Ballnut;ID4820;D
+Case 96;Turning & Milling Q.C.;Quality Check 1;2012/03/18 13:53:00.000;001:53;200;Ballnut;ID4287;D
+Case 96;Turning & Milling Q.C.;Quality Check 1;2012/03/27 17:41:00.000;002:29;200;Ballnut;ID4287;D
+Case 96;Lapping;Machine 1 - Lapping;2012/03/28 01:15:00.000;000:00;200;Ballnut;ID4882;D
+Case 96;Lapping;Machine 1 - Lapping;2012/03/28 10:13:00.000;001:09;200;Ballnut;ID4882;D
+Case 96;Laser Marking;Machine 7- Laser Marking;2012/03/28 12:00:00.000;002:30;200;Ballnut;ID4718;D
+Case 96;Lapping;Machine 1 - Lapping;2012/03/28 13:22:00.000;002:42;200;Ballnut;ID0998;D
+Case 96;Packing;Packing;2012/03/29 01:00:00.000;000:00;200;Ballnut;ID4291;D
+Case 96;Packing;Packing;2012/03/29 01:00:00.000;000:00;200;Ballnut;ID4820;D
+Case 96;Final Inspection Q.C.;Quality Check 1;2012/03/29 08:40:00.000;001:40;200;Ballnut;ID4287;D
+Case 97;Turning & Milling Q.C.;Quality Check 1;2012/03/09 12:45:00.000;001:15;100;Ballnut;ID4287;D
+Case 97;Laser Marking;Machine 7- Laser Marking;2012/03/11 15:53:00.000;000:57;100;Ballnut;ID4445;D
+Case 97;Laser Marking;Machine 7- Laser Marking;2012/03/11 16:48:00.000;000:46;100;Ballnut;ID4882;D
+Case 97;Lapping;Machine 1 - Lapping;2012/03/12 01:15:00.000;000:00;100;Ballnut;ID4882;D
+Case 97;Lapping;Machine 1 - Lapping;2012/03/12 01:15:00.000;000:00;100;Ballnut;ID4882;D
+Case 97;Flat Grinding;Machine 11 - Grinding;2012/03/12 11:19:00.000;000:01;100;Ballnut;ID0998;D
+Case 97;Lapping;Machine 1 - Lapping;2012/03/12 14:10:00.000;002:51;100;Ballnut;ID0998;D
+Case 97;Final Inspection Q.C.;Quality Check 1;2012/03/18 15:00:00.000;001:06;100;Ballnut;ID4287;D
+Case 97;Final Inspection Q.C.;Quality Check 1;2012/03/19 16:00:00.000;002:21;100;Ballnut;ID4287;D
+Case 97;Packing;Packing;2012/03/22 01:00:00.000;000:00;100;Ballnut;ID4820;D
+Case 97;Packing;Packing;2012/03/22 01:00:00.000;000:00;100;Ballnut;ID4820;D
+Case 97;Final Inspection Q.C.;Quality Check 1;2012/03/22 08:40:00.000;000:40;100;Ballnut;ID4287;D
+Case 98;Turning & Milling Q.C.;Quality Check 1;2012/03/28 12:38:00.000;002:38;330;Ballnut;ID4287;D
+Case 98;Laser Marking;Machine 7- Laser Marking;2012/03/28 15:30:00.000;000:30;330;Ballnut;ID4718;D
+Case 98;Laser Marking;Machine 7- Laser Marking;2012/03/29 08:20:00.000;000:55;330;Ballnut;ID4882;D
+Case 98;Laser Marking;Machine 7- Laser Marking;2012/03/29 09:30:00.000;000:30;330;Ballnut;ID4718;D
+>>>>>>> db80f220febc2dc144df63b134ee36af89af8b96
