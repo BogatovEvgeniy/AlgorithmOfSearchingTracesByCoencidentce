@@ -9,10 +9,8 @@ import org.deckfour.xes.model.XLog;
 import utils.AttributeUtils;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Tha algorithm assumes that his input is an set of event in an one trace.
@@ -210,12 +208,13 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
      */
     private void attributeCoincidence(XLog originLog, List<XEvent> eventRange) {
         attributeSets = getAttributeSet(originLog, windowIndex, windowSize);
-
+        System.out.println("3rd Step:" + SimpleDateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis())));
         for (int attrSetIndex = 0; attrSetIndex < attributeSets.size(); attrSetIndex++) {
 
             /**
              *  4. Calculate window coincidence
              */
+            System.out.println("4rd Step:" + SimpleDateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis())));
             int negativeTriesCounter = 0;
             float windowCoincidence = windowCoincidence(attrSetIndex, attributeSets.get(attrSetIndex), eventRange);
 
@@ -235,6 +234,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
      * 7. IF (window_size  + window_first_event_index < log_events_count) THEN go to 8   ELSE go to 9
      */
     private boolean moreEventsAvailable(XLog originLog, int windowIndex) {
+        System.out.println("7rd Step:" + SimpleDateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis())));
         return originLog.get(0).size() > windowIndex + windowSize; // Assumption that we have a log with only one trace
     }
 
@@ -242,6 +242,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
      * 4. Calculate window coincidence
      */
     float windowCoincidence(int attributeSetIndex, List<String> attributeSet, List<XEvent> inStepEvents) {
+
         float coincidenceInStep = 0f;
         int stepCounter = 0;
         boolean isEqualsFound = false;
@@ -252,7 +253,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
             XAttributeMap currentInStepEventAttr = currEvent.getAttributes();
             XEvent nextEvent = inStepEvents.get(secondComparisionValIndex);
             XAttributeMap nextInStepEventAttr = nextEvent.getAttributes();
-            attributeSetCoincidence = calculateCoincidenceEventPair(attributeSet, currentInStepEventAttr, nextInStepEventAttr);
+             attributeSetCoincidence = calculateCoincidenceEventPair(attributeSet, currentInStepEventAttr, nextInStepEventAttr);
             stepCounter++;
             if (attributeSetCoincidence > 0) {
                 isEqualsFound = true;
@@ -267,6 +268,7 @@ public abstract class BaseWeightSearchAlgorithm implements ILogAlgorithm<List<At
             /**
              * 5. Store events with coincidence and window index (KEY,VAL -> window_index, values)
              */
+            System.out.println("5rd Step:" + SimpleDateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis())));
             dbWriter.insertPairOfEvents(attributeSet,
                     windowIndex, attributeSetIndex,
                     windowIndex + firstComparisonValIndex, windowIndex + secondComparisionValIndex,
