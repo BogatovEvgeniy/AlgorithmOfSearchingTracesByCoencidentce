@@ -3,6 +3,7 @@ package algorithms.search.trace.locator.invariant;
 import algorithms.Utils;
 import algorithms.search.trace.ITraceSearchingAlgorithm;
 import algorithms.search.trace.locator.invariant.rule.log.Final;
+import algorithms.search.trace.locator.invariant.rule.log.Initial;
 import com.google.common.annotations.VisibleForTesting;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
@@ -11,6 +12,7 @@ import org.deckfour.xes.model.XLog;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+import static algorithms.search.trace.TraceSearchingAlgorithm.ADD_NEW_TRACE;
 import static algorithms.search.trace.TraceSearchingAlgorithm.TRACE_UNDEFINED;
 
 
@@ -44,6 +46,11 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
     private int[] getMaxCoincidenceTraceIndexByAttr(XLog resultLog, XEvent event) {
         XAttributeMap getEventAttributes = event.getAttributes();
         Map<Integer, Float> traceAttributesCoincidenceValues = new HashMap<>();
+
+        if (isEventInitial(event, tree)){
+            return ADD_NEW_TRACE;
+        }
+
         for (String key : getEventAttributes.keySet()) {
             String eventVal = event.getAttributes().get(key).toString();
             List<IRule> ruleList = tree.getRuleSetPerKey(key);
@@ -51,6 +58,7 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
             if (ruleList == null || ruleList.isEmpty()) {
                 continue;
             }
+
 
             List<Integer> suitableTraceIndexes;
             @Nonnull List<String> preValues = definePossiblePreviousValues(resultLog, ruleList, eventVal);
@@ -66,47 +74,76 @@ public class ByFirstTraceCoincidenceInvariantsTraceLocator implements ITraceSear
         traceAttributesCoincidenceValues = removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues, event);
 
         if (traceAttributesCoincidenceValues.isEmpty()) {
-            return TRACE_UNDEFINED;
+            return ADD_NEW_TRACE;
         } else {
             return returnSortedResults(traceAttributesCoincidenceValues);
         }
     }
 
+    public boolean isEventInitial(XEvent event, TraceInvariantList invariantList) {
+        int[] result = TRACE_UNDEFINED;
+        for (String key : event.getAttributes().keySet()) {
+
+            List<Initial> initialRules = invariantList.getInitialEvents(key);
+            if (initialRules == null || initialRules.isEmpty()) {
+                continue;
+            }
+
+            for (Initial rule : initialRules) {
+                if (rule.isInitialState(event)) {
+                    result = ADD_NEW_TRACE;
+                    break;
+                }
+            }
+        }
+        return result == ADD_NEW_TRACE;
+    }
+
     private Map<Integer, Float> removeFinalizedTraces(XLog resultLog, Map<Integer, Float> traceAttributesCoincidenceValues, XEvent event) {
         Map<Integer, Float> result = new HashMap<>();
-        Set<Integer> validatedTraces = new HashSet<>();
+        Set<Integer> nonFinalizedTraces = new HashSet<>();
         for (String attrKey : event.getAttributes().keySet()) {
             List<Final> finalRules = tree.getFinalEvents(attrKey);
 
             if (finalRules == null) {
                 continue;
             }
-
-           Set<Integer> perKeyResults = new HashSet<>();
-            for (Final finalRule : finalRules) {
-                Set<Integer> perFinalValues = finalRule.removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues.keySet());
-                if (perKeyResults.isEmpty()){
-                    perKeyResults = perFinalValues;
-                } else {
-                    perKeyResults.retainAll(perFinalValues);
-                }
-            }
-
-
-            if (validatedTraces.isEmpty()) {
-                validatedTraces = perKeyResults;
-            } else {
-                validatedTraces.retainAll(perKeyResults);
-            }
-
+            nonFinalizedTraces = defineNonFinalizedTraceIndexesPerAttribute(finalRules, resultLog, traceAttributesCoincidenceValues, nonFinalizedTraces);
         }
 
+        // Copy nonfinalized traces and their coincidence values to result
         for (Integer integer : traceAttributesCoincidenceValues.keySet()) {
-            if (validatedTraces.contains(integer)) {
+            if (nonFinalizedTraces.contains(integer)) {
                 result.put(integer, traceAttributesCoincidenceValues.get(integer));
             }
         }
         return result;
+    }
+
+    private Set<Integer> defineNonFinalizedTraceIndexesPerAttribute(List<Final> finalRules, XLog resultLog, Map<Integer, Float> traceAttributesCoincidenceValues, Set<Integer> nonFinalizedTraces) {
+
+        Set<Integer> perAttrNonFinalizedTraceIndexes = null;
+        for (Final finalRule : finalRules) {
+            perAttrNonFinalizedTraceIndexes = defineAllowedTracesPerRule(resultLog, traceAttributesCoincidenceValues, perAttrNonFinalizedTraceIndexes, finalRule);
+        }
+
+
+        if (nonFinalizedTraces.isEmpty()) {
+            nonFinalizedTraces = perAttrNonFinalizedTraceIndexes;
+        } else {
+            nonFinalizedTraces.retainAll(perAttrNonFinalizedTraceIndexes);
+        }
+        return nonFinalizedTraces;
+    }
+
+    private Set<Integer> defineAllowedTracesPerRule(XLog resultLog, Map<Integer, Float> traceAttributesCoincidenceValues, Set<Integer> perAttrNonFinalizedTraceIndexes, Final finalRule) {
+        Set<Integer> perRuleAllowedTraces = finalRule.removeFinalizedTraces(resultLog, traceAttributesCoincidenceValues.keySet());
+        if (perAttrNonFinalizedTraceIndexes == null) {
+            perAttrNonFinalizedTraceIndexes = perRuleAllowedTraces;
+        } else {
+            perAttrNonFinalizedTraceIndexes.retainAll(perRuleAllowedTraces);
+        }
+        return perAttrNonFinalizedTraceIndexes;
     }
 
     private List<Integer> defineSuitableTraceIndex(XLog resultLog, List<String> preValues, String key) {

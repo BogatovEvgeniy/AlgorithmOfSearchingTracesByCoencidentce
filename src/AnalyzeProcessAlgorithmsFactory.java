@@ -36,7 +36,9 @@ public class AnalyzeProcessAlgorithmsFactory {
                 algorithms =
                         Lists.newArrayList(
                                 new MergeEventsInOneTrace(),
-                                PredefinedAttributeWeightsSearchAlgorithm.init(variant.algorithmModel.getAttributeSets())
+                                PredefinedAttributeWeightsSearchAlgorithm.init(variant.algorithmModel.getAttributeSets()),
+                                TraceSearchingAlgorithm.initAlgorithmBasedOnAttributeComparision(variant.coeficientMapCalculator.calculateCoefficientsMap()),
+                                TraceSearchingAlgorithm.initAlgorithmBasedOnInvariantComparision(variant.invariantSetHolder.getInvariants())
                         );
         }
         return new AlgorithmSequence(algorithms);

@@ -5,6 +5,7 @@ import algorithms.search.trace.locator.coefficient.LastEventCoefficientsTraceLoc
 import algorithms.search.trace.locator.invariant.ByFirstTraceCoincidenceInvariantsTraceLocator;
 import algorithms.search.trace.locator.invariant.InitialEventValidator;
 import algorithms.search.trace.locator.invariant.TraceInvariantList;
+import algorithms.search.trace.locator.invariant.rule.log.Initial;
 import com.sun.istack.internal.NotNull;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
@@ -79,9 +80,9 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     }
 
     public static ITraceSearchingAlgorithm initAlgorithmBasedOnInvariantComparision(TraceInvariantList tree) {
-        InitialEventValidator initialEventValidator = new InitialEventValidator(tree);
+//        InitialEventValidator initialEventValidator = new InitialEventValidator(tree);
         ITraceSearchingAlgorithm.TraceLocator invariantTraceLocator = new ByFirstTraceCoincidenceInvariantsTraceLocator(0.9f, tree);
-        return initTraceSearchingAlgorithm(initialEventValidator, invariantTraceLocator);
+        return initTraceSearchingAlgorithm(/*initialEventValidator,*/ invariantTraceLocator);
     }
 
     private static ITraceSearchingAlgorithm initTraceSearchingAlgorithm(ITraceSearchingAlgorithm.TraceLocator traceLocator) {
@@ -139,7 +140,7 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
             boolean initialEqual = initialEvent.getAttributes().get(Product_production.KEY_ACTIVITY).toString().equals("Turning & Milling");
             boolean finalIsEqual = finalEvent.getAttributes().get(Product_production.KEY_ACTIVITY).toString().equals("Packing");
             boolean comparisionResult = initialEqual && finalIsEqual;
-            if(!comparisionResult){
+            if (!comparisionResult) {
                 tracesToExclude.add(xTrace);
             }
 
@@ -205,7 +206,7 @@ public class TraceSearchingAlgorithm implements ITraceSearchingAlgorithm {
     private void addEvent(XEvent xEvent, int[] traceLocatorResults) {
 
         if (initialEventValidator == null) {
-            if (Arrays.equals(traceLocatorResults, TRACE_UNDEFINED)) {
+            if (Arrays.equals(traceLocatorResults, TRACE_UNDEFINED) || Arrays.equals(traceLocatorResults, ADD_NEW_TRACE)) {
                 addInNewTrace(xEvent);
             } else {
                 addByTheIndex(xEvent, traceLocatorResults[0]);

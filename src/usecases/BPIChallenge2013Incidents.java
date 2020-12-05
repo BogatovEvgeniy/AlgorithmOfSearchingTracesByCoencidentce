@@ -17,7 +17,7 @@ public class BPIChallenge2013Incidents implements IUseCase, ICoefficientMapCalcu
 
     @Override
     public String getLogName() {
-        return "BPI_Challenge_2013_incidents_111";
+        return "BPI_Challenge_2013_incidents_380_traces";
     }
 
     @Override
@@ -50,9 +50,9 @@ public class BPIChallenge2013Incidents implements IUseCase, ICoefficientMapCalcu
         traceRules.add(new Same(KEY_PRODUCT));
         list.addInvariantBatchTraceRule(traceRules);
 
-        list.addInitialEvents(new Initial("concept:name", "Accepted"));
-        list.addInitialEvents(new Initial("concept:name", "Queued"));
-        list.addInitialEvents(new Initial("lifecycle:transition", "In Progress"));
+//        list.addInitialEvents(new Initial("concept:name", "Accepted"));
+//        list.addInitialEvents(new Initial("concept:name", "Queued"));
+//        list.addInitialEvents(new Initial("lifecycle:transition", "In Progress"));
         list.addFinalEvents(new Final("concept:name", "Completed"));
         list.addFinalEvents(new Final("lifecycle:transition", "Closed"));
         list.addFinalEvents(new Final("lifecycle:transition", "In Call"));

@@ -76,7 +76,7 @@ public class DBWriter {
     public static DBWriter init() {
         connection = getConnection();
 //        STEP 2: Register JDBC driver
-//        truncateTables();
+        truncateTables();
         return new DBWriter();
     }
 
